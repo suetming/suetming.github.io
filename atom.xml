@@ -4,7 +4,7 @@
   <subtitle><![CDATA[清静心性现，水清月影明]]></subtitle>
   <link href="http://suetming.com/atom.xml" rel="self"/>
   <link href="http://suetming.com"/>
-  <updated>2013-08-11T12:19:46.221Z</updated>
+  <updated>2013-08-11T12:20:47.927Z</updated>
   <id>http://suetming.com/</id>
   <author>
     <name><![CDATA[SuetMing]]></name>
@@ -15,8 +15,8 @@
     <title type="html"><![CDATA[仿360|ChatHead等APP悬浮窗和动画效果]]></title>
     <link href="http://suetming.com/2013/08/11/仿360chathead等app悬浮窗效果/"/>
     <id>http://suetming.com/2013/08/11/仿360chathead等app悬浮窗效果/</id>
-    <published>2013-08-11T12:19:31.000Z</published>
-    <updated>2013-08-11T12:19:31.000Z</updated>
+    <published>2013-08-11T12:20:36.000Z</published>
+    <updated>2013-08-11T12:20:36.000Z</updated>
     <content type="html"><![CDATA[<p>360手机卫士很早就有悬浮窗效果，并且搞了各种游戏吸引用户眼球，Facebook出了新版的Facebook Messager，也增加了悬浮窗的效果，大家都在争夺用户的手机桌面，尽可能的强化用户行为习惯。本文不对产品做过多描述，主要讲解如何实现悬浮窗以及相关动画效果</p>
 <p><img src="/images/photos/2013-08-11-xiaomi-360safe.png" alt=""></p>
 <p><a name="more"></a>
@@ -214,9 +214,11 @@
 
 <p>增加上述代码后，重新运行看看是不是可以拖拽了O(∩_∩)O~</p>
 <h2>弹力球动画效果</h2>
-<p>弹力球效果的物理模型在大学物理弹力系统章节里有相应描述，具体可以函数参照这两篇文章：
-- <a href="http://khanlou.com/2012/01/dampers-and-their-role-in-physical-models/">mass-spring-damper system</a>
-- <a href="http://khanlou.com/2012/01/cakeyframeanimation-make-it-bounce/">bounce animation</a></p>
+<p>弹力球效果的物理模型在大学物理弹力系统章节里有相应描述，具体可以函数参照这两篇文章：</p>
+<ul>
+<li><a href="http://khanlou.com/2012/01/dampers-and-their-role-in-physical-models/">mass-spring-damper system</a></li>
+<li><a href="http://khanlou.com/2012/01/cakeyframeanimation-make-it-bounce/">bounce animation</a></li>
+</ul>
 <p>弹力效果函数如下：</p>
 <p><img src="/images/photos/2013-08-11-bounce-equation.png" alt=""></p>
 <p>弹力行为反映到图上如下：</p>
