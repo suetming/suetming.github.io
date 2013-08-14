@@ -4,7 +4,7 @@
   <subtitle><![CDATA[清静心性现，水清月影明]]></subtitle>
   <link href="http://suetming.com/atom.xml" rel="self"/>
   <link href="http://suetming.com"/>
-  <updated>2013-08-14T01:11:04.578Z</updated>
+  <updated>2013-08-14T01:16:54.203Z</updated>
   <id>http://suetming.com/</id>
   <author>
     <name><![CDATA[SuetMing]]></name>
@@ -15,8 +15,8 @@
     <title type="html"><![CDATA[Web组件(Web Components) | HTML5]]></title>
     <link href="http://suetming.com/2013/08/14/2013-06-29-web-components/"/>
     <id>http://suetming.com/2013/08/14/2013-06-29-web-components/</id>
-    <published>2013-08-14T01:09:44.000Z</published>
-    <updated>2013-08-14T01:09:44.000Z</updated>
+    <published>2013-08-14T01:16:48.000Z</published>
+    <updated>2013-08-14T01:16:48.000Z</updated>
     <content type="html"><![CDATA[<p>译者：<a href="http://suetming.com">suetming</a></p>
 <p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/">W3C: Web Components</a></p>
 <h2>1 关于本文</h2>
@@ -144,6 +144,7 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
 <h2>5 Custom Elements</h2>
 <p>技术规范见此<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html">The Custom Elements specification</a></p>
 <p>用户可以构造新的DOM元素，这种技术称之为Custom Elements. 不像decorators，自定义元素可以封装状态并提供脚本接口. 下面的数据表表明两者区别</p>
+<blockquote>
 <table>
    <tr>
       <td></td>
@@ -176,6 +177,7 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
       <td>First-class using script and events</td>
    </tr>
 </table>
+</blockquote>
 
 <h2>5.1 构造一个自定义元素</h2>
 <p>用<code>&lt;element&gt;</code>构造一个元素，并指明继承哪一个属性如下：</p>
