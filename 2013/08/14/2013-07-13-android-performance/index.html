@@ -67,7 +67,7 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2013-08-11T10:54:10.000Z"><a href="/2013/08/11/2013-07-13-android-performance/">8月 11 2013</a></time>
+        <time datetime="2013-08-14T01:02:09.000Z"><a href="/2013/08/14/2013-07-13-android-performance/">8月 14 2013</a></time>
       
       
   
@@ -195,9 +195,11 @@ startService(<span class="keyword">new</span> Intent(<span class="string">"com.t
 </ul>
 </li>
 </ul>
-<p>另外，部分Java方法请采用google建议的代码库代替，如： 
-- gson、fastjson 替换 JSONObject
-- volley 替换 HttpURLConnection、HttpClient</p>
+<p>另外，部分Java方法请采用google建议的代码库代替，如： </p>
+<ul>
+<li>gson、fastjson 替换 JSONObject</li>
+<li>volley 替换 HttpURLConnection、HttpClient</li>
+</ul>
 <h2>UI性能优化</h2>
 <p>UI性能优化需要清楚UI的层次结构和几个API：Measure、Layout、Draw，还有事件处理流程key events、TrackBall events、Touch events</p>
 <p>相关概况如下：</p>
@@ -362,8 +364,10 @@ stmt.execute();
 - %Used: free / heap size * 100%
 - External allocation: Bitmap内存(HoneyComb版本之前的参数)</p>
 <p>其次不同机型的Heap size limit是不同的，通过ActivityManager.getMemoryClass()获取内存信息</p>
-<p>出现OOM的条件：
-- Honeycomb之前</p>
+<p>出现OOM的条件：</p>
+<ul>
+<li>Honeycomb之前</li>
+</ul>
 <pre><code><figure class="highlight"><pre><span class="comment">Heap</span> <span class="comment">size</span> <span class="literal">+</span> <span class="comment">external</span> <span class="comment">allocation</span> <span class="literal">+</span> <span class="comment">new</span> <span class="comment">allocation</span> <span class="comment">request</span> &gt;<span class="comment">=</span> <span class="comment">Heap</span> <span class="comment">limit
 </pre></figure></code></pre>
 <ul>
@@ -380,11 +384,13 @@ stmt.execute();
 <pre><code><figure class="highlight"><pre><span class="title">adb</span> shell procrank -p
 </pre></figure></code></pre>
 <p><img src="/images/photos/2013-07-memory-usage.png" alt="memory useage"></p>
-<p>图解说明：
-- VSS(Virtual Set Size)：进程可以得到的总页数
-- RSS(Resident Set Size)：进程可以在RAM中获得的总页数
-- PSS(Proportional Set Size)：进程可以在RAM中已经用的总页数
-- USS(Unique Set Size))：进程可以取得的未分配的页数</p>
+<p>图解说明：</p>
+<ul>
+<li>VSS(Virtual Set Size)：进程可以得到的总页数</li>
+<li>RSS(Resident Set Size)：进程可以在RAM中获得的总页数</li>
+<li>PSS(Proportional Set Size)：进程可以在RAM中已经用的总页数</li>
+<li>USS(Unique Set Size))：进程可以取得的未分配的页数</li>
+</ul>
 <p>打印进程虚拟内存相关命令如下：</p>
 <pre><code><figure class="highlight"><pre>adb shell procmem -p <span class="tag">&lt;<span class="title">pid</span>&gt;</span>
 adb shell dumpsys meminfo <span class="tag">&lt;<span class="title">pid</span>&gt;</span>

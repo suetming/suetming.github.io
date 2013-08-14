@@ -72,7 +72,7 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2013-08-11T10:54:06.000Z"><a href="/2013/08/11/2013-06-29-web-components/">8月 11 2013</a></time>
+        <time datetime="2013-08-14T01:09:44.000Z"><a href="/2013/08/14/2013-06-29-web-components/">8月 14 2013</a></time>
       
       
   
@@ -92,26 +92,11 @@
 <h2>2 介绍</h2>
 <p>web组件模型由5部分组成：</p>
 <ul>
-<li><ol>
 <li>Templates：由一系列复用时能被激活的标记组成</li>
-</ol>
-</li>
-<li><ol>
 <li>Decorators：用于Templates中，通过CSS丰富和控制交互改变文本</li>
-</ol>
-</li>
-<li><ol>
 <li>Custom Elements：让用户可以自定义元素[自定义元素名、自定义API接口]</li>
-</ol>
-</li>
-<li><ol>
 <li>Shadow DOM：将一组DOM树封装成一个用户接口元素</li>
-</ol>
-</li>
-<li><ol>
 <li>Imports：定义如何将Templates、Decorators和Custom Elements打包，并且能够以资源的形式从外部引用</li>
-</ol>
-</li>
 </ul>
 <p>每一部分都有各自的用途. 如果将这5种技术引入，开发人员可以轻松的编写拥有复杂交互体验的组件，并且可以轻松引用和组装，这是今天的CSS和脚本语言所无法达到的</p>
 <p>本文将会讨论这5种技术，并举例说明其在Web组件中的作用</p>
@@ -139,7 +124,7 @@
 <p><strong>template</strong> 所包含的的元素包含在属性 <strong>content</strong> 中，通过script拷贝里面的元素并插入到HTML中使图片加载进来，脚本开始运行. 例如，在templates引入大型脚本，需要时调用</p>
 <h2>4 Decorators</h2>
 <p>Decorators 目前没有标准文档，<strong>decorator</strong> 主要加强或者重载已经存在的元素，由CSS控制表现，与一般元素不同的是通过标记可以达到额外的效果</p>
-<p>\<decorator\>通过包含\<template\>来明确具体渲染哪一块</p>
+<p><code>&lt;decorator&gt;</code>通过包含<code>&lt;template&gt;</code>来明确具体渲染哪一块</p>
 <pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">template</span>&gt;</span>
         <span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"summary"</span>&gt;</span>
@@ -150,7 +135,7 @@
     <span class="tag">&lt;/<span class="title">template</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">decorator</span>&gt;</span>
 </pre></figure></code></pre>
-<p>\<content\>包含待渲染的内容，通过CSS控制生效</p>
+<p><code>&lt;content&gt;</code>包含待渲染的内容，通过CSS控制生效</p>
 <pre><code class="lang-css"><figure class="highlight lang-css"><pre><span class="tag">details</span><span class="attr_selector">[open]</span> <span class="rules">{
     <span class="rule"><span class="attribute">decorator</span>:<span class="value"> <span class="function">url(#details-open)</span>;</span></span>
 <span class="rule">}</span></span>
@@ -179,7 +164,7 @@
 <p>4.1 Decorators的事件
 Decorators可以关联事件增强交互，decorator采用事件控制器当做媒介，因为decorator可能在任何时间生效或者失效，所以关联template中监听节点事件或者获取其状态都是无效的</p>
 <p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-handler-registration.png" alt="事件注册"></p>
-<p>通过事件控制器注册事件监听器，template中插入\<script\>，decorator元素插入到文档中时脚本会执行，脚本会被插入到注册队列中:</p>
+<p>通过事件控制器注册事件监听器，template中插入<code>&lt;script&gt;</code>，decorator元素插入到文档中时脚本会执行，脚本会被插入到注册队列中:</p>
 <pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
         <span class="function"><span class="keyword">function</span> <span class="title">clicked</span><span class="params">(event)</span> {</span>
@@ -193,7 +178,7 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
 </pre></figure></code></pre>
 <p>事件控制器解析注册事件如图所示</p>
 <p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-routing-retargeting.png" alt="事件的路由和重定向"></p>
-<p>事件监听器被调用时，事件的目标是最终生成的内容而不是template中的内容. 点击template中定义的▾，将会调用单击事件（在template中定义的<strong>#summary</strong>元素）, event.target指向\<details\>，事件的重定向不会影响文档DOM结构</p>
+<p>事件监听器被调用时，事件的目标是最终生成的内容而不是template中的内容. 点击template中定义的▾，将会调用单击事件（在template中定义的<strong>#summary</strong>元素）, event.target指向<code>&lt;details&gt;</code>，事件的重定向不会影响文档DOM结构</p>
 <p>移除属性<strong>open</strong>，由于selector与decorator的属性不匹配，这个decorator不再有效. 未应用的decorator会回到最初的状态. 不过可以再构造一个decorator来渲染<strong>closed</strong>，通过激活不同的decorator可以达到无状态交互，代码如下</p>
 <pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
 <span class="tag">details</span> <span class="rules">{
@@ -258,7 +243,7 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
 </table>
 
 <h2>5.1 构造一个自定义元素</h2>
-<p>用\<element\>构造一个元素，并指明继承哪一个属性如下：</p>
+<p>用<code>&lt;element&gt;</code>构造一个元素，并指明继承哪一个属性如下：</p>
 <pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"button"</span> <span class="attribute">name</span>=<span class="value">"fancy-button"</span>&gt;</span>
     …
 <span class="tag">&lt;/<span class="title">element</span>&gt;</span>
@@ -267,7 +252,7 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
 <p><strong>name</strong>属性指明元素名称，命名必须包含“-”</p>
 <p>用户的自定义元素应该继承最接近自己想法的实际存在的元素. 如果用户构造不继承任何元素的自定义元素，user agent会抛出异常<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/elements.html#htmlunknownelement">HTMLUnknownElement</a></p>
 <h2>5.2 方法和属性</h2>
-<p>将\<script\>插入到自定义元素中可以对自定义元素增加方法和属性，下面的例子中元素\<tick-tock-clock\>增加了tick方法</p>
+<p>将<code>&lt;script&gt;</code>插入到自定义元素中可以对自定义元素增加方法和属性，下面的例子中元素<code>&lt;tick-tock-clock&gt;</code>增加了tick方法</p>
 <pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
     ({
@@ -400,7 +385,7 @@ c.popOutBirdie(); <span class="comment">// specific to cuckoo-clock</span>
 <object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" width="450" height="400"></object>
 
 <p>6.1 插入点
-shadow DOM 子树通过\<content\>元素作为渲染输出插入点. \<content\>只是作为渲染输出的插入点，如下：</p>
+shadow DOM 子树通过<code>&lt;content&gt;</code>元素作为渲染输出插入点. <code>&lt;content&gt;</code>只是作为渲染输出的插入点，如下：</p>
 <pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- document --&gt;</span>
 <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
@@ -446,7 +431,7 @@ s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
   <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
 </pre></figure></code></pre>
-<p>第二部分，由于\<content class="highlight" select=".breaking"\>所有类属性为breaking的排在顶部，这种方式称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#reprojection">reprojection</a></p>
+<p>第二部分，由于<code>&lt;content class=&quot;highlight&quot; select=&quot;.breaking&quot;&gt;</code>所有类属性为breaking的排在顶部，这种方式称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#reprojection">reprojection</a></p>
 <pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
   <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
@@ -471,7 +456,7 @@ s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
 </pre></figure></code></pre>
 <h2>6.4 多重Shadow子树</h2>
 <p>一个元素可以含有不止一个shadow DOM 子树. 继承一个已具有shadow DOM子树的自定义元素是很常见的. 不过要是想重用原先的元素时怎么处理? 如何重用?
-利用\<shadow\>可以调用原先申请的shadow DOM 子树，如下：</p>
+利用<code>&lt;shadow&gt;</code>可以调用原先申请的shadow DOM 子树，如下：</p>
 <pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"sailing-watch"</span> <span class="attribute">extends</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">template</span>&gt;</span>
     <span class="tag">&lt;<span class="title">shadow</span>&gt;</span><span class="tag">&lt;/<span class="title">shadow</span>&gt;</span>
@@ -510,20 +495,20 @@ s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
 </ol>
 </li>
 </ul>
-<p>其次，根据顺序从最新生效的子树反向推倒，每一个\<content\>插入点，根据规则，可以定位任何宿主元素子节点</p>
-<p>一旦子节点在正确的地方渲染，我们可以检查是否有\<shadow\>元素，如果没有，表明成功；如果有，从\<shadow\>队列元素中取出子树重复替换\<content\>插入点，直到队尾. 具体见如下图：</p>
+<p>其次，根据顺序从最新生效的子树反向推倒，每一个<code>&lt;content&gt;</code>插入点，根据规则，可以定位任何宿主元素子节点</p>
+<p>一旦子节点在正确的地方渲染，我们可以检查是否有<code>&lt;shadow&gt;</code>元素，如果没有，表明成功；如果有，从<code>&lt;shadow&gt;</code>队列元素中取出子树重复替换<code>&lt;content&gt;</code>插入点，直到队尾. 具体见如下图：</p>
 <p><img src="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg" alt="shadow stack"></p>
 <object data="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg" width="500" height="600"></object>
 
 <p>总结一下：</p>
 <ul>
-<li>最近申请的shadow DOM 子树最可能在\<content\>插入点获得最新的子树</li>
+<li>最近申请的shadow DOM 子树最可能在<code>&lt;content&gt;</code>插入点获得最新的子树</li>
 <li>以此类推</li>
-<li>直到当前的shadow DOM子树没有\<shadow\>，那么其就是这个元素最后的DOM子树</li>
+<li>直到当前的shadow DOM子树没有<code>&lt;shadow&gt;</code>，那么其就是这个元素最后的DOM子树</li>
 </ul>
 <h2>6.5 CSS 和 Shadow DOM</h2>
 <p>当构建自定义元素时自然要考虑属性、内容和API接口. 这与页面渲染同等重要. Shadow DOM 提供给开发者很多方式控制shadow DOM内容的样式.</p>
-<p>shadow DOM 子树有一个不看见的边界，user agent的样式默认生效，而不是定制的样式. 派生的元素依旧有效，这不是我们想要的. 在上面的scailing-watch的例子里，如果页面内容被渲染成绿色，如果要保持整体风格，shadow DOM内的文本由于color属性由于继承性质也会是绿色，不过设定了所有\<div\>元素橙色边框， 那direction indicator不会有橙色边框因为<strong>border</strong>并不是具有继承性质的属性</p>
+<p>shadow DOM 子树有一个不看见的边界，user agent的样式默认生效，而不是定制的样式. 派生的元素依旧有效，这不是我们想要的. 在上面的scailing-watch的例子里，如果页面内容被渲染成绿色，如果要保持整体风格，shadow DOM内的文本由于color属性由于继承性质也会是绿色，不过设定了所有<code>&lt;div&gt;</code>元素橙色边框， 那direction indicator不会有橙色边框因为<strong>border</strong>并不是具有继承性质的属性</p>
 <p>一个shadow根节点有两个属性控制行为. applyAuthorStyles（开发者样式）属性，shadow DOM 会匹配最接近的样式，注意这个属性只能匹配shadow DOM 子树. 使用时要注意&quot;n&quot;代选择器</p>
 <p>如果<strong>applyAuthorStyles</strong>设置为false，<strong>resetStyleInheritance</strong>设置为true，样式会清空. 元素会被与页面样式隔离，你可以通过浏览器重置样式</p>
 <p>在插入点有相似的界限. shadow DOM子树的样式不会再插入点分布的元素上生效. 不过要是通过选择器想渲染某一部分特定内容， 可以用<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#distributed-pseudo-element">::distributed pseudo-selector</a>，如下：</p>
@@ -542,7 +527,7 @@ s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
   <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">template</span>&gt;</span>
 </pre></figure></code></pre>
-<p>上述包含了两个规则，选择器的左半部分是shadow DOM 生效；括号内代表适用元素。第一个选择器对\<content\>的所有元素有效；第二个选择器对类对象为breaking的元素有效</p>
+<p>上述包含了两个规则，选择器的左半部分是shadow DOM 生效；括号内代表适用元素。第一个选择器对<code>&lt;content&gt;</code>的所有元素有效；第二个选择器对类对象为breaking的元素有效</p>
 <p>ShadowDOM 也可以定制宿主元素的样式. 代码如下：</p>
 <pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
 <span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
@@ -625,7 +610,7 @@ ticker.pseudo = <span class="string">'x-ticker'</span>;
 <p>Custom elements 和 decorators可以通过文件的方式引入：</p>
 <pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"import"</span> <span class="attribute">href</span>=<span class="value">"goodies.html"</span>&gt;</span>
 </pre></figure></code></pre>
-<p>只有\<decorator\>元素和\<element\>能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行. </p>
+<p>只有<code>&lt;decorator&gt;</code>元素和<code>&lt;element&gt;</code>能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行. </p>
 <p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/">CC 3.0 BY-SA 协议</a>”发布</strong></p>
 
       

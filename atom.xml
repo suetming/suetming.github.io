@@ -4,7 +4,7 @@
   <subtitle><![CDATA[清静心性现，水清月影明]]></subtitle>
   <link href="http://suetming.com/atom.xml" rel="self"/>
   <link href="http://suetming.com"/>
-  <updated>2013-08-12T01:03:32.343Z</updated>
+  <updated>2013-08-14T01:11:04.578Z</updated>
   <id>http://suetming.com/</id>
   <author>
     <name><![CDATA[SuetMing]]></name>
@@ -12,11 +12,1013 @@
   </author>
   <generator uri="http://zespia.tw/hexo">Hexo</generator>
   <entry>
+    <title type="html"><![CDATA[Web组件(Web Components) | HTML5]]></title>
+    <link href="http://suetming.com/2013/08/14/2013-06-29-web-components/"/>
+    <id>http://suetming.com/2013/08/14/2013-06-29-web-components/</id>
+    <published>2013-08-14T01:09:44.000Z</published>
+    <updated>2013-08-14T01:09:44.000Z</updated>
+    <content type="html"><![CDATA[<p>译者：<a href="http://suetming.com">suetming</a></p>
+<p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/">W3C: Web Components</a></p>
+<h2>1 关于本文</h2>
+<p>注意文章涉及正在开展的工作. 关系到web组件的一系列概念，每个概念都有各自的规范.
+这是一个迭代的过程</p>
+<p>本文描述的概念有时会落后或者超前于专门界定此概念的规范，一旦本文涉及的前瞻性技术被相应的规范所采纳，本文会更新并注明</p>
+<p><a name="more"></a></p>
+<h2>2 介绍</h2>
+<p>web组件模型由5部分组成：</p>
+<ul>
+<li>Templates：由一系列复用时能被激活的标记组成</li>
+<li>Decorators：用于Templates中，通过CSS丰富和控制交互改变文本</li>
+<li>Custom Elements：让用户可以自定义元素[自定义元素名、自定义API接口]</li>
+<li>Shadow DOM：将一组DOM树封装成一个用户接口元素</li>
+<li>Imports：定义如何将Templates、Decorators和Custom Elements打包，并且能够以资源的形式从外部引用</li>
+</ul>
+<p>每一部分都有各自的用途. 如果将这5种技术引入，开发人员可以轻松的编写拥有复杂交互体验的组件，并且可以轻松引用和组装，这是今天的CSS和脚本语言所无法达到的</p>
+<p>本文将会讨论这5种技术，并举例说明其在Web组件中的作用</p>
+<h2>3 Templates</h2>
+<p>具体规范参加这篇<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html">HTML Templates</a>
+\<template\>元素及其所包含元素会由解析器进行解析并标记，不过不会立即渲染出来，脚本不会立即执行，包含的图片也不会立即下载
+\<template\>元素有一个属性 <strong>content</strong> 存储元素的实际内容，属性 <strong>content</strong> 的内容可以拷贝移动到HTML节点中</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"commentTemplate"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">img</span> <span class="attribute">src</span>=<span class="value">""</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"comment-text"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+<span class="function"><span class="keyword">function</span> <span class="title">addComment</span><span class="params">(imageUrl, text)</span> {</span>
+  <span class="keyword">var</span> t = document.querySelector(<span class="string">"#commentTemplate"</span>);
+  <span class="keyword">var</span> comment = t.content.cloneNode(<span class="literal">true</span>);
+  <span class="comment">// Populate content.</span>
+  comment.querySelector(<span class="string">'img'</span>).src = imageUrl;
+  comment.querySelector(<span class="string">'.comment-text'</span>).textContent = text;
+  document.body.appendChild(comment);
+}
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+</pre></figure></code></pre>
+<p><strong>template</strong> 所包含的的元素包含在属性 <strong>content</strong> 中，通过script拷贝里面的元素并插入到HTML中使图片加载进来，脚本开始运行. 例如，在templates引入大型脚本，需要时调用</p>
+<h2>4 Decorators</h2>
+<p>Decorators 目前没有标准文档，<strong>decorator</strong> 主要加强或者重载已经存在的元素，由CSS控制表现，与一般元素不同的是通过标记可以达到额外的效果</p>
+<p><code>&lt;decorator&gt;</code>通过包含<code>&lt;template&gt;</code>来明确具体渲染哪一块</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">template</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"summary"</span>&gt;</span>
+          &amp;blacktriangledown;
+          <span class="tag">&lt;<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"summary"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">template</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">decorator</span>&gt;</span>
+</pre></figure></code></pre>
+<p><code>&lt;content&gt;</code>包含待渲染的内容，通过CSS控制生效</p>
+<pre><code class="lang-css"><figure class="highlight lang-css"><pre><span class="tag">details</span><span class="attr_selector">[open]</span> <span class="rules">{
+    <span class="rule"><span class="attribute">decorator</span>:<span class="value"> <span class="function">url(#details-open)</span>;</span></span>
+<span class="rule">}</span></span>
+</pre></figure></code></pre>
+<p>通过这种方式可以使下面的html代码</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">details</span> <span class="attribute">open</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">summary</span>&gt;</span>Timepieces<span class="tag">&lt;/<span class="title">summary</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">ul</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">li</span>&gt;</span>Sundial
+      <span class="tag">&lt;<span class="title">li</span>&gt;</span>Cuckoo clock
+      <span class="tag">&lt;<span class="title">li</span>&gt;</span>Wristwatch
+    <span class="tag">&lt;/<span class="title">ul</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">details</span>&gt;</span>
+</pre></figure></code></pre>
+<p>最终渲染成</p>
+<p><a>
+  ▾ Timepieces
+</a></p>
+<ul>
+  <li>Sundial
+  </li><li>Cuckoo clock
+  </li><li>Wristwatch
+</li></ul>
+
+<p><strong>decorator</strong> CSS属性可以指向任何网络资源，不过只有其“定义”被调用才能申请，生成的标记仅限于展示，永远不会运行脚本包括内联事件，而且也是不可编辑的</p>
+<p>4.1 Decorators的事件
+Decorators可以关联事件增强交互，decorator采用事件控制器当做媒介，因为decorator可能在任何时间生效或者失效，所以关联template中监听节点事件或者获取其状态都是无效的</p>
+<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-handler-registration.png" alt="事件注册"></p>
+<p>通过事件控制器注册事件监听器，template中插入<code>&lt;script&gt;</code>，decorator元素插入到文档中时脚本会执行，脚本会被插入到注册队列中:</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+        <span class="function"><span class="keyword">function</span> <span class="title">clicked</span><span class="params">(event)</span> {</span>
+            event.target.removeAttribute(<span class="string">'open'</span>);
+        }
+        [{selector: <span class="string">'#summary'</span>, type: <span class="string">'click'</span>, handler: clicked}];
+    </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">template</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"summary"</span>&gt;</span>
+        <span class="comment">&lt;!-- as illustrated above --&gt;</span>
+</pre></figure></code></pre>
+<p>事件控制器解析注册事件如图所示</p>
+<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-routing-retargeting.png" alt="事件的路由和重定向"></p>
+<p>事件监听器被调用时，事件的目标是最终生成的内容而不是template中的内容. 点击template中定义的▾，将会调用单击事件（在template中定义的<strong>#summary</strong>元素）, event.target指向<code>&lt;details&gt;</code>，事件的重定向不会影响文档DOM结构</p>
+<p>移除属性<strong>open</strong>，由于selector与decorator的属性不匹配，这个decorator不再有效. 未应用的decorator会回到最初的状态. 不过可以再构造一个decorator来渲染<strong>closed</strong>，通过激活不同的decorator可以达到无状态交互，代码如下</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
+<span class="tag">details</span> <span class="rules">{
+    <span class="rule"><span class="attribute">decorator</span>:<span class="value"> <span class="function">url(#details-closed)</span>;</span></span>
+<span class="rule">}</span></span>
+<span class="tag">details</span><span class="attr_selector">[open]</span> <span class="rules">{
+    <span class="rule"><span class="attribute">decorator</span>:<span class="value"> <span class="function">url(#details-open)</span>;</span></span>
+<span class="rule">}</span></span>
+</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-closed"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+        <span class="function"><span class="keyword">function</span> <span class="title">clicked</span><span class="params">(event)</span> {</span>
+            event.target.setAttribute(<span class="string">'open'</span>, <span class="string">'open'</span>);
+        }
+        [{selector: <span class="string">'#summary'</span>, type: <span class="string">'click'</span>, handler: clicked}];
+    </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">template</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"summary"</span>&gt;</span>
+            &amp;blacktriangleright; <span class="tag">&lt;<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"summary"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">template</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">decorator</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
+    <span class="comment">&lt;!-- as illustrated above --&gt;</span>
+</pre></figure></code></pre>
+<h2>5 Custom Elements</h2>
+<p>技术规范见此<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html">The Custom Elements specification</a></p>
+<p>用户可以构造新的DOM元素，这种技术称之为Custom Elements. 不像decorators，自定义元素可以封装状态并提供脚本接口. 下面的数据表表明两者区别</p>
+<table>
+   <tr>
+      <td></td>
+      <td>Decorators</td>
+      <td>Custom Elements</td>
+   </tr>
+   <tr>
+      <td>Lifetime</td>
+      <td>Ephemeral, while a CSS selector matches</td>
+      <td>Stable, matches entire element lifetime</td>
+   </tr>
+   <tr>
+      <td>Applied, unapplied dynamically</td>
+      <td>Yes, based on CSS selectors</td>
+      <td>No, fixed at element creation time</td>
+   </tr>
+   <tr>
+      <td>Accessible through script</td>
+      <td>No, transparent to DOM; cannot add interfaces</td>
+      <td>Yes, accessible through DOM; can provide interfaces</td>
+   </tr>
+   <tr>
+      <td>State</td>
+      <td>Stateless projection</td>
+      <td>Stateful DOM object</td>
+   </tr>
+   <tr>
+      <td>Behavior</td>
+      <td>Simulated by changing decorators</td>
+      <td>First-class using script and events</td>
+   </tr>
+</table>
+
+<h2>5.1 构造一个自定义元素</h2>
+<p>用<code>&lt;element&gt;</code>构造一个元素，并指明继承哪一个属性如下：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"button"</span> <span class="attribute">name</span>=<span class="value">"fancy-button"</span>&gt;</span>
+    …
+<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
+</pre></figure></code></pre>
+<p><strong>extends</strong>属性标记继承于哪一个元素，自定义元素实例会有此标记名</p>
+<p><strong>name</strong>属性指明元素名称，命名必须包含“-”</p>
+<p>用户的自定义元素应该继承最接近自己想法的实际存在的元素. 如果用户构造不继承任何元素的自定义元素，user agent会抛出异常<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/elements.html#htmlunknownelement">HTMLUnknownElement</a></p>
+<h2>5.2 方法和属性</h2>
+<p>将<code>&lt;script&gt;</code>插入到自定义元素中可以对自定义元素增加方法和属性，下面的例子中元素<code>&lt;tick-tock-clock&gt;</code>增加了tick方法</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+    ({
+      tick: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        …
+      }
+    });
+  </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
+</pre></figure></code></pre>
+<p>5.3 生命周期回调函数
+自定义元素有很多回调函数如下：</p>
+<ul>
+<li>readyCallback：创建时调用</li>
+<li>insertedCallback：插入文档时调用</li>
+<li>removedCallbakc：删除元素时调用</li>
+</ul>
+<p>下面的例子演示如何用template，Shadow DOM (见下一章节)，以及Custom Elements回调函数创建元素：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">template</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"hh"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"sep"</span>&gt;</span>:<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"mm"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">template</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+    <span class="keyword">var</span> template = document.currentScript.parentNode.querySelector(<span class="string">'template'</span>);
+
+    <span class="function"><span class="keyword">function</span> <span class="title">start</span><span class="params">()</span> {</span>
+      <span class="keyword">this</span>.tick();
+      <span class="keyword">this</span>._interval = window.setInterval(<span class="keyword">this</span>.tick.bind(<span class="keyword">this</span>), <span class="number">1000</span>);
+    }
+    <span class="function"><span class="keyword">function</span> <span class="title">stop</span><span class="params">()</span> {</span>
+      window.clearInterval(<span class="keyword">this</span>._interval);
+    }
+    <span class="function"><span class="keyword">function</span> <span class="title">fmt</span><span class="params">(n)</span> {</span>
+      <span class="keyword">return</span> (n &lt; <span class="number">10</span> ? <span class="string">'0'</span> : <span class="string">''</span>) + n;
+    }
+
+    ({
+      readyCallback: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">this</span>._root = <span class="keyword">this</span>.createShadowRoot();
+        <span class="keyword">this</span>._root.appendChild(template.content.cloneNode());
+        <span class="keyword">if</span> (<span class="keyword">this</span>.parentElement) {
+          start.call(<span class="keyword">this</span>);
+        }
+      },
+      insertedCallback: start,
+      removedCallback: stop,
+      tick: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">var</span> now = <span class="keyword">new</span> Date();
+        <span class="keyword">this</span>._root.querySelector(<span class="string">'hh'</span>).textContent = fmt(now.getHours());
+        <span class="keyword">this</span>._root.querySelector(<span class="string">'sep'</span>).style.visibility =
+            now.getSeconds() % <span class="number">2</span> ? <span class="string">'visible'</span> : <span class="string">'hidden'</span>;
+        <span class="keyword">this</span>._root.querySelector(<span class="string">'mm'</span>).textContent = fmt(now.getMinutes());
+      },
+      chime: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> … }
+    });
+  </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
+</pre></figure></code></pre>
+<p>5.4 Custom Elements实例化
+自定义元素均继承HTML的标准元素(div/button/option/...)， 当用户想用这些元素的时候需要用到属性<strong>is</strong>，如下：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"button"</span> <span class="attribute">name</span>=<span class="value">"fancy-button"</span>&gt;</span>  <span class="comment">&lt;!-- definition --&gt;</span>
+    …
+<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">button</span> <span class="attribute">is</span>=<span class="value">"fancy-button"</span>&gt;</span>  <span class="comment">&lt;!-- use --&gt;</span>
+    Do something fancy
+<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+</pre></figure></code></pre>
+<p>5.5 Script实例化Custom Elements
+通过脚本语言也可以实例化自定义元素，方法为<strong>register</strong>，具体见下述代码：</p>
+<pre><code class="lang-javascript"><figure class="highlight lang-javascript"><pre><span class="keyword">var</span> p = Object.create(HTMLButtonElement.prototype, {});
+p.dazzle = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> … };
+
+<span class="comment">// 返回实例化对象</span>
+<span class="keyword">var</span> FancyButton = document.register(<span class="string">'button'</span>, <span class="string">'fancy-button'</span>, {prototype: p});
+<span class="keyword">var</span> b = <span class="keyword">new</span> FancyButton();
+document.body.appendChild(b);
+b.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(event)</span> {</span>
+    event.target.dazzle();
+});
+</pre></figure></code></pre>
+<p>也可以直接通过createElement生成：</p>
+<pre><code class="lang-javascript"><figure class="highlight lang-javascript"><pre><span class="keyword">var</span> b = document.createElement(<span class="string">'button'</span>, <span class="string">'fancy-button'</span>);
+alert(b.outerHTML); <span class="comment">// will display '&lt;button is="fancy-button"&gt;&lt;/button&gt;'</span>
+<span class="keyword">var</span> c = document.createElement(<span class="string">'tick-tock-clock'</span>);
+alert(c.outerHTML); <span class="comment">// will display '&lt;tick-tock-clock&gt;&lt;/tick-tock-clock&gt;'</span>
+</pre></figure></code></pre>
+<h2>5.6 元素更新</h2>
+<p>当元素定义调用的时候，每一个匹配的元素都会进行更新. 更新元素后，元素相应API会生效，生命周期相关函数会被调用.
+通过CSS<strong>:unresolved</strong>可以匹配所有为构造的自定义元素，通过这种方式避免更新元素所造成的闪烁</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
+<span class="tag">tick</span>-<span class="tag">tock</span>-<span class="tag">clock</span><span class="pseudo">:unresolved</span> <span class="rules">{
+  <span class="rule"><span class="attribute">content</span>:<span class="value"> <span class="string">'??:??'</span>;</span></span>  
+<span class="rule">}</span></span>
+</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
+<span class="tag">&lt;<span class="title">tick-tock-clock</span>&gt;</span><span class="tag">&lt;/<span class="title">tick-tock-clock</span>&gt;</span> <span class="comment">&lt;!-- will show ??:?? --&gt;</span>
+</pre></figure></code></pre>
+<p>也可以通过脚本进行控制</p>
+<pre><code class="lang-javascript"><figure class="highlight lang-javascript"><pre><span class="comment">// Chime ALL the clocks!</span>
+Array.prototype.forEach.call(
+  document.querySelectorAll(<span class="string">'tick-tock-clock:not(:unresolved)'</span>),
+  <span class="function"><span class="keyword">function</span> <span class="params">(clock)</span> {</span> clock.chime(); });
+</pre></figure></code></pre>
+<p>通过自定义事件元素可以通知页面其他部分元素已经更新，可以等到元素更新完成，脚本在对其进行操作</p>
+<p>5.7 扩展Custom Elements
+元素也可以继承自定义元素，代码如下：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"tick-tock-clock"</span> <span class="attribute">name</span>=<span class="value">"grand-father-clock"</span>&gt;</span>
+    …
+<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+<span class="keyword">var</span> p = Object.create(Object.getPrototypeOf(document.createElement(<span class="string">'tick-tock-clock'</span>)));
+p.popOutBirdie = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> … }
+<span class="keyword">var</span> CuckooClock = document.register(<span class="string">'cuckoo-clock'</span>, {prototype: p});
+<span class="keyword">var</span> c = <span class="keyword">new</span> CuckooClock();
+c.tick();         <span class="comment">// inherited from tick-tock-clock</span>
+c.popOutBirdie(); <span class="comment">// specific to cuckoo-clock</span>
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+</pre></figure></code></pre>
+<h2>6 Shadow DOM</h2>
+<p>相应规范见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html">The Shadow DOM specification</a></p>
+<p>Shadow DOM 是一种DOM节点的辅助树. Shadow DOM 子树能够关联某个元素，但不会显示在元素子节点中，子树有自己的作用域. 例如，一个shadow DOM 子树可以和文档中相同ID和风格的元素而不冲突，因为shadow DOM 子树与文档是完全分离的</p>
+<p>Shadow DOM 通过<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-partial-element-create-shadow-root"><strong>createShadowRoot</strong></a>方法生效，返回shadow DOM的根节点并填充到DOM节点中</p>
+<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg" alt="shadow trees"></p>
+<object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg" width="800" height="430"></object>
+
+<p>关联shadow DOM的元素称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-shadow-host">shadow host</a>. 当元素存在shadow DOM，元素的子节点不会渲染；渲染的是shadow DOM的内容</p>
+<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" alt="shadow rendering"></p>
+<object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" width="450" height="400"></object>
+
+<p>6.1 插入点
+shadow DOM 子树通过<code>&lt;content&gt;</code>元素作为渲染输出插入点. <code>&lt;content&gt;</code>只是作为渲染输出的插入点，如下：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- document --&gt;</span>
+<span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span>&gt;</span>Area kitten "adorable"&amp;mdash;owner<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Jiggled piece of yarn derails kitten kongress<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+
+<span class="comment">&lt;!-- #news' shadow --&gt;</span>
+<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"t"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"h1"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">content</span> <span class="attribute">id</span>=<span class="value">"stories"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
+
+<span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
+<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+<span class="comment">// Set up shadow DOM</span>
+<span class="keyword">var</span> news = document.querySelector(<span class="string">'#news'</span>);
+<span class="keyword">var</span> r = news.createShadowRoot();
+<span class="keyword">var</span> t = document.querySelector(<span class="string">'#t'</span>);
+r.appendChild(t.content.cloneNode(<span class="literal">true</span>));
+
+<span class="keyword">var</span> ticker = r.querySelector(<span class="string">'#ticker'</span>);
+<span class="keyword">var</span> s = ticker.createShadowRoot();
+<span class="keyword">var</span> u = document.querySelector(<span class="string">'#u'</span>);
+s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+</pre></figure></code></pre>
+<p>理论上，第一部分文档和第一部分shadow根节点生成了下面的DOM树. 宿主元素的子节点显示在插入点的位置. </p>
+<pre><code><figure class="highlight"><pre><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span>&gt;</span>Area kitten "adorable"&amp;mdash;owner<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Jiggled piece of yarn derails kitten kongress<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+</pre></figure></code></pre>
+<p>第二部分，由于<code>&lt;content class=&quot;highlight&quot; select=&quot;.breaking&quot;&gt;</code>所有类属性为breaking的排在顶部，这种方式称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#reprojection">reprojection</a></p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Jiggled piece of yarn derails kitten kongress<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span>&gt;</span>Area kitten "adorable"&amp;mdash;owner<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+</pre></figure></code></pre>
+<p>6.3 备用内容
+插入点可以有<em>content</em>，称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-fallback-content">备用内容</a>，当插入点没有任何文本时，会显示此信息，如下：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #news' shadow --&gt;</span>
+<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"t"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"h1"</span>&gt;</span>Today's top headlines<span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">content</span> <span class="attribute">id</span>=<span class="value">"stories"</span>&gt;</span>
+      No news
+      <span class="tag">&lt;<span class="title">button</span> <span class="attribute">onclick</span>=<span class="value">"window.location.reload(true);"</span>&gt;</span>Reload<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
+</pre></figure></code></pre>
+<h2>6.4 多重Shadow子树</h2>
+<p>一个元素可以含有不止一个shadow DOM 子树. 继承一个已具有shadow DOM子树的自定义元素是很常见的. 不过要是想重用原先的元素时怎么处理? 如何重用?
+利用<code>&lt;shadow&gt;</code>可以调用原先申请的shadow DOM 子树，如下：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"sailing-watch"</span> <span class="attribute">extends</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">template</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">shadow</span>&gt;</span><span class="tag">&lt;/<span class="title">shadow</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"compass"</span>&gt;</span>N<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">template</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+    …
+  </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
+</pre></figure></code></pre>
+<p>由于一个元素可以有多个shadow，我们需要了解这些shadow如何相互影响，如何作用元素的子节点</p>
+<p>由于你不能删除shadow root，所以shadow DOM子树生效时的顺序很重要，如下：</p>
+<ul>
+<li><ol>
+<li>user agent shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>自定义元素的shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>第一个派生自定义元素的shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>...</li>
+</ol>
+</li>
+<li><ol>
+<li>用脚本添加的Ad-hoc shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>Decorator shadow (applied and removed with CSS rules—not technically shadow DOM, but its insertion points work similarly to shadow DOM.)</li>
+</ol>
+</li>
+</ul>
+<p>其次，根据顺序从最新生效的子树反向推倒，每一个<code>&lt;content&gt;</code>插入点，根据规则，可以定位任何宿主元素子节点</p>
+<p>一旦子节点在正确的地方渲染，我们可以检查是否有<code>&lt;shadow&gt;</code>元素，如果没有，表明成功；如果有，从<code>&lt;shadow&gt;</code>队列元素中取出子树重复替换<code>&lt;content&gt;</code>插入点，直到队尾. 具体见如下图：</p>
+<p><img src="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg" alt="shadow stack"></p>
+<object data="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg" width="500" height="600"></object>
+
+<p>总结一下：</p>
+<ul>
+<li>最近申请的shadow DOM 子树最可能在<code>&lt;content&gt;</code>插入点获得最新的子树</li>
+<li>以此类推</li>
+<li>直到当前的shadow DOM子树没有<code>&lt;shadow&gt;</code>，那么其就是这个元素最后的DOM子树</li>
+</ul>
+<h2>6.5 CSS 和 Shadow DOM</h2>
+<p>当构建自定义元素时自然要考虑属性、内容和API接口. 这与页面渲染同等重要. Shadow DOM 提供给开发者很多方式控制shadow DOM内容的样式.</p>
+<p>shadow DOM 子树有一个不看见的边界，user agent的样式默认生效，而不是定制的样式. 派生的元素依旧有效，这不是我们想要的. 在上面的scailing-watch的例子里，如果页面内容被渲染成绿色，如果要保持整体风格，shadow DOM内的文本由于color属性由于继承性质也会是绿色，不过设定了所有<code>&lt;div&gt;</code>元素橙色边框， 那direction indicator不会有橙色边框因为<strong>border</strong>并不是具有继承性质的属性</p>
+<p>一个shadow根节点有两个属性控制行为. applyAuthorStyles（开发者样式）属性，shadow DOM 会匹配最接近的样式，注意这个属性只能匹配shadow DOM 子树. 使用时要注意&quot;n&quot;代选择器</p>
+<p>如果<strong>applyAuthorStyles</strong>设置为false，<strong>resetStyleInheritance</strong>设置为true，样式会清空. 元素会被与页面样式隔离，你可以通过浏览器重置样式</p>
+<p>在插入点有相似的界限. shadow DOM子树的样式不会再插入点分布的元素上生效. 不过要是通过选择器想渲染某一部分特定内容， 可以用<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#distributed-pseudo-element">::distributed pseudo-selector</a>，如下：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
+<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
+    <span class="tag">content</span><span class="pseudo">::distributed(</span>*) <span class="rules">{
+      <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block;</span></span>
+    <span class="rule">}</span></span>
+    *<span class="pseudo">::distributed(</span><span class="class">.breaking</span>) <span class="rules">{
+      <span class="rule"><span class="attribute">text-shadow</span>:<span class="value"> <span class="number">0</span> <span class="number">0</span> <span class="number">0.2</span>em maroon;</span></span>
+      <span class="rule"><span class="attribute">color</span>:<span class="value"> orange;</span></span>
+    <span class="rule">}</span></span>
+  </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
+</pre></figure></code></pre>
+<p>上述包含了两个规则，选择器的左半部分是shadow DOM 生效；括号内代表适用元素。第一个选择器对<code>&lt;content&gt;</code>的所有元素有效；第二个选择器对类对象为breaking的元素有效</p>
+<p>ShadowDOM 也可以定制宿主元素的样式. 代码如下：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
+<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
+    <span class="at_rule">@host </span>{
+      <span class="pseudo">:scope</span> <span class="rules">{
+        <span class="rule"><span class="attribute">white-space</span>:<span class="value"> nowrap;</span></span>
+        <span class="rule"><span class="attribute">overflow-style</span>:<span class="value"> marquee-line;</span></span>
+        <span class="rule"><span class="attribute">overflow-x</span>:<span class="value"> marquee;</span></span>
+      <span class="rule">}</span></span>
+    }
+    <span class="tag">content</span><span class="pseudo">::distributed(</span>*) <span class="rules">{
+      <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block;</span></span>
+    <span class="rule">}</span></span>
+    *<span class="pseudo">::distributed(</span><span class="class">.breaking</span>) <span class="rules">{
+      <span class="rule"><span class="attribute">text-shadow</span>:<span class="value"> <span class="number">0</span> <span class="number">0</span> <span class="number">0.2</span>em maroon;</span></span>
+      <span class="rule"><span class="attribute">color</span>:<span class="value"> orange;</span></span>
+    <span class="rule">}</span></span>
+  </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
+</pre></figure></code></pre>
+<p>最后，有两种方式可以使shadow DOM 子树的样式与页面保持一致. 首先通过分配一个伪ID暴漏shadow DOM 子树中的特定元素，开发者可以定制其样式. 例如：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+<span class="comment">// Set up shadow DOM</span>
+…
+<span class="keyword">var</span> ticker = r.querySelector(<span class="string">'#ticker'</span>);
+ticker.pseudo = <span class="string">'x-ticker'</span>;
+…
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+
+<span class="comment">&lt;!-- change the appearance of the ticker part --&gt;</span>
+<span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
+<span class="id">#news</span><span class="pseudo">::x-ticker</span> <span class="rules">{
+  <span class="rule"><span class="attribute">background</span>:<span class="value"> gray;</span></span>
+  <span class="rule"><span class="attribute">color</span>:<span class="value"> lightblue;</span></span>
+<span class="rule">}</span></span>
+</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
+</pre></figure></code></pre>
+<p>另一种方法是通过CSS变量进行控制，如下：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
+<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
+    <span class="at_rule">@host </span>{
+      <span class="pseudo">:scope</span> <span class="rules">{
+        <span class="rule"><span class="attribute">white-space</span>:<span class="value"> nowrap;</span></span>
+        <span class="rule"><span class="attribute">overflow-style</span>:<span class="value"> marquee-line;</span></span>
+        <span class="rule"><span class="attribute">overflow-x</span>:<span class="value"> marquee;</span></span>
+      <span class="rule">}</span></span>
+    }
+    <span class="tag">content</span><span class="pseudo">::distributed(</span>*) <span class="rules">{
+      <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block;</span></span>
+    <span class="rule">}</span></span>
+    *<span class="pseudo">::distributed(</span><span class="class">.breaking</span>) <span class="rules">{
+      <span class="rule"><span class="attribute">text-shadow</span>:<span class="value"> <span class="number">0</span> <span class="number">0</span> <span class="number">0.2</span>em <span class="function">var(highlight-accent, maroon)</span>;</span></span>
+      <span class="rule"><span class="attribute">color</span>:<span class="value"> <span class="function">var(highlight-primary, orange)</span>;</span></span>
+    <span class="rule">}</span></span>
+  </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
+
+<span class="comment">&lt;!-- change the appearance of the ticker part --&gt;</span>
+<span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
+<span class="id">#news</span><span class="pseudo">::x-ticker</span> <span class="rules">{
+  <span class="rule"><span class="attribute">background</span>:<span class="value"> gray;</span></span>
+  <span class="rule"><span class="attribute">color</span>:<span class="value"> lightblue;</span></span>
+  <span class="rule"><span class="attribute">var-highlight-primary</span>:<span class="value"> green;</span></span>
+  <span class="rule"><span class="attribute">var-highlight-accent</span>:<span class="value"> yellow;</span></span>
+<span class="rule">}</span></span>
+</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
+</pre></figure></code></pre>
+<p>伪元素方法针对特定元素保持页面样式非常有用，而CSS变量则对不想重复指定的属性集（主题风格）非常有用. </p>
+<h2>6.6 Shadow DOM中的事件</h2>
+<p>为了确保shadow DOM子树中的元素不会暴露给外部子树，会有很多工作来分发内部子树事件. 
+首先，shadow DOM 子树会阻止事件如mutation和selectstart外部监听. 那些能够穿过shadow DOM的范围并且重定向的的事件，它们的<strong>target</strong>和<strong>relatedTarget</strong>的会指向shadow DOM子树的宿主元素. 在一些情况下，如<strong>DOMFocusIn</strong>，<strong>mouseover</strong>，<strong>mouseout</strong>事件需要特别注意，如果你在shadow DOM的两个元素中间移动鼠标，会出现鼠标从本身移动到它本身这种诡异的事件</p>
+<h2>7 Imports</h2>
+<p>规范标准见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html">The HTML Imports specification</a></p>
+<p>Custom elements 和 decorators可以通过文件的方式引入：</p>
+<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"import"</span> <span class="attribute">href</span>=<span class="value">"goodies.html"</span>&gt;</span>
+</pre></figure></code></pre>
+<p>只有<code>&lt;decorator&gt;</code>元素和<code>&lt;element&gt;</code>能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行. </p>
+<p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/">CC 3.0 BY-SA 协议</a>”发布</strong></p>
+]]></content>
+    <category scheme="http://suetming.com/categories/javascript/" term="javascript"/>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[android深度优化]]></title>
+    <link href="http://suetming.com/2013/08/14/2013-07-13-android-performance/"/>
+    <id>http://suetming.com/2013/08/14/2013-07-13-android-performance/</id>
+    <published>2013-08-14T01:02:09.000Z</published>
+    <updated>2013-08-14T01:02:09.000Z</updated>
+    <content type="html"><![CDATA[<p>android开发有几年了，对其相关有些许认识，虽然现在手机的硬件配置以极快的速度提升，但是优化仍然占有重要的位置，是必不可少的重要环节，本文主要是写自己在学习和实际开发app过程中的吸取的教训和对优化相关认识的总结，如有不周之处，还请批评指正</p>
+<p><a name="more"></a>
+本文主要由以下几部分组成：</p>
+<ul>
+<li>framework API</li>
+<li>UI 性能优化</li>
+<li>I/O 性能优化</li>
+<li>速度优化【泛指】</li>
+</ul>
+<h2>Framework API</h2>
+<h2>1.繁重的任务请开启新线程，UI线程只做UI的任务</h2>
+<ul>
+<li>Thread、Runnable、Future、ExecutorService、AsyncTask</li>
+</ul>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() {
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> run() {
+        <span class="comment">// 后台任务</span>
+    }
+}).start();
+</pre></figure></code></pre>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> AsyncTask&lt;URL, Integer, Integer&gt;() {
+    <span class="keyword">protected</span> Long doInBackground(URL... urls) {
+        <span class="comment">// background thread</span>
+        <span class="comment">// fetch url/save open file/...</span>
+    }
+
+    <span class="keyword">protected</span> <span class="keyword">void</span> onProgressUpdate(Integer... progress) {
+        updateProgress(progress[<span class="number">0</span>]);
+    }
+
+    <span class="keyword">protected</span> <span class="keyword">void</span> onPostExecute(Integer result) {
+        <span class="comment">// frontend thread</span>
+    }
+}
+</pre></figure></code></pre>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre>HandlerThread mHandlerThread = <span class="keyword">new</span> HandlerThread(<span class="string">"WorkerThread"</span>);
+    Handler handler = <span class="keyword">new</span> Handler(mHandlerThread.getLooper()) {
+        <span class="annotation">@Override</span>
+        <span class="keyword">public</span> <span class="keyword">void</span> handleMessage(Message msg) {
+            <span class="keyword">switch</span> (msg.what) {
+            <span class="keyword">case</span> JOB_1:
+            <span class="comment">// do job #1</span>
+            <span class="keyword">break</span>;
+            <span class="keyword">case</span> JOB_2:
+            <span class="comment">// do job #2</span>
+            <span class="keyword">break</span>;
+        }
+    }
+};
+
+handler.sendEmptyMessage(JOB_1);
+handler.sendEmptyMessage(JOB_2);
+handler.post(<span class="keyword">new</span> Runnable() {
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> run() {
+        <span class="comment">// do more work</span>
+    }
+});
+
+<span class="annotation">@Override</span>
+<span class="keyword">protected</span> <span class="keyword">void</span> onDestroy() {
+    mHandlerThread.quit();
+    <span class="keyword">super</span>.onDestroy();
+}
+</pre></figure></code></pre>
+<p>由于thread比较简单，不支持并发中的很多特性，如果要求同步和调度等功能需要自己实现，可选用Asynctask来处理，不过如果需要和frontend有更多的交互，则thread+handler+looper更灵活</p>
+<p>如果要处理ContentProvider相关内容，这些耗时操作可以用AsyncQueryHandler来处理</p>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> AsyncQueryHandler(getContentResolver()) {
+    <span class="annotation">@Override</span>
+    <span class="keyword">protected</span> <span class="keyword">void</span> onQueryComplete(<span class="keyword">int</span> token, Object cookie,Cursor cursor) {
+        <span class="keyword">if</span> (token == <span class="number">0</span>) {
+            <span class="comment">// get data from cursor</span>
+        }
+    }
+}.startQuery(<span class="number">0</span>, <span class="comment">// token</span>
+            <span class="keyword">null</span>, <span class="comment">// cookie</span>
+            RawContacts.CONTENT_URI, <span class="keyword">null</span>, <span class="comment">// projection</span>
+            RawContacts.CONTACT_ID + <span class="string">"&lt;?"</span>, <span class="comment">// selection</span>
+            <span class="keyword">new</span> String[] { <span class="string">"888"</span> }, <span class="comment">// selectionArgs</span>
+            RawContacts.DISPLAY_NAME_PRIMARY + <span class="string">" ASC"</span>);  <span class="comment">// orderby</span>
+</pre></figure></code></pre>
+<p>如果后台运行服务需要做耗时操作请采用IntentService而不是Service，因为Service和应用程序在同一个进程不是单独的进程; Service也不是线程，所以需要避免做耗时操作</p>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WorkerService</span> <span class="keyword">extends</span> <span class="title">IntentService</span> {</span>
+    <span class="keyword">public</span> WorkerService() {
+        <span class="keyword">super</span>(<span class="string">"WorkerThread"</span>);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">protected</span> <span class="keyword">void</span> onHandleIntent(Intent intent) {
+        String action = intent.getAction();
+        <span class="keyword">if</span> (<span class="string">"com.test.DO_JOB_1"</span>.equals(action)) {
+            <span class="comment">// 耗时操作</span>
+        }
+    }
+}
+
+startService(<span class="keyword">new</span> Intent(<span class="string">"com.test.DO_JOB_1"</span>));
+</pre></figure></code></pre>
+<p>总结，采用下述API避免在UI线程做耗时操作</p>
+<ul>
+<li>Activity or Fragment<ul>
+<li>Handler, HandlerThread</li>
+<li>AsyncTask</li>
+<li>AsyncTaskLoader</li>
+</ul>
+</li>
+<li>ContentProvider<ul>
+<li>AsyncQueryHandler</li>
+<li>CursorLoader</li>
+</ul>
+</li>
+<li>Service<ul>
+<li>IntentService</li>
+<li>Parcel.writeStrongBinder(IBinder)</li>
+</ul>
+</li>
+</ul>
+<p>另外，部分Java方法请采用google建议的代码库代替，如： </p>
+<ul>
+<li>gson、fastjson 替换 JSONObject</li>
+<li>volley 替换 HttpURLConnection、HttpClient</li>
+</ul>
+<h2>UI性能优化</h2>
+<p>UI性能优化需要清楚UI的层次结构和几个API：Measure、Layout、Draw，还有事件处理流程key events、TrackBall events、Touch events</p>
+<p>相关概况如下：</p>
+<ul>
+<li>1.尽量简化视图布局，用 Hierarchy Viewer来查看瓶颈所在，用 layoutopt来查找布局文件中的常见问题</li>
+<li>2.采用RelativeLayout或者GridLayout来替换多个LinearLayout</li>
+<li>3.不经常用的视图可以采用<Viewstub/>延迟加载</li>
+<li>4.标签<merge/>重用布局文件</li>
+<li>5.尽量使用点9作为背景</li>
+</ul>
+<p>Scrolling和ListView是讨论的比较多的，这里单独拿出来强调一下</p>
+<ul>
+<li>缓存Item避免重复Inflate：</li>
+</ul>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="annotation">@Override</span>
+<span class="keyword">public</span> View getView(<span class="keyword">int</span> position, View convertView, ViewGroup parent) {
+    <span class="keyword">if</span> (convertView == <span class="keyword">null</span>) {
+        convertView = mInflater.inflate(R.layout.main, parent, <span class="keyword">false</span>);
+        ViewHolder holder = <span class="keyword">new</span> ViewHolder();
+        holder.img = (ImageView) convertView.findViewById(R.id.image);
+        holder.txt = (TextView) convertView.findViewById(R.id.text);
+        convertView.setTag(holder);
+    }
+    ViewHolder holder = (ViewHolder) convertView.getTag();
+    holder.img.setImageResource(R.drawable.icon);
+    holder.txt.setText(R.string.hello);
+    <span class="keyword">return</span> convertView;
+}
+
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> {</span>
+    ImageView img;
+    TextView txt;
+}
+</pre></figure></code></pre>
+<ul>
+<li>尽量缓存view避免findviewById()</li>
+<li>避免不必要的drawing</li>
+</ul>
+<p>通常情况下即使一个实体的子类view在最前面，android也会绘制每一个父类view，所以如果有不可见的父类视图则需要禁用draw来减少消耗</p>
+<p>其次大多数情况下Window的背景也不需要绘制</p>
+<pre><code><figure class="highlight"><pre>getWindow()<span class="preprocessor">.setBackgroundDrawable</span>(null)<span class="comment">;</span>
+
+<span class="label">android:</span>windowBackground=<span class="string">"@null"</span> // XML
+</pre></figure></code></pre>
+<ul>
+<li>运行时要避免图像放缩等耗时操作</li>
+<li>滚动时避免animations(AnimationDrawable...)</li>
+<li>如果要用animations，设置ListView.setDrawableCacheEnabled(false)</li>
+</ul>
+<h2>I/O 性能优化</h2>
+<ul>
+<li>SharedPreferences是耗时I/O操作请采用异步方式</li>
+</ul>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre>SharedPreferences.Editor.apply();  <span class="comment">// asynchronous</span>
+SharedPreferences.Editor.commit(); <span class="comment">// synchronous</span>
+</pre></figure></code></pre>
+<p>可以采用下面的封装</p>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SharedPreferencesUtils</span> {</span>
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Method sApplyMethod = findApplyMethod();
+    <span class="keyword">private</span> <span class="keyword">static</span> Method findApplyMethod() {
+        <span class="keyword">try</span> {
+            Class cls = SharedPreferences.Editor.class;
+            <span class="keyword">return</span> cls.getMethod(<span class="string">"apply"</span>);
+        } <span class="keyword">catch</span> ( NoSuchMethodException unused ) {
+            <span class="comment">// fall through</span>
+        }
+        <span class="keyword">return</span> <span class="keyword">null</span>;
+    }
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> apply(SharedPreferences.Editor editor) {
+        <span class="keyword">if</span> ( sApplyMethod != <span class="keyword">null</span> ) {
+            <span class="keyword">try</span> {
+                sApplyMethod.invoke(editor);
+                <span class="keyword">return</span>;
+            } <span class="keyword">catch</span> ( InvocationTargetException unused ) {
+                <span class="comment">// fall through</span>
+            } <span class="keyword">catch</span> ( IllegalAccessException unused ) {
+                <span class="comment">// fall through</span>
+            }
+        }
+        editor.commit();
+    }
+}
+</pre></figure></code></pre>
+<ul>
+<li>数据库查询可以采用<a href="http://www.sqlite.org/eqp.html">EXPLAIN QUERY PLAN</a>来确定哪些信息需要优化或者用TraceView查看</li>
+<li>SQLITE的某些字段可以添加索引提高查询速度</li>
+</ul>
+<p><img src="/images/photos/2013-07-sqlite-db-index.png" alt="sqlite添加索引"></p>
+<ul>
+<li><p>如无必要请对查询的数据增加限制LIMIT来减少耗时</p>
+</li>
+<li><p>可以用<a href="http://developer.android.com/reference/android/database/sqlite/SQLiteStatement.html">SQLiteStatement</a>来预编译一些频繁使用的sql语句</p>
+</li>
+</ul>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre>SQLiteDatabase db = dbHelper.getWritableDatabase();
+SQLiteStatement stmt = db.compileStatement(<span class="string">"SELECT * FROM Country WHERE code = ?"</span>);
+stmt.bindString(<span class="number">1</span>, <span class="string">"US"</span>);
+stmt.execute();
+</pre></figure></code></pre>
+<ul>
+<li>如果用了ContentObserver，请延迟查询操作</li>
+</ul>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre>getContentResolver().registerContentObserver(uri, <span class="keyword">true</span>,
+    <span class="keyword">new</span> ContentObserver(<span class="keyword">new</span> Handler()) {
+            <span class="annotation">@Override</span>
+            <span class="keyword">public</span> <span class="keyword">void</span> onChange(<span class="keyword">boolean</span> selfChange) {
+                mDirty = <span class="keyword">true</span>;
+            }
+    })
+);
+
+<span class="annotation">@Override</span>
+<span class="keyword">protected</span> <span class="keyword">void</span> onResume() {
+    <span class="keyword">super</span>.onResume();
+    <span class="keyword">if</span> (mDirty) {
+        <span class="comment">// start query again</span>
+        mDirty = <span class="keyword">false</span>;
+    }
+})
+</pre></figure></code></pre>
+<ul>
+<li>能批量操作的尽量批量操作ContentProviderOperation、ContentProviderOperation.Builder、ContentResolver.applyBatch()</li>
+<li>多线程情况下可以采用SQLITEDatabase.yieldIfContendedSafely()</li>
+</ul>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="keyword">int</span> bulkInsert(Uri uri, ContentValues[] values) {
+    <span class="keyword">int</span> numValues = values.length;
+    mDb = mOpenHelper.getWritableDatabase();
+    mDb.beginTransactionWithListener(<span class="keyword">this</span>);
+    <span class="keyword">try</span> {
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numValues; i++) {
+            Uri result = insertInTransaction(uri, values[i]);
+            <span class="keyword">if</span> (result != <span class="keyword">null</span>) {
+                mNotifyChange = <span class="keyword">true</span>;
+            }
+            mDb.yieldIfContendedSafely();
+        }
+        mDb.setTransactionSuccessful();
+    } <span class="keyword">finally</span> {
+        mDb.endTransaction();
+    }
+
+    onEndTransaction();
+    <span class="keyword">return</span> numValues;
+}
+</pre></figure></code></pre>
+<ul>
+<li>输出事件日志分析耗时操作并优化</li>
+</ul>
+<pre><code><figure class="highlight"><pre><span class="tag">adb</span> <span class="tag">logcat</span> -<span class="tag">b</span> <span class="tag">events</span> <span class="tag">content_query_sample</span><span class="pseudo">:I</span> *<span class="pseudo">:S</span>
+</pre></figure></code></pre>
+<p>内存性能优化
+内存这块比较大，从底层的Linux的就有OOM killer到Android系统层的OOM killer，我们只讨论应用层</p>
+<p>在应用层上，android严格控制每一个应用程序分配多少内存，当应用超出这个限制会抛出OutOfMemoryError</p>
+<p>打开ADT的heap可以查看里面每一列</p>
+<p><img src="/images/photos/2013-07-heap.png" alt="heap"></p>
+<p>这里要说明几个概念：
+- Heap limit：Dalvik heap最大值
+- Heap size: Dalvik heap当前值
+- Allocated： Dalvik heap分配的字节数
+- Free：还能分配的Heap size
+- %Used: free / heap size * 100%
+- External allocation: Bitmap内存(HoneyComb版本之前的参数)</p>
+<p>其次不同机型的Heap size limit是不同的，通过ActivityManager.getMemoryClass()获取内存信息</p>
+<p>出现OOM的条件：</p>
+<ul>
+<li>Honeycomb之前</li>
+</ul>
+<pre><code><figure class="highlight"><pre><span class="comment">Heap</span> <span class="comment">size</span> <span class="literal">+</span> <span class="comment">external</span> <span class="comment">allocation</span> <span class="literal">+</span> <span class="comment">new</span> <span class="comment">allocation</span> <span class="comment">request</span> &gt;<span class="comment">=</span> <span class="comment">Heap</span> <span class="comment">limit
+</pre></figure></code></pre>
+<ul>
+<li>Honeycomb之后</li>
+</ul>
+<pre><code><figure class="highlight"><pre><span class="title">Heap</span> size + new allocation request &gt;= Heap limit
+<span class="number">104</span>
+</pre></figure></code></pre>
+<p>不过上述情况并不能代表应用进程的实际使用情况，要注意以下几点
+- 每一个进程初始情况下有2MB+的开销
+- 本地下可以分配更多的内存：android app 运行在Dalvik VM上，但是通过JNI可以调用本地lib，并且可以在lib中做相关操作
+- 如果开启硬件加速（ICS默认开启），会给OpenGL分配8MB初始内存</p>
+<p>通过下述命令查看内存使用情况</p>
+<pre><code><figure class="highlight"><pre><span class="title">adb</span> shell procrank -p
+</pre></figure></code></pre>
+<p><img src="/images/photos/2013-07-memory-usage.png" alt="memory useage"></p>
+<p>图解说明：</p>
+<ul>
+<li>VSS(Virtual Set Size)：进程可以得到的总页数</li>
+<li>RSS(Resident Set Size)：进程可以在RAM中获得的总页数</li>
+<li>PSS(Proportional Set Size)：进程可以在RAM中已经用的总页数</li>
+<li>USS(Unique Set Size))：进程可以取得的未分配的页数</li>
+</ul>
+<p>打印进程虚拟内存相关命令如下：</p>
+<pre><code><figure class="highlight"><pre>adb shell procmem -p <span class="tag">&lt;<span class="title">pid</span>&gt;</span>
+adb shell dumpsys meminfo <span class="tag">&lt;<span class="title">pid</span>&gt;</span>
+</pre></figure></code></pre>
+<p>stackoverflow：<a href="http://stackoverflow.com/questions/2298208/how-to-discover-memory-usage-of-my-application-in-android">http://stackoverflow.com/questions/2298208/how-to-discover-memory-usage-of-my-application-in-android</a></p>
+<p>如何避免内存泄露？</p>
+<p>想要避免内存泄露，那么就需要了解垃圾回收(GC)</p>
+<ul>
+<li><p>Gingerbread之前：</p>
+<ul>
+<li>Stop the world</li>
+<li>Full Heap collection</li>
+<li>Pause times often &gt; 100ms</li>
+</ul>
+</li>
+<li><p>Gingerbread之后：</p>
+<ul>
+<li>Concurrent（大部分情况下）</li>
+<li>Partial collection</li>
+<li>Pause times usually &lt; 5ms</li>
+</ul>
+</li>
+</ul>
+<p>内存泄露主要是有代码本身造成的，GC无法阻止人为的内存泄露问题；只要有生命周期长度的引用引用了没用的对象，GC就无法回收；那么最有可能出现这种内存泄露的是那些对象呢？你猜对了，是Context/Activity</p>
+<p>参考：<a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/附图如下：">http://dubroy.com/blog/google-io-memory-management-for-android-apps/附图如下：</a>
+<img src="/images/photos/2013-07-memory-leak.png" alt="memory leak"></p>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> <span class="keyword">extends</span> <span class="title">Activity</span> <span class="keyword">implements</span> <span class="title">ActionBar</span>.<span class="title">TabListener</span> {</span>
+    <span class="keyword">static</span> Leaky leak = <span class="keyword">null</span>;
+    <span class="class"><span class="keyword">class</span> <span class="title">Leaky</span> {</span>
+        <span class="keyword">void</span> doSomething(){
+            System.out.print(<span class="string">"Wheee!!!"</span>);
+        }
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> onCreate(Bundle savedInstanceState){
+        <span class="keyword">if</span> (leak==<span class="keyword">null</span>){
+            leak = <span class="keyword">new</span> Leaky();
+        }
+    }
+}
+</pre></figure></code></pre>
+<p>上述代码引用了一个私有非静态内部类的实例对象，情况可想而知：</p>
+<p><img src="/images/photos/2013-07-inner-class-object.png" alt="inner class"></p>
+<p>一个超过Activity生命周期的线程，会发生什么情况？内存泄露</p>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() {
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> run() {
+        <span class="comment">// do some heavy work</span>
+    }
+}).start();
+</pre></figure></code></pre>
+<p>如何检测内存泄露?</p>
+<p>1.LOGCAT</p>
+<p><img src="/images/photos/2013-07-logcat.png" alt="logcat"></p>
+<p>上述每一个字段都有明确的意义，具体概念不详述了请google</p>
+<p>2.Allocation Tracker可以查看已经分配内存去没有用到的对象</p>
+<p><img src="/images/photos/2013-07-reference-object.png" alt="look up object"></p>
+<p>3.Eclipse Memory Analyzer (MAT)可以查看潜在的内存泄露</p>
+<p>DEMO：
+- <a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/">dubroy</a>
+- <a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=_CruQY55HOk">youtube</a></p>
+<p>4.Histogram：查看Activity的实例数量，一个activity不止一个实例在运行是潜在内存泄露信号</p>
+<p><img src="/images/photos/2013-07-histogram.png" alt="histogram"></p>
+<p>5.Dominator Tree：帮助辨别占用很多内存且没有释放的对象</p>
+<p><img src="/images/photos/2013-07-dominator-tree.png" alt="Dominator Tree"></p>
+<p><img src="/images/photos/2013-07-dominator-tree2.png" alt="Dominator Tree 2"></p>
+<p><img src="/images/photos/2013-07-dominator-tree3.png" alt="Dominator Tree 3"></p>
+<p>避免抛出OutOfMemoryError异常【具体用法google】：</p>
+<ul>
+<li>Bitmap：<ul>
+<li>是否可以Sample？</li>
+<li>回收不用的Bitmap：Bitmap.recycle()</li>
+</ul>
+</li>
+</ul>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre>BitmapFactory.Options opts = <span class="keyword">new</span> BitmapFactory.Options();
+opts.inJustDecodeBounds = <span class="keyword">true</span>;
+BitmapFactory.decodeFile(path, opts);
+<span class="keyword">final</span> <span class="keyword">int</span> originalWidth = opts.outWidth;
+<span class="keyword">final</span> <span class="keyword">int</span> originalHeight = opts.outHeight;
+<span class="keyword">final</span> <span class="keyword">int</span> originalDim = Math.max(originalWidth, originalHeight);
+opts = <span class="keyword">new</span> BitmapFactory.Options();
+opts.inSampleSize = <span class="number">1</span>;
+<span class="keyword">while</span> ( originalDim &gt; MAX_IMAGE_DIM ) {
+    opts.inSampleSize *= <span class="number">2</span>;
+    originalDim /= <span class="number">2</span>;
+}
+<span class="keyword">return</span> BitmapFactory.decodeFile(path, opts);
+</pre></figure></code></pre>
+<ul>
+<li>Java Object：<ul>
+<li>用SoftReference替换直接引用</li>
+<li>用WeakReference避免内存泄露【常用到引用Context、Activity】</li>
+</ul>
+</li>
+</ul>
+<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> {</span>
+    <span class="keyword">static</span> Leaky leak = <span class="keyword">null</span>;
+    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Leaky</span> {</span>
+        <span class="keyword">private</span> <span class="keyword">final</span> WeakReference&lt;Context&gt; mContext;
+        <span class="keyword">public</span> Leaky(Context context) {
+            <span class="keyword">super</span>();
+            mContext = <span class="keyword">new</span> WeakReference&lt;Context&gt;(context);
+            doSomethingWithOuterInstance();
+        }
+
+        <span class="keyword">void</span> doSomethingWithOuterInstance() {
+            Context context = mContext.get();
+            <span class="keyword">if</span> (context != <span class="keyword">null</span>) {
+                String text = context.getString(R.string.hello);
+                System.out.println(text);
+            }
+        }
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> onCreate(Bundle savedInstanceState) {
+        <span class="keyword">super</span>.onCreate(savedInstanceState);
+        <span class="keyword">if</span> (leak == <span class="keyword">null</span>) {
+            leak = <span class="keyword">new</span> Leaky(<span class="keyword">this</span>);
+        }
+    }
+}
+</pre></figure></code></pre>
+<h2>速度优化</h2>
+<p>经常会有引用一些开源的底层库，比如pdf或者doc解析库，ffmppeg编解码库等等，除了对库做底层的裁剪移植，我们有时也需要将解码后的图形等信息输出到设备上，或者url fetch了某些网页或者图片，为了避免下次重复这种耗时操作，有效的方法就是缓存</p>
+<p>图像的缓存见<a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html">android developer</a>已经有例子写的很详细，使用LRU(最近最少使用)算法实现</p>
+<h2>主要参考文献：</h2>
+<ul>
+<li>1.<a href="http://stackoverflow.com/questions/2630158/detect-application-heap-size-in-android/2634738#2634738">http://stackoverflow.com/questions/2630158/detect-application-heap-size-in-android/2634738#2634738</a></li>
+<li>2.<a href="http://developer.android.com/reference/java/lang/ref/WeakReference.html">http://developer.android.com/reference/java/lang/ref/WeakReference.html</a></li>
+<li>3.<a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html">http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html</a></li>
+<li>4.<a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/">http://dubroy.com/blog/google-io-memory-management-for-android-apps/</a></li>
+<li>5.<a href="http://cyrilmottier.com/2013/01/09/back-to-top-android-vs-ios/">http://cyrilmottier.com/2013/01/09/back-to-top-android-vs-ios/</a></li>
+<li>6.<a href="http://blog.csdn.net/luoshengyang/article/details/6745181">http://blog.csdn.net/luoshengyang/article/details/6745181</a></li>
+</ul>
+]]></content>
+    <category scheme="http://suetming.com/tags/UI-performance/" term="UI performance"/>
+    <category scheme="http://suetming.com/tags/IO-performance/" term="I/O performance"/>
+    <category scheme="http://suetming.com/tags/Scrolling-performance/" term="Scrolling performance"/>
+    <category scheme="http://suetming.com/categories/android/" term="android"/>
+  </entry>
+  <entry>
     <title type="html"><![CDATA[仿360|ChatHead等APP悬浮窗和动画效果]]></title>
-    <link href="http://suetming.com/2013/08/11/仿360chathead等app悬浮窗效果/"/>
-    <id>http://suetming.com/2013/08/11/仿360chathead等app悬浮窗效果/</id>
-    <published>2013-08-11T12:20:36.000Z</published>
-    <updated>2013-08-11T12:20:36.000Z</updated>
+    <link href="http://suetming.com/2013/08/14/仿360chathead等app悬浮窗效果/"/>
+    <id>http://suetming.com/2013/08/14/仿360chathead等app悬浮窗效果/</id>
+    <published>2013-08-14T00:59:53.000Z</published>
+    <updated>2013-08-14T00:59:53.000Z</updated>
     <content type="html"><![CDATA[<p>360手机卫士很早就有悬浮窗效果，并且搞了各种游戏吸引用户眼球，Facebook出了新版的Facebook Messager，也增加了悬浮窗的效果，大家都在争夺用户的手机桌面，尽可能的强化用户行为习惯。本文不对产品做过多描述，主要讲解如何实现悬浮窗以及相关动画效果</p>
 <p><img src="/images/photos/2013-08-11-xiaomi-360safe.png" alt=""></p>
 <p><a name="more"></a>
@@ -366,7 +1368,7 @@
 }
 </pre></td></tr></table></figure>
 
-<p>android录像比较麻烦（后面考虑开发一个android的录像程序，好像目前还没有同类app呢）这里有一个ios上仿Chathead的视窗实现效果如下：</p>
+<p>本来想录制动态视频，不过android录像比较麻烦（后面考虑开发一个android的录像程序，好像目前还没有同类app呢）这里有一个ios上仿Chathead的视窗实现效果如下：</p>
 <p><a href="https://dl.dropboxusercontent.com/u/2187517/Uploads/ChatHeads/move.m4v">Chathead on IOS</a></p>
 <ul>
 <li>DEMO源码见<a href="https://github.com/suetming/floatingwindow.git">这里</a>(IDE环境：android studio)</li>
@@ -375,1017 +1377,6 @@
 ]]></content>
     <category scheme="http://suetming.com/tags/悬浮窗/" term="悬浮窗"/>
     <category scheme="http://suetming.com/categories/android/" term="android"/>
-  </entry>
-  <entry>
-    <title type="html"><![CDATA[android深度优化]]></title>
-    <link href="http://suetming.com/2013/08/11/2013-07-13-android-performance/"/>
-    <id>http://suetming.com/2013/08/11/2013-07-13-android-performance/</id>
-    <published>2013-08-11T10:54:10.000Z</published>
-    <updated>2013-08-11T10:54:10.000Z</updated>
-    <content type="html"><![CDATA[<p>android开发有几年了，对其相关有些许认识，虽然现在手机的硬件配置以极快的速度提升，但是优化仍然占有重要的位置，是必不可少的重要环节，本文主要是写自己在学习和实际开发app过程中的吸取的教训和对优化相关认识的总结，如有不周之处，还请批评指正</p>
-<p><a name="more"></a>
-本文主要由以下几部分组成：</p>
-<ul>
-<li>framework API</li>
-<li>UI 性能优化</li>
-<li>I/O 性能优化</li>
-<li>速度优化【泛指】</li>
-</ul>
-<h2>Framework API</h2>
-<h2>1.繁重的任务请开启新线程，UI线程只做UI的任务</h2>
-<ul>
-<li>Thread、Runnable、Future、ExecutorService、AsyncTask</li>
-</ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() {
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> run() {
-        <span class="comment">// 后台任务</span>
-    }
-}).start();
-</pre></figure></code></pre>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> AsyncTask&lt;URL, Integer, Integer&gt;() {
-    <span class="keyword">protected</span> Long doInBackground(URL... urls) {
-        <span class="comment">// background thread</span>
-        <span class="comment">// fetch url/save open file/...</span>
-    }
-
-    <span class="keyword">protected</span> <span class="keyword">void</span> onProgressUpdate(Integer... progress) {
-        updateProgress(progress[<span class="number">0</span>]);
-    }
-
-    <span class="keyword">protected</span> <span class="keyword">void</span> onPostExecute(Integer result) {
-        <span class="comment">// frontend thread</span>
-    }
-}
-</pre></figure></code></pre>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre>HandlerThread mHandlerThread = <span class="keyword">new</span> HandlerThread(<span class="string">"WorkerThread"</span>);
-    Handler handler = <span class="keyword">new</span> Handler(mHandlerThread.getLooper()) {
-        <span class="annotation">@Override</span>
-        <span class="keyword">public</span> <span class="keyword">void</span> handleMessage(Message msg) {
-            <span class="keyword">switch</span> (msg.what) {
-            <span class="keyword">case</span> JOB_1:
-            <span class="comment">// do job #1</span>
-            <span class="keyword">break</span>;
-            <span class="keyword">case</span> JOB_2:
-            <span class="comment">// do job #2</span>
-            <span class="keyword">break</span>;
-        }
-    }
-};
-
-handler.sendEmptyMessage(JOB_1);
-handler.sendEmptyMessage(JOB_2);
-handler.post(<span class="keyword">new</span> Runnable() {
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> run() {
-        <span class="comment">// do more work</span>
-    }
-});
-
-<span class="annotation">@Override</span>
-<span class="keyword">protected</span> <span class="keyword">void</span> onDestroy() {
-    mHandlerThread.quit();
-    <span class="keyword">super</span>.onDestroy();
-}
-</pre></figure></code></pre>
-<p>由于thread比较简单，不支持并发中的很多特性，如果要求同步和调度等功能需要自己实现，可选用Asynctask来处理，不过如果需要和frontend有更多的交互，则thread+handler+looper更灵活</p>
-<p>如果要处理ContentProvider相关内容，这些耗时操作可以用AsyncQueryHandler来处理</p>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> AsyncQueryHandler(getContentResolver()) {
-    <span class="annotation">@Override</span>
-    <span class="keyword">protected</span> <span class="keyword">void</span> onQueryComplete(<span class="keyword">int</span> token, Object cookie,Cursor cursor) {
-        <span class="keyword">if</span> (token == <span class="number">0</span>) {
-            <span class="comment">// get data from cursor</span>
-        }
-    }
-}.startQuery(<span class="number">0</span>, <span class="comment">// token</span>
-            <span class="keyword">null</span>, <span class="comment">// cookie</span>
-            RawContacts.CONTENT_URI, <span class="keyword">null</span>, <span class="comment">// projection</span>
-            RawContacts.CONTACT_ID + <span class="string">"&lt;?"</span>, <span class="comment">// selection</span>
-            <span class="keyword">new</span> String[] { <span class="string">"888"</span> }, <span class="comment">// selectionArgs</span>
-            RawContacts.DISPLAY_NAME_PRIMARY + <span class="string">" ASC"</span>);  <span class="comment">// orderby</span>
-</pre></figure></code></pre>
-<p>如果后台运行服务需要做耗时操作请采用IntentService而不是Service，因为Service和应用程序在同一个进程不是单独的进程; Service也不是线程，所以需要避免做耗时操作</p>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WorkerService</span> <span class="keyword">extends</span> <span class="title">IntentService</span> {</span>
-    <span class="keyword">public</span> WorkerService() {
-        <span class="keyword">super</span>(<span class="string">"WorkerThread"</span>);
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="keyword">protected</span> <span class="keyword">void</span> onHandleIntent(Intent intent) {
-        String action = intent.getAction();
-        <span class="keyword">if</span> (<span class="string">"com.test.DO_JOB_1"</span>.equals(action)) {
-            <span class="comment">// 耗时操作</span>
-        }
-    }
-}
-
-startService(<span class="keyword">new</span> Intent(<span class="string">"com.test.DO_JOB_1"</span>));
-</pre></figure></code></pre>
-<p>总结，采用下述API避免在UI线程做耗时操作</p>
-<ul>
-<li>Activity or Fragment<ul>
-<li>Handler, HandlerThread</li>
-<li>AsyncTask</li>
-<li>AsyncTaskLoader</li>
-</ul>
-</li>
-<li>ContentProvider<ul>
-<li>AsyncQueryHandler</li>
-<li>CursorLoader</li>
-</ul>
-</li>
-<li>Service<ul>
-<li>IntentService</li>
-<li>Parcel.writeStrongBinder(IBinder)</li>
-</ul>
-</li>
-</ul>
-<p>另外，部分Java方法请采用google建议的代码库代替，如： 
-- gson、fastjson 替换 JSONObject
-- volley 替换 HttpURLConnection、HttpClient</p>
-<h2>UI性能优化</h2>
-<p>UI性能优化需要清楚UI的层次结构和几个API：Measure、Layout、Draw，还有事件处理流程key events、TrackBall events、Touch events</p>
-<p>相关概况如下：</p>
-<ul>
-<li>1.尽量简化视图布局，用 Hierarchy Viewer来查看瓶颈所在，用 layoutopt来查找布局文件中的常见问题</li>
-<li>2.采用RelativeLayout或者GridLayout来替换多个LinearLayout</li>
-<li>3.不经常用的视图可以采用<Viewstub/>延迟加载</li>
-<li>4.标签<merge/>重用布局文件</li>
-<li>5.尽量使用点9作为背景</li>
-</ul>
-<p>Scrolling和ListView是讨论的比较多的，这里单独拿出来强调一下</p>
-<ul>
-<li>缓存Item避免重复Inflate：</li>
-</ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="annotation">@Override</span>
-<span class="keyword">public</span> View getView(<span class="keyword">int</span> position, View convertView, ViewGroup parent) {
-    <span class="keyword">if</span> (convertView == <span class="keyword">null</span>) {
-        convertView = mInflater.inflate(R.layout.main, parent, <span class="keyword">false</span>);
-        ViewHolder holder = <span class="keyword">new</span> ViewHolder();
-        holder.img = (ImageView) convertView.findViewById(R.id.image);
-        holder.txt = (TextView) convertView.findViewById(R.id.text);
-        convertView.setTag(holder);
-    }
-    ViewHolder holder = (ViewHolder) convertView.getTag();
-    holder.img.setImageResource(R.drawable.icon);
-    holder.txt.setText(R.string.hello);
-    <span class="keyword">return</span> convertView;
-}
-
-<span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> {</span>
-    ImageView img;
-    TextView txt;
-}
-</pre></figure></code></pre>
-<ul>
-<li>尽量缓存view避免findviewById()</li>
-<li>避免不必要的drawing</li>
-</ul>
-<p>通常情况下即使一个实体的子类view在最前面，android也会绘制每一个父类view，所以如果有不可见的父类视图则需要禁用draw来减少消耗</p>
-<p>其次大多数情况下Window的背景也不需要绘制</p>
-<pre><code><figure class="highlight"><pre>getWindow()<span class="preprocessor">.setBackgroundDrawable</span>(null)<span class="comment">;</span>
-
-<span class="label">android:</span>windowBackground=<span class="string">"@null"</span> // XML
-</pre></figure></code></pre>
-<ul>
-<li>运行时要避免图像放缩等耗时操作</li>
-<li>滚动时避免animations(AnimationDrawable...)</li>
-<li>如果要用animations，设置ListView.setDrawableCacheEnabled(false)</li>
-</ul>
-<h2>I/O 性能优化</h2>
-<ul>
-<li>SharedPreferences是耗时I/O操作请采用异步方式</li>
-</ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre>SharedPreferences.Editor.apply();  <span class="comment">// asynchronous</span>
-SharedPreferences.Editor.commit(); <span class="comment">// synchronous</span>
-</pre></figure></code></pre>
-<p>可以采用下面的封装</p>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SharedPreferencesUtils</span> {</span>
-    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Method sApplyMethod = findApplyMethod();
-    <span class="keyword">private</span> <span class="keyword">static</span> Method findApplyMethod() {
-        <span class="keyword">try</span> {
-            Class cls = SharedPreferences.Editor.class;
-            <span class="keyword">return</span> cls.getMethod(<span class="string">"apply"</span>);
-        } <span class="keyword">catch</span> ( NoSuchMethodException unused ) {
-            <span class="comment">// fall through</span>
-        }
-        <span class="keyword">return</span> <span class="keyword">null</span>;
-    }
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> apply(SharedPreferences.Editor editor) {
-        <span class="keyword">if</span> ( sApplyMethod != <span class="keyword">null</span> ) {
-            <span class="keyword">try</span> {
-                sApplyMethod.invoke(editor);
-                <span class="keyword">return</span>;
-            } <span class="keyword">catch</span> ( InvocationTargetException unused ) {
-                <span class="comment">// fall through</span>
-            } <span class="keyword">catch</span> ( IllegalAccessException unused ) {
-                <span class="comment">// fall through</span>
-            }
-        }
-        editor.commit();
-    }
-}
-</pre></figure></code></pre>
-<ul>
-<li>数据库查询可以采用<a href="http://www.sqlite.org/eqp.html">EXPLAIN QUERY PLAN</a>来确定哪些信息需要优化或者用TraceView查看</li>
-<li>SQLITE的某些字段可以添加索引提高查询速度</li>
-</ul>
-<p><img src="/images/photos/2013-07-sqlite-db-index.png" alt="sqlite添加索引"></p>
-<ul>
-<li><p>如无必要请对查询的数据增加限制LIMIT来减少耗时</p>
-</li>
-<li><p>可以用<a href="http://developer.android.com/reference/android/database/sqlite/SQLiteStatement.html">SQLiteStatement</a>来预编译一些频繁使用的sql语句</p>
-</li>
-</ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre>SQLiteDatabase db = dbHelper.getWritableDatabase();
-SQLiteStatement stmt = db.compileStatement(<span class="string">"SELECT * FROM Country WHERE code = ?"</span>);
-stmt.bindString(<span class="number">1</span>, <span class="string">"US"</span>);
-stmt.execute();
-</pre></figure></code></pre>
-<ul>
-<li>如果用了ContentObserver，请延迟查询操作</li>
-</ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre>getContentResolver().registerContentObserver(uri, <span class="keyword">true</span>,
-    <span class="keyword">new</span> ContentObserver(<span class="keyword">new</span> Handler()) {
-            <span class="annotation">@Override</span>
-            <span class="keyword">public</span> <span class="keyword">void</span> onChange(<span class="keyword">boolean</span> selfChange) {
-                mDirty = <span class="keyword">true</span>;
-            }
-    })
-);
-
-<span class="annotation">@Override</span>
-<span class="keyword">protected</span> <span class="keyword">void</span> onResume() {
-    <span class="keyword">super</span>.onResume();
-    <span class="keyword">if</span> (mDirty) {
-        <span class="comment">// start query again</span>
-        mDirty = <span class="keyword">false</span>;
-    }
-})
-</pre></figure></code></pre>
-<ul>
-<li>能批量操作的尽量批量操作ContentProviderOperation、ContentProviderOperation.Builder、ContentResolver.applyBatch()</li>
-<li>多线程情况下可以采用SQLITEDatabase.yieldIfContendedSafely()</li>
-</ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="annotation">@Override</span>
-<span class="keyword">public</span> <span class="keyword">int</span> bulkInsert(Uri uri, ContentValues[] values) {
-    <span class="keyword">int</span> numValues = values.length;
-    mDb = mOpenHelper.getWritableDatabase();
-    mDb.beginTransactionWithListener(<span class="keyword">this</span>);
-    <span class="keyword">try</span> {
-        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numValues; i++) {
-            Uri result = insertInTransaction(uri, values[i]);
-            <span class="keyword">if</span> (result != <span class="keyword">null</span>) {
-                mNotifyChange = <span class="keyword">true</span>;
-            }
-            mDb.yieldIfContendedSafely();
-        }
-        mDb.setTransactionSuccessful();
-    } <span class="keyword">finally</span> {
-        mDb.endTransaction();
-    }
-
-    onEndTransaction();
-    <span class="keyword">return</span> numValues;
-}
-</pre></figure></code></pre>
-<ul>
-<li>输出事件日志分析耗时操作并优化</li>
-</ul>
-<pre><code><figure class="highlight"><pre><span class="tag">adb</span> <span class="tag">logcat</span> -<span class="tag">b</span> <span class="tag">events</span> <span class="tag">content_query_sample</span><span class="pseudo">:I</span> *<span class="pseudo">:S</span>
-</pre></figure></code></pre>
-<p>内存性能优化
-内存这块比较大，从底层的Linux的就有OOM killer到Android系统层的OOM killer，我们只讨论应用层</p>
-<p>在应用层上，android严格控制每一个应用程序分配多少内存，当应用超出这个限制会抛出OutOfMemoryError</p>
-<p>打开ADT的heap可以查看里面每一列</p>
-<p><img src="/images/photos/2013-07-heap.png" alt="heap"></p>
-<p>这里要说明几个概念：
-- Heap limit：Dalvik heap最大值
-- Heap size: Dalvik heap当前值
-- Allocated： Dalvik heap分配的字节数
-- Free：还能分配的Heap size
-- %Used: free / heap size * 100%
-- External allocation: Bitmap内存(HoneyComb版本之前的参数)</p>
-<p>其次不同机型的Heap size limit是不同的，通过ActivityManager.getMemoryClass()获取内存信息</p>
-<p>出现OOM的条件：
-- Honeycomb之前</p>
-<pre><code><figure class="highlight"><pre><span class="comment">Heap</span> <span class="comment">size</span> <span class="literal">+</span> <span class="comment">external</span> <span class="comment">allocation</span> <span class="literal">+</span> <span class="comment">new</span> <span class="comment">allocation</span> <span class="comment">request</span> &gt;<span class="comment">=</span> <span class="comment">Heap</span> <span class="comment">limit
-</pre></figure></code></pre>
-<ul>
-<li>Honeycomb之后</li>
-</ul>
-<pre><code><figure class="highlight"><pre><span class="title">Heap</span> size + new allocation request &gt;= Heap limit
-<span class="number">104</span>
-</pre></figure></code></pre>
-<p>不过上述情况并不能代表应用进程的实际使用情况，要注意以下几点
-- 每一个进程初始情况下有2MB+的开销
-- 本地下可以分配更多的内存：android app 运行在Dalvik VM上，但是通过JNI可以调用本地lib，并且可以在lib中做相关操作
-- 如果开启硬件加速（ICS默认开启），会给OpenGL分配8MB初始内存</p>
-<p>通过下述命令查看内存使用情况</p>
-<pre><code><figure class="highlight"><pre><span class="title">adb</span> shell procrank -p
-</pre></figure></code></pre>
-<p><img src="/images/photos/2013-07-memory-usage.png" alt="memory useage"></p>
-<p>图解说明：
-- VSS(Virtual Set Size)：进程可以得到的总页数
-- RSS(Resident Set Size)：进程可以在RAM中获得的总页数
-- PSS(Proportional Set Size)：进程可以在RAM中已经用的总页数
-- USS(Unique Set Size))：进程可以取得的未分配的页数</p>
-<p>打印进程虚拟内存相关命令如下：</p>
-<pre><code><figure class="highlight"><pre>adb shell procmem -p <span class="tag">&lt;<span class="title">pid</span>&gt;</span>
-adb shell dumpsys meminfo <span class="tag">&lt;<span class="title">pid</span>&gt;</span>
-</pre></figure></code></pre>
-<p>stackoverflow：<a href="http://stackoverflow.com/questions/2298208/how-to-discover-memory-usage-of-my-application-in-android">http://stackoverflow.com/questions/2298208/how-to-discover-memory-usage-of-my-application-in-android</a></p>
-<p>如何避免内存泄露？</p>
-<p>想要避免内存泄露，那么就需要了解垃圾回收(GC)</p>
-<ul>
-<li><p>Gingerbread之前：</p>
-<ul>
-<li>Stop the world</li>
-<li>Full Heap collection</li>
-<li>Pause times often &gt; 100ms</li>
-</ul>
-</li>
-<li><p>Gingerbread之后：</p>
-<ul>
-<li>Concurrent（大部分情况下）</li>
-<li>Partial collection</li>
-<li>Pause times usually &lt; 5ms</li>
-</ul>
-</li>
-</ul>
-<p>内存泄露主要是有代码本身造成的，GC无法阻止人为的内存泄露问题；只要有生命周期长度的引用引用了没用的对象，GC就无法回收；那么最有可能出现这种内存泄露的是那些对象呢？你猜对了，是Context/Activity</p>
-<p>参考：<a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/附图如下：">http://dubroy.com/blog/google-io-memory-management-for-android-apps/附图如下：</a>
-<img src="/images/photos/2013-07-memory-leak.png" alt="memory leak"></p>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> <span class="keyword">extends</span> <span class="title">Activity</span> <span class="keyword">implements</span> <span class="title">ActionBar</span>.<span class="title">TabListener</span> {</span>
-    <span class="keyword">static</span> Leaky leak = <span class="keyword">null</span>;
-    <span class="class"><span class="keyword">class</span> <span class="title">Leaky</span> {</span>
-        <span class="keyword">void</span> doSomething(){
-            System.out.print(<span class="string">"Wheee!!!"</span>);
-        }
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> onCreate(Bundle savedInstanceState){
-        <span class="keyword">if</span> (leak==<span class="keyword">null</span>){
-            leak = <span class="keyword">new</span> Leaky();
-        }
-    }
-}
-</pre></figure></code></pre>
-<p>上述代码引用了一个私有非静态内部类的实例对象，情况可想而知：</p>
-<p><img src="/images/photos/2013-07-inner-class-object.png" alt="inner class"></p>
-<p>一个超过Activity生命周期的线程，会发生什么情况？内存泄露</p>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() {
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> run() {
-        <span class="comment">// do some heavy work</span>
-    }
-}).start();
-</pre></figure></code></pre>
-<p>如何检测内存泄露?</p>
-<p>1.LOGCAT</p>
-<p><img src="/images/photos/2013-07-logcat.png" alt="logcat"></p>
-<p>上述每一个字段都有明确的意义，具体概念不详述了请google</p>
-<p>2.Allocation Tracker可以查看已经分配内存去没有用到的对象</p>
-<p><img src="/images/photos/2013-07-reference-object.png" alt="look up object"></p>
-<p>3.Eclipse Memory Analyzer (MAT)可以查看潜在的内存泄露</p>
-<p>DEMO：
-- <a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/">dubroy</a>
-- <a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=_CruQY55HOk">youtube</a></p>
-<p>4.Histogram：查看Activity的实例数量，一个activity不止一个实例在运行是潜在内存泄露信号</p>
-<p><img src="/images/photos/2013-07-histogram.png" alt="histogram"></p>
-<p>5.Dominator Tree：帮助辨别占用很多内存且没有释放的对象</p>
-<p><img src="/images/photos/2013-07-dominator-tree.png" alt="Dominator Tree"></p>
-<p><img src="/images/photos/2013-07-dominator-tree2.png" alt="Dominator Tree 2"></p>
-<p><img src="/images/photos/2013-07-dominator-tree3.png" alt="Dominator Tree 3"></p>
-<p>避免抛出OutOfMemoryError异常【具体用法google】：</p>
-<ul>
-<li>Bitmap：<ul>
-<li>是否可以Sample？</li>
-<li>回收不用的Bitmap：Bitmap.recycle()</li>
-</ul>
-</li>
-</ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre>BitmapFactory.Options opts = <span class="keyword">new</span> BitmapFactory.Options();
-opts.inJustDecodeBounds = <span class="keyword">true</span>;
-BitmapFactory.decodeFile(path, opts);
-<span class="keyword">final</span> <span class="keyword">int</span> originalWidth = opts.outWidth;
-<span class="keyword">final</span> <span class="keyword">int</span> originalHeight = opts.outHeight;
-<span class="keyword">final</span> <span class="keyword">int</span> originalDim = Math.max(originalWidth, originalHeight);
-opts = <span class="keyword">new</span> BitmapFactory.Options();
-opts.inSampleSize = <span class="number">1</span>;
-<span class="keyword">while</span> ( originalDim &gt; MAX_IMAGE_DIM ) {
-    opts.inSampleSize *= <span class="number">2</span>;
-    originalDim /= <span class="number">2</span>;
-}
-<span class="keyword">return</span> BitmapFactory.decodeFile(path, opts);
-</pre></figure></code></pre>
-<ul>
-<li>Java Object：<ul>
-<li>用SoftReference替换直接引用</li>
-<li>用WeakReference避免内存泄露【常用到引用Context、Activity】</li>
-</ul>
-</li>
-</ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> {</span>
-    <span class="keyword">static</span> Leaky leak = <span class="keyword">null</span>;
-    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Leaky</span> {</span>
-        <span class="keyword">private</span> <span class="keyword">final</span> WeakReference&lt;Context&gt; mContext;
-        <span class="keyword">public</span> Leaky(Context context) {
-            <span class="keyword">super</span>();
-            mContext = <span class="keyword">new</span> WeakReference&lt;Context&gt;(context);
-            doSomethingWithOuterInstance();
-        }
-
-        <span class="keyword">void</span> doSomethingWithOuterInstance() {
-            Context context = mContext.get();
-            <span class="keyword">if</span> (context != <span class="keyword">null</span>) {
-                String text = context.getString(R.string.hello);
-                System.out.println(text);
-            }
-        }
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> onCreate(Bundle savedInstanceState) {
-        <span class="keyword">super</span>.onCreate(savedInstanceState);
-        <span class="keyword">if</span> (leak == <span class="keyword">null</span>) {
-            leak = <span class="keyword">new</span> Leaky(<span class="keyword">this</span>);
-        }
-    }
-}
-</pre></figure></code></pre>
-<h2>速度优化</h2>
-<p>经常会有引用一些开源的底层库，比如pdf或者doc解析库，ffmppeg编解码库等等，除了对库做底层的裁剪移植，我们有时也需要将解码后的图形等信息输出到设备上，或者url fetch了某些网页或者图片，为了避免下次重复这种耗时操作，有效的方法就是缓存</p>
-<p>图像的缓存见<a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html">android developer</a>已经有例子写的很详细，使用LRU(最近最少使用)算法实现</p>
-<h2>主要参考文献：</h2>
-<ul>
-<li>1.<a href="http://stackoverflow.com/questions/2630158/detect-application-heap-size-in-android/2634738#2634738">http://stackoverflow.com/questions/2630158/detect-application-heap-size-in-android/2634738#2634738</a></li>
-<li>2.<a href="http://developer.android.com/reference/java/lang/ref/WeakReference.html">http://developer.android.com/reference/java/lang/ref/WeakReference.html</a></li>
-<li>3.<a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html">http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html</a></li>
-<li>4.<a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/">http://dubroy.com/blog/google-io-memory-management-for-android-apps/</a></li>
-<li>5.<a href="http://cyrilmottier.com/2013/01/09/back-to-top-android-vs-ios/">http://cyrilmottier.com/2013/01/09/back-to-top-android-vs-ios/</a></li>
-<li>6.<a href="http://blog.csdn.net/luoshengyang/article/details/6745181">http://blog.csdn.net/luoshengyang/article/details/6745181</a></li>
-</ul>
-]]></content>
-    <category scheme="http://suetming.com/tags/UI-performance/" term="UI performance"/>
-    <category scheme="http://suetming.com/tags/IO-performance/" term="I/O performance"/>
-    <category scheme="http://suetming.com/tags/Scrolling-performance/" term="Scrolling performance"/>
-    <category scheme="http://suetming.com/categories/android/" term="android"/>
-  </entry>
-  <entry>
-    <title type="html"><![CDATA[Web组件(Web Components) | HTML5]]></title>
-    <link href="http://suetming.com/2013/08/11/2013-06-29-web-components/"/>
-    <id>http://suetming.com/2013/08/11/2013-06-29-web-components/</id>
-    <published>2013-08-11T10:54:06.000Z</published>
-    <updated>2013-08-11T10:54:06.000Z</updated>
-    <content type="html"><![CDATA[<p>译者：<a href="http://suetming.com">suetming</a></p>
-<p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/">W3C: Web Components</a></p>
-<h2>1 关于本文</h2>
-<p>注意文章涉及正在开展的工作. 关系到web组件的一系列概念，每个概念都有各自的规范.
-这是一个迭代的过程</p>
-<p>本文描述的概念有时会落后或者超前于专门界定此概念的规范，一旦本文涉及的前瞻性技术被相应的规范所采纳，本文会更新并注明</p>
-<p><a name="more"></a></p>
-<h2>2 介绍</h2>
-<p>web组件模型由5部分组成：</p>
-<ul>
-<li><ol>
-<li>Templates：由一系列复用时能被激活的标记组成</li>
-</ol>
-</li>
-<li><ol>
-<li>Decorators：用于Templates中，通过CSS丰富和控制交互改变文本</li>
-</ol>
-</li>
-<li><ol>
-<li>Custom Elements：让用户可以自定义元素[自定义元素名、自定义API接口]</li>
-</ol>
-</li>
-<li><ol>
-<li>Shadow DOM：将一组DOM树封装成一个用户接口元素</li>
-</ol>
-</li>
-<li><ol>
-<li>Imports：定义如何将Templates、Decorators和Custom Elements打包，并且能够以资源的形式从外部引用</li>
-</ol>
-</li>
-</ul>
-<p>每一部分都有各自的用途. 如果将这5种技术引入，开发人员可以轻松的编写拥有复杂交互体验的组件，并且可以轻松引用和组装，这是今天的CSS和脚本语言所无法达到的</p>
-<p>本文将会讨论这5种技术，并举例说明其在Web组件中的作用</p>
-<h2>3 Templates</h2>
-<p>具体规范参加这篇<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html">HTML Templates</a>
-\<template\>元素及其所包含元素会由解析器进行解析并标记，不过不会立即渲染出来，脚本不会立即执行，包含的图片也不会立即下载
-\<template\>元素有一个属性 <strong>content</strong> 存储元素的实际内容，属性 <strong>content</strong> 的内容可以拷贝移动到HTML节点中</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"commentTemplate"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">img</span> <span class="attribute">src</span>=<span class="value">""</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"comment-text"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
-<span class="function"><span class="keyword">function</span> <span class="title">addComment</span><span class="params">(imageUrl, text)</span> {</span>
-  <span class="keyword">var</span> t = document.querySelector(<span class="string">"#commentTemplate"</span>);
-  <span class="keyword">var</span> comment = t.content.cloneNode(<span class="literal">true</span>);
-  <span class="comment">// Populate content.</span>
-  comment.querySelector(<span class="string">'img'</span>).src = imageUrl;
-  comment.querySelector(<span class="string">'.comment-text'</span>).textContent = text;
-  document.body.appendChild(comment);
-}
-</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-</pre></figure></code></pre>
-<p><strong>template</strong> 所包含的的元素包含在属性 <strong>content</strong> 中，通过script拷贝里面的元素并插入到HTML中使图片加载进来，脚本开始运行. 例如，在templates引入大型脚本，需要时调用</p>
-<h2>4 Decorators</h2>
-<p>Decorators 目前没有标准文档，<strong>decorator</strong> 主要加强或者重载已经存在的元素，由CSS控制表现，与一般元素不同的是通过标记可以达到额外的效果</p>
-<p>\<decorator\>通过包含\<template\>来明确具体渲染哪一块</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">template</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"summary"</span>&gt;</span>
-          &amp;blacktriangledown;
-          <span class="tag">&lt;<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"summary"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">a</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">decorator</span>&gt;</span>
-</pre></figure></code></pre>
-<p>\<content\>包含待渲染的内容，通过CSS控制生效</p>
-<pre><code class="lang-css"><figure class="highlight lang-css"><pre><span class="tag">details</span><span class="attr_selector">[open]</span> <span class="rules">{
-    <span class="rule"><span class="attribute">decorator</span>:<span class="value"> <span class="function">url(#details-open)</span>;</span></span>
-<span class="rule">}</span></span>
-</pre></figure></code></pre>
-<p>通过这种方式可以使下面的html代码</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">details</span> <span class="attribute">open</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">summary</span>&gt;</span>Timepieces<span class="tag">&lt;/<span class="title">summary</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">ul</span>&gt;</span>
-      <span class="tag">&lt;<span class="title">li</span>&gt;</span>Sundial
-      <span class="tag">&lt;<span class="title">li</span>&gt;</span>Cuckoo clock
-      <span class="tag">&lt;<span class="title">li</span>&gt;</span>Wristwatch
-    <span class="tag">&lt;/<span class="title">ul</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">details</span>&gt;</span>
-</pre></figure></code></pre>
-<p>最终渲染成</p>
-<p><a>
-  ▾ Timepieces
-</a></p>
-<ul>
-  <li>Sundial
-  </li><li>Cuckoo clock
-  </li><li>Wristwatch
-</li></ul>
-
-<p><strong>decorator</strong> CSS属性可以指向任何网络资源，不过只有其“定义”被调用才能申请，生成的标记仅限于展示，永远不会运行脚本包括内联事件，而且也是不可编辑的</p>
-<p>4.1 Decorators的事件
-Decorators可以关联事件增强交互，decorator采用事件控制器当做媒介，因为decorator可能在任何时间生效或者失效，所以关联template中监听节点事件或者获取其状态都是无效的</p>
-<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-handler-registration.png" alt="事件注册"></p>
-<p>通过事件控制器注册事件监听器，template中插入\<script\>，decorator元素插入到文档中时脚本会执行，脚本会被插入到注册队列中:</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
-        <span class="function"><span class="keyword">function</span> <span class="title">clicked</span><span class="params">(event)</span> {</span>
-            event.target.removeAttribute(<span class="string">'open'</span>);
-        }
-        [{selector: <span class="string">'#summary'</span>, type: <span class="string">'click'</span>, handler: clicked}];
-    </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">template</span>&gt;</span>
-      <span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"summary"</span>&gt;</span>
-        <span class="comment">&lt;!-- as illustrated above --&gt;</span>
-</pre></figure></code></pre>
-<p>事件控制器解析注册事件如图所示</p>
-<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-routing-retargeting.png" alt="事件的路由和重定向"></p>
-<p>事件监听器被调用时，事件的目标是最终生成的内容而不是template中的内容. 点击template中定义的▾，将会调用单击事件（在template中定义的<strong>#summary</strong>元素）, event.target指向\<details\>，事件的重定向不会影响文档DOM结构</p>
-<p>移除属性<strong>open</strong>，由于selector与decorator的属性不匹配，这个decorator不再有效. 未应用的decorator会回到最初的状态. 不过可以再构造一个decorator来渲染<strong>closed</strong>，通过激活不同的decorator可以达到无状态交互，代码如下</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
-<span class="tag">details</span> <span class="rules">{
-    <span class="rule"><span class="attribute">decorator</span>:<span class="value"> <span class="function">url(#details-closed)</span>;</span></span>
-<span class="rule">}</span></span>
-<span class="tag">details</span><span class="attr_selector">[open]</span> <span class="rules">{
-    <span class="rule"><span class="attribute">decorator</span>:<span class="value"> <span class="function">url(#details-open)</span>;</span></span>
-<span class="rule">}</span></span>
-</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-
-<span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-closed"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
-        <span class="function"><span class="keyword">function</span> <span class="title">clicked</span><span class="params">(event)</span> {</span>
-            event.target.setAttribute(<span class="string">'open'</span>, <span class="string">'open'</span>);
-        }
-        [{selector: <span class="string">'#summary'</span>, type: <span class="string">'click'</span>, handler: clicked}];
-    </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">template</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"summary"</span>&gt;</span>
-            &amp;blacktriangleright; <span class="tag">&lt;<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"summary"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">a</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">decorator</span>&gt;</span>
-
-<span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
-    <span class="comment">&lt;!-- as illustrated above --&gt;</span>
-</pre></figure></code></pre>
-<h2>5 Custom Elements</h2>
-<p>技术规范见此<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html">The Custom Elements specification</a></p>
-<p>用户可以构造新的DOM元素，这种技术称之为Custom Elements. 不像decorators，自定义元素可以封装状态并提供脚本接口. 下面的数据表表明两者区别</p>
-<table>
-   <tr>
-      <td></td>
-      <td>Decorators</td>
-      <td>Custom Elements</td>
-   </tr>
-   <tr>
-      <td>Lifetime</td>
-      <td>Ephemeral, while a CSS selector matches</td>
-      <td>Stable, matches entire element lifetime</td>
-   </tr>
-   <tr>
-      <td>Applied, unapplied dynamically</td>
-      <td>Yes, based on CSS selectors</td>
-      <td>No, fixed at element creation time</td>
-   </tr>
-   <tr>
-      <td>Accessible through script</td>
-      <td>No, transparent to DOM; cannot add interfaces</td>
-      <td>Yes, accessible through DOM; can provide interfaces</td>
-   </tr>
-   <tr>
-      <td>State</td>
-      <td>Stateless projection</td>
-      <td>Stateful DOM object</td>
-   </tr>
-   <tr>
-      <td>Behavior</td>
-      <td>Simulated by changing decorators</td>
-      <td>First-class using script and events</td>
-   </tr>
-</table>
-
-<h2>5.1 构造一个自定义元素</h2>
-<p>用\<element\>构造一个元素，并指明继承哪一个属性如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"button"</span> <span class="attribute">name</span>=<span class="value">"fancy-button"</span>&gt;</span>
-    …
-<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
-</pre></figure></code></pre>
-<p><strong>extends</strong>属性标记继承于哪一个元素，自定义元素实例会有此标记名</p>
-<p><strong>name</strong>属性指明元素名称，命名必须包含“-”</p>
-<p>用户的自定义元素应该继承最接近自己想法的实际存在的元素. 如果用户构造不继承任何元素的自定义元素，user agent会抛出异常<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/elements.html#htmlunknownelement">HTMLUnknownElement</a></p>
-<h2>5.2 方法和属性</h2>
-<p>将\<script\>插入到自定义元素中可以对自定义元素增加方法和属性，下面的例子中元素\<tick-tock-clock\>增加了tick方法</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
-    ({
-      tick: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
-        …
-      }
-    });
-  </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
-</pre></figure></code></pre>
-<p>5.3 生命周期回调函数
-自定义元素有很多回调函数如下：</p>
-<ul>
-<li>readyCallback：创建时调用</li>
-<li>insertedCallback：插入文档时调用</li>
-<li>removedCallbakc：删除元素时调用</li>
-</ul>
-<p>下面的例子演示如何用template，Shadow DOM (见下一章节)，以及Custom Elements回调函数创建元素：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">template</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"hh"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"sep"</span>&gt;</span>:<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"mm"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
-    <span class="keyword">var</span> template = document.currentScript.parentNode.querySelector(<span class="string">'template'</span>);
-
-    <span class="function"><span class="keyword">function</span> <span class="title">start</span><span class="params">()</span> {</span>
-      <span class="keyword">this</span>.tick();
-      <span class="keyword">this</span>._interval = window.setInterval(<span class="keyword">this</span>.tick.bind(<span class="keyword">this</span>), <span class="number">1000</span>);
-    }
-    <span class="function"><span class="keyword">function</span> <span class="title">stop</span><span class="params">()</span> {</span>
-      window.clearInterval(<span class="keyword">this</span>._interval);
-    }
-    <span class="function"><span class="keyword">function</span> <span class="title">fmt</span><span class="params">(n)</span> {</span>
-      <span class="keyword">return</span> (n &lt; <span class="number">10</span> ? <span class="string">'0'</span> : <span class="string">''</span>) + n;
-    }
-
-    ({
-      readyCallback: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
-        <span class="keyword">this</span>._root = <span class="keyword">this</span>.createShadowRoot();
-        <span class="keyword">this</span>._root.appendChild(template.content.cloneNode());
-        <span class="keyword">if</span> (<span class="keyword">this</span>.parentElement) {
-          start.call(<span class="keyword">this</span>);
-        }
-      },
-      insertedCallback: start,
-      removedCallback: stop,
-      tick: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
-        <span class="keyword">var</span> now = <span class="keyword">new</span> Date();
-        <span class="keyword">this</span>._root.querySelector(<span class="string">'hh'</span>).textContent = fmt(now.getHours());
-        <span class="keyword">this</span>._root.querySelector(<span class="string">'sep'</span>).style.visibility =
-            now.getSeconds() % <span class="number">2</span> ? <span class="string">'visible'</span> : <span class="string">'hidden'</span>;
-        <span class="keyword">this</span>._root.querySelector(<span class="string">'mm'</span>).textContent = fmt(now.getMinutes());
-      },
-      chime: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> … }
-    });
-  </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
-</pre></figure></code></pre>
-<p>5.4 Custom Elements实例化
-自定义元素均继承HTML的标准元素(div/button/option/...)， 当用户想用这些元素的时候需要用到属性<strong>is</strong>，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"button"</span> <span class="attribute">name</span>=<span class="value">"fancy-button"</span>&gt;</span>  <span class="comment">&lt;!-- definition --&gt;</span>
-    …
-<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
-
-<span class="tag">&lt;<span class="title">button</span> <span class="attribute">is</span>=<span class="value">"fancy-button"</span>&gt;</span>  <span class="comment">&lt;!-- use --&gt;</span>
-    Do something fancy
-<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
-</pre></figure></code></pre>
-<p>5.5 Script实例化Custom Elements
-通过脚本语言也可以实例化自定义元素，方法为<strong>register</strong>，具体见下述代码：</p>
-<pre><code class="lang-javascript"><figure class="highlight lang-javascript"><pre><span class="keyword">var</span> p = Object.create(HTMLButtonElement.prototype, {});
-p.dazzle = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> … };
-
-<span class="comment">// 返回实例化对象</span>
-<span class="keyword">var</span> FancyButton = document.register(<span class="string">'button'</span>, <span class="string">'fancy-button'</span>, {prototype: p});
-<span class="keyword">var</span> b = <span class="keyword">new</span> FancyButton();
-document.body.appendChild(b);
-b.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(event)</span> {</span>
-    event.target.dazzle();
-});
-</pre></figure></code></pre>
-<p>也可以直接通过createElement生成：</p>
-<pre><code class="lang-javascript"><figure class="highlight lang-javascript"><pre><span class="keyword">var</span> b = document.createElement(<span class="string">'button'</span>, <span class="string">'fancy-button'</span>);
-alert(b.outerHTML); <span class="comment">// will display '&lt;button is="fancy-button"&gt;&lt;/button&gt;'</span>
-<span class="keyword">var</span> c = document.createElement(<span class="string">'tick-tock-clock'</span>);
-alert(c.outerHTML); <span class="comment">// will display '&lt;tick-tock-clock&gt;&lt;/tick-tock-clock&gt;'</span>
-</pre></figure></code></pre>
-<h2>5.6 元素更新</h2>
-<p>当元素定义调用的时候，每一个匹配的元素都会进行更新. 更新元素后，元素相应API会生效，生命周期相关函数会被调用.
-通过CSS<strong>:unresolved</strong>可以匹配所有为构造的自定义元素，通过这种方式避免更新元素所造成的闪烁</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
-<span class="tag">tick</span>-<span class="tag">tock</span>-<span class="tag">clock</span><span class="pseudo">:unresolved</span> <span class="rules">{
-  <span class="rule"><span class="attribute">content</span>:<span class="value"> <span class="string">'??:??'</span>;</span></span>  
-<span class="rule">}</span></span>
-</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-<span class="tag">&lt;<span class="title">tick-tock-clock</span>&gt;</span><span class="tag">&lt;/<span class="title">tick-tock-clock</span>&gt;</span> <span class="comment">&lt;!-- will show ??:?? --&gt;</span>
-</pre></figure></code></pre>
-<p>也可以通过脚本进行控制</p>
-<pre><code class="lang-javascript"><figure class="highlight lang-javascript"><pre><span class="comment">// Chime ALL the clocks!</span>
-Array.prototype.forEach.call(
-  document.querySelectorAll(<span class="string">'tick-tock-clock:not(:unresolved)'</span>),
-  <span class="function"><span class="keyword">function</span> <span class="params">(clock)</span> {</span> clock.chime(); });
-</pre></figure></code></pre>
-<p>通过自定义事件元素可以通知页面其他部分元素已经更新，可以等到元素更新完成，脚本在对其进行操作</p>
-<p>5.7 扩展Custom Elements
-元素也可以继承自定义元素，代码如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"tick-tock-clock"</span> <span class="attribute">name</span>=<span class="value">"grand-father-clock"</span>&gt;</span>
-    …
-<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
-<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
-<span class="keyword">var</span> p = Object.create(Object.getPrototypeOf(document.createElement(<span class="string">'tick-tock-clock'</span>)));
-p.popOutBirdie = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> … }
-<span class="keyword">var</span> CuckooClock = document.register(<span class="string">'cuckoo-clock'</span>, {prototype: p});
-<span class="keyword">var</span> c = <span class="keyword">new</span> CuckooClock();
-c.tick();         <span class="comment">// inherited from tick-tock-clock</span>
-c.popOutBirdie(); <span class="comment">// specific to cuckoo-clock</span>
-</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-</pre></figure></code></pre>
-<h2>6 Shadow DOM</h2>
-<p>相应规范见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html">The Shadow DOM specification</a></p>
-<p>Shadow DOM 是一种DOM节点的辅助树. Shadow DOM 子树能够关联某个元素，但不会显示在元素子节点中，子树有自己的作用域. 例如，一个shadow DOM 子树可以和文档中相同ID和风格的元素而不冲突，因为shadow DOM 子树与文档是完全分离的</p>
-<p>Shadow DOM 通过<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-partial-element-create-shadow-root"><strong>createShadowRoot</strong></a>方法生效，返回shadow DOM的根节点并填充到DOM节点中</p>
-<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg" alt="shadow trees"></p>
-<object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg" width="800" height="430"></object>
-
-<p>关联shadow DOM的元素称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-shadow-host">shadow host</a>. 当元素存在shadow DOM，元素的子节点不会渲染；渲染的是shadow DOM的内容</p>
-<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" alt="shadow rendering"></p>
-<object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" width="450" height="400"></object>
-
-<p>6.1 插入点
-shadow DOM 子树通过\<content\>元素作为渲染输出插入点. \<content\>只是作为渲染输出的插入点，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- document --&gt;</span>
-<span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">div</span>&gt;</span>Area kitten "adorable"&amp;mdash;owner<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Jiggled piece of yarn derails kitten kongress<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-
-<span class="comment">&lt;!-- #news' shadow --&gt;</span>
-<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"t"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"h1"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">content</span> <span class="attribute">id</span>=<span class="value">"stories"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-
-<span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
-<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-
-<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
-<span class="comment">// Set up shadow DOM</span>
-<span class="keyword">var</span> news = document.querySelector(<span class="string">'#news'</span>);
-<span class="keyword">var</span> r = news.createShadowRoot();
-<span class="keyword">var</span> t = document.querySelector(<span class="string">'#t'</span>);
-r.appendChild(t.content.cloneNode(<span class="literal">true</span>));
-
-<span class="keyword">var</span> ticker = r.querySelector(<span class="string">'#ticker'</span>);
-<span class="keyword">var</span> s = ticker.createShadowRoot();
-<span class="keyword">var</span> u = document.querySelector(<span class="string">'#u'</span>);
-s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
-</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-</pre></figure></code></pre>
-<p>理论上，第一部分文档和第一部分shadow根节点生成了下面的DOM树. 宿主元素的子节点显示在插入点的位置. </p>
-<pre><code><figure class="highlight"><pre><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span>&gt;</span>Area kitten "adorable"&amp;mdash;owner<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Jiggled piece of yarn derails kitten kongress<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-</pre></figure></code></pre>
-<p>第二部分，由于\<content class="highlight" select=".breaking"\>所有类属性为breaking的排在顶部，这种方式称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#reprojection">reprojection</a></p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Jiggled piece of yarn derails kitten kongress<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span>&gt;</span>Area kitten "adorable"&amp;mdash;owner<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-</pre></figure></code></pre>
-<p>6.3 备用内容
-插入点可以有<em>content</em>，称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-fallback-content">备用内容</a>，当插入点没有任何文本时，会显示此信息，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #news' shadow --&gt;</span>
-<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"t"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"h1"</span>&gt;</span>Today's top headlines<span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">content</span> <span class="attribute">id</span>=<span class="value">"stories"</span>&gt;</span>
-      No news
-      <span class="tag">&lt;<span class="title">button</span> <span class="attribute">onclick</span>=<span class="value">"window.location.reload(true);"</span>&gt;</span>Reload<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-</pre></figure></code></pre>
-<h2>6.4 多重Shadow子树</h2>
-<p>一个元素可以含有不止一个shadow DOM 子树. 继承一个已具有shadow DOM子树的自定义元素是很常见的. 不过要是想重用原先的元素时怎么处理? 如何重用?
-利用\<shadow\>可以调用原先申请的shadow DOM 子树，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"sailing-watch"</span> <span class="attribute">extends</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">template</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">shadow</span>&gt;</span><span class="tag">&lt;/<span class="title">shadow</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"compass"</span>&gt;</span>N<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
-    …
-  </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
-</pre></figure></code></pre>
-<p>由于一个元素可以有多个shadow，我们需要了解这些shadow如何相互影响，如何作用元素的子节点</p>
-<p>由于你不能删除shadow root，所以shadow DOM子树生效时的顺序很重要，如下：</p>
-<ul>
-<li><ol>
-<li>user agent shadow DOM</li>
-</ol>
-</li>
-<li><ol>
-<li>自定义元素的shadow DOM</li>
-</ol>
-</li>
-<li><ol>
-<li>第一个派生自定义元素的shadow DOM</li>
-</ol>
-</li>
-<li><ol>
-<li>...</li>
-</ol>
-</li>
-<li><ol>
-<li>用脚本添加的Ad-hoc shadow DOM</li>
-</ol>
-</li>
-<li><ol>
-<li>Decorator shadow (applied and removed with CSS rules—not technically shadow DOM, but its insertion points work similarly to shadow DOM.)</li>
-</ol>
-</li>
-</ul>
-<p>其次，根据顺序从最新生效的子树反向推倒，每一个\<content\>插入点，根据规则，可以定位任何宿主元素子节点</p>
-<p>一旦子节点在正确的地方渲染，我们可以检查是否有\<shadow\>元素，如果没有，表明成功；如果有，从\<shadow\>队列元素中取出子树重复替换\<content\>插入点，直到队尾. 具体见如下图：</p>
-<p><img src="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg" alt="shadow stack"></p>
-<object data="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg" width="500" height="600"></object>
-
-<p>总结一下：</p>
-<ul>
-<li>最近申请的shadow DOM 子树最可能在\<content\>插入点获得最新的子树</li>
-<li>以此类推</li>
-<li>直到当前的shadow DOM子树没有\<shadow\>，那么其就是这个元素最后的DOM子树</li>
-</ul>
-<h2>6.5 CSS 和 Shadow DOM</h2>
-<p>当构建自定义元素时自然要考虑属性、内容和API接口. 这与页面渲染同等重要. Shadow DOM 提供给开发者很多方式控制shadow DOM内容的样式.</p>
-<p>shadow DOM 子树有一个不看见的边界，user agent的样式默认生效，而不是定制的样式. 派生的元素依旧有效，这不是我们想要的. 在上面的scailing-watch的例子里，如果页面内容被渲染成绿色，如果要保持整体风格，shadow DOM内的文本由于color属性由于继承性质也会是绿色，不过设定了所有\<div\>元素橙色边框， 那direction indicator不会有橙色边框因为<strong>border</strong>并不是具有继承性质的属性</p>
-<p>一个shadow根节点有两个属性控制行为. applyAuthorStyles（开发者样式）属性，shadow DOM 会匹配最接近的样式，注意这个属性只能匹配shadow DOM 子树. 使用时要注意&quot;n&quot;代选择器</p>
-<p>如果<strong>applyAuthorStyles</strong>设置为false，<strong>resetStyleInheritance</strong>设置为true，样式会清空. 元素会被与页面样式隔离，你可以通过浏览器重置样式</p>
-<p>在插入点有相似的界限. shadow DOM子树的样式不会再插入点分布的元素上生效. 不过要是通过选择器想渲染某一部分特定内容， 可以用<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#distributed-pseudo-element">::distributed pseudo-selector</a>，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
-<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
-    <span class="tag">content</span><span class="pseudo">::distributed(</span>*) <span class="rules">{
-      <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block;</span></span>
-    <span class="rule">}</span></span>
-    *<span class="pseudo">::distributed(</span><span class="class">.breaking</span>) <span class="rules">{
-      <span class="rule"><span class="attribute">text-shadow</span>:<span class="value"> <span class="number">0</span> <span class="number">0</span> <span class="number">0.2</span>em maroon;</span></span>
-      <span class="rule"><span class="attribute">color</span>:<span class="value"> orange;</span></span>
-    <span class="rule">}</span></span>
-  </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-</pre></figure></code></pre>
-<p>上述包含了两个规则，选择器的左半部分是shadow DOM 生效；括号内代表适用元素。第一个选择器对\<content\>的所有元素有效；第二个选择器对类对象为breaking的元素有效</p>
-<p>ShadowDOM 也可以定制宿主元素的样式. 代码如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
-<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
-    <span class="at_rule">@host </span>{
-      <span class="pseudo">:scope</span> <span class="rules">{
-        <span class="rule"><span class="attribute">white-space</span>:<span class="value"> nowrap;</span></span>
-        <span class="rule"><span class="attribute">overflow-style</span>:<span class="value"> marquee-line;</span></span>
-        <span class="rule"><span class="attribute">overflow-x</span>:<span class="value"> marquee;</span></span>
-      <span class="rule">}</span></span>
-    }
-    <span class="tag">content</span><span class="pseudo">::distributed(</span>*) <span class="rules">{
-      <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block;</span></span>
-    <span class="rule">}</span></span>
-    *<span class="pseudo">::distributed(</span><span class="class">.breaking</span>) <span class="rules">{
-      <span class="rule"><span class="attribute">text-shadow</span>:<span class="value"> <span class="number">0</span> <span class="number">0</span> <span class="number">0.2</span>em maroon;</span></span>
-      <span class="rule"><span class="attribute">color</span>:<span class="value"> orange;</span></span>
-    <span class="rule">}</span></span>
-  </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-</pre></figure></code></pre>
-<p>最后，有两种方式可以使shadow DOM 子树的样式与页面保持一致. 首先通过分配一个伪ID暴漏shadow DOM 子树中的特定元素，开发者可以定制其样式. 例如：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
-<span class="comment">// Set up shadow DOM</span>
-…
-<span class="keyword">var</span> ticker = r.querySelector(<span class="string">'#ticker'</span>);
-ticker.pseudo = <span class="string">'x-ticker'</span>;
-…
-</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-
-<span class="comment">&lt;!-- change the appearance of the ticker part --&gt;</span>
-<span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
-<span class="id">#news</span><span class="pseudo">::x-ticker</span> <span class="rules">{
-  <span class="rule"><span class="attribute">background</span>:<span class="value"> gray;</span></span>
-  <span class="rule"><span class="attribute">color</span>:<span class="value"> lightblue;</span></span>
-<span class="rule">}</span></span>
-</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-</pre></figure></code></pre>
-<p>另一种方法是通过CSS变量进行控制，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
-<span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
-    <span class="at_rule">@host </span>{
-      <span class="pseudo">:scope</span> <span class="rules">{
-        <span class="rule"><span class="attribute">white-space</span>:<span class="value"> nowrap;</span></span>
-        <span class="rule"><span class="attribute">overflow-style</span>:<span class="value"> marquee-line;</span></span>
-        <span class="rule"><span class="attribute">overflow-x</span>:<span class="value"> marquee;</span></span>
-      <span class="rule">}</span></span>
-    }
-    <span class="tag">content</span><span class="pseudo">::distributed(</span>*) <span class="rules">{
-      <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block;</span></span>
-    <span class="rule">}</span></span>
-    *<span class="pseudo">::distributed(</span><span class="class">.breaking</span>) <span class="rules">{
-      <span class="rule"><span class="attribute">text-shadow</span>:<span class="value"> <span class="number">0</span> <span class="number">0</span> <span class="number">0.2</span>em <span class="function">var(highlight-accent, maroon)</span>;</span></span>
-      <span class="rule"><span class="attribute">color</span>:<span class="value"> <span class="function">var(highlight-primary, orange)</span>;</span></span>
-    <span class="rule">}</span></span>
-  </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-
-<span class="comment">&lt;!-- change the appearance of the ticker part --&gt;</span>
-<span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
-<span class="id">#news</span><span class="pseudo">::x-ticker</span> <span class="rules">{
-  <span class="rule"><span class="attribute">background</span>:<span class="value"> gray;</span></span>
-  <span class="rule"><span class="attribute">color</span>:<span class="value"> lightblue;</span></span>
-  <span class="rule"><span class="attribute">var-highlight-primary</span>:<span class="value"> green;</span></span>
-  <span class="rule"><span class="attribute">var-highlight-accent</span>:<span class="value"> yellow;</span></span>
-<span class="rule">}</span></span>
-</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-</pre></figure></code></pre>
-<p>伪元素方法针对特定元素保持页面样式非常有用，而CSS变量则对不想重复指定的属性集（主题风格）非常有用. </p>
-<h2>6.6 Shadow DOM中的事件</h2>
-<p>为了确保shadow DOM子树中的元素不会暴露给外部子树，会有很多工作来分发内部子树事件. 
-首先，shadow DOM 子树会阻止事件如mutation和selectstart外部监听. 那些能够穿过shadow DOM的范围并且重定向的的事件，它们的<strong>target</strong>和<strong>relatedTarget</strong>的会指向shadow DOM子树的宿主元素. 在一些情况下，如<strong>DOMFocusIn</strong>，<strong>mouseover</strong>，<strong>mouseout</strong>事件需要特别注意，如果你在shadow DOM的两个元素中间移动鼠标，会出现鼠标从本身移动到它本身这种诡异的事件</p>
-<h2>7 Imports</h2>
-<p>规范标准见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html">The HTML Imports specification</a></p>
-<p>Custom elements 和 decorators可以通过文件的方式引入：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"import"</span> <span class="attribute">href</span>=<span class="value">"goodies.html"</span>&gt;</span>
-</pre></figure></code></pre>
-<p>只有\<decorator\>元素和\<element\>能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行. </p>
-<p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/">CC 3.0 BY-SA 协议</a>”发布</strong></p>
-]]></content>
-    <category scheme="http://suetming.com/categories/javascript/" term="javascript"/>
   </entry>
   <entry>
     <title type="html"><![CDATA[重写全局方法 | JavaScript]]></title>
