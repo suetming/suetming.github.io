@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://suetming.com/about/index.html</loc>
+    <lastmod>2013-08-17T06:58:31.000Z</lastmod>
+  </url>
+  <url>
     <loc>http://suetming.com/2013/08/14/2013-06-29-web-components/</loc>
     <lastmod>2013-08-14T01:19:32.000Z</lastmod>
   </url>
@@ -31,10 +35,6 @@
   <url>
     <loc>http://suetming.com/404.html</loc>
     <lastmod>2013-08-11T10:33:53.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://suetming.com/about/index.html</loc>
-    <lastmod>2013-08-11T08:56:52.000Z</lastmod>
   </url>
   <url>
     <loc>http://suetming.com/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/</loc>
