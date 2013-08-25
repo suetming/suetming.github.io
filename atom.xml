@@ -4,7 +4,7 @@
   <subtitle><![CDATA[清静心性现，水清月影明]]></subtitle>
   <link href="http://suetming.com/atom.xml" rel="self"/>
   <link href="http://suetming.com"/>
-  <updated>2013-08-25T09:59:40.873Z</updated>
+  <updated>2013-08-25T10:01:18.315Z</updated>
   <id>http://suetming.com/</id>
   <author>
     <name><![CDATA[SuetMing]]></name>
@@ -16,10 +16,12 @@
     <link href="http://suetming.com/2013/08/25/deep-learning---round-1/"/>
     <id>http://suetming.com/2013/08/25/deep-learning---round-1/</id>
     <published>2013-08-25T04:15:21.000Z</published>
-    <updated>2013-08-25T09:59:08.000Z</updated>
+    <updated>2013-08-25T10:01:04.000Z</updated>
     <content type="html"><![CDATA[<h2>前言</h2>
 <p>我一直对人工生命、AI、神经网络、遗传算法等相关问题有兴趣，不过也从来没有真正潜下心去研究这些有趣的课题。深度学习这块儿会是一个长篇的分章研究，这里主要记录个人对这块儿的理解和算法实现，与主流的那些神经网络结构的理论研究和实践证明还是有很大的差距。不知会写到什么时候，也许只有几篇文章，也许会是大长篇，全看个人能力，习惯，外界环境的变化等因素了，欢迎其他大牛加入进来共同讨论。</p>
 <p><img src="/images/photos/2013-08-25-deep-learning-round-1.jpg" alt="human brain"></p>
+<a name="more"></a>
+
 <h2>概念篇</h2>
 <p>深度学习最近这几年一直都很火，很多方面都开始采用深度学习算法（图像、语音、文字），我也来凑个热闹，学习一下。
 主要是尝试模仿人脑的结构，人脑通过听觉、视觉，触觉，嗅觉的感觉，这些输入量，通过层层处理，把具像的实物层层抽象，直到大脑认为可以理解的方向。</p>
