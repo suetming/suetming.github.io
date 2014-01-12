@@ -82,8 +82,7 @@
       
         <p>360手机卫士很早就有悬浮窗效果，并且搞了各种游戏吸引用户眼球，Facebook出了新版的Facebook Messager，也增加了悬浮窗的效果，大家都在争夺用户的手机桌面，尽可能的强化用户行为习惯。本文不对产品做过多描述，主要讲解如何实现悬浮窗以及相关动画效果</p>
 <p><img src="/images/photos/2013-08-11-xiaomi-360safe.png" alt=""></p>
-<p><a name="more"></a>
-<img src="/images/photos/2013-08-11-xiaomi-360safe2.png" alt=""></p>
+<p><a id="more"></a><br><img src="/images/photos/2013-08-11-xiaomi-360safe2.png" alt=""></p>
 <p>如果看看这些有悬浮窗的程序是不用的透明的activity，输入如下命令查看：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre>1
 </pre></td><td class="code"><pre><span class="title">adb</span> shell dumpsys activity services
@@ -91,7 +90,7 @@
 
 <p>会发现这几个程序用的都是service而没有activity</p>
 <h2>实现原理</h2>
-<p>很简单，向Window中添加View即可。总所周知，activity是window实例，Dialog也有自己专用的window，即使是service也有自己的window，比如<a href="http://developer.android.com/reference/android/inputmethodservice/InputMethodService.html">InputMethodService</a>通过window收到touch event根据状态在所有窗口之上画一个输入法的窗体。</p>
+<p>很简单，向Window中添加View即可。总所周知，activity是window实例，Dialog也有自己专用的window，即使是service也有自己的window，比如<a href="http://developer.android.com/reference/android/inputmethodservice/InputMethodService.html" target="_blank">InputMethodService</a>通过window收到touch event根据状态在所有窗口之上画一个输入法的窗体。</p>
 <h2>显示悬浮窗</h2>
 <p>首先需要获得新建window的权限，官方解释如下：</p>
 <blockquote>
@@ -279,8 +278,8 @@
 <h2>弹力球动画效果</h2>
 <p>弹力球效果的物理模型在大学物理弹力系统章节里有相应描述，具体可以函数参照这两篇文章：</p>
 <ul>
-<li><a href="http://khanlou.com/2012/01/dampers-and-their-role-in-physical-models/">mass-spring-damper system</a></li>
-<li><a href="http://khanlou.com/2012/01/cakeyframeanimation-make-it-bounce/">bounce animation</a></li>
+<li><a href="http://khanlou.com/2012/01/dampers-and-their-role-in-physical-models/" target="_blank">mass-spring-damper system</a></li>
+<li><a href="http://khanlou.com/2012/01/cakeyframeanimation-make-it-bounce/" target="_blank">bounce animation</a></li>
 </ul>
 <p>弹力效果函数如下：</p>
 <p><img src="/images/photos/2013-08-11-bounce-equation.png" alt=""></p>
@@ -430,10 +429,10 @@
 </pre></td></tr></table></figure>
 
 <p>本来想录制动态视频，不过android录像比较麻烦（后面考虑开发一个android的录像程序，好像目前还没有同类app呢）这里有一个ios上仿Chathead的视窗实现效果如下：</p>
-<p><a href="https://dl.dropboxusercontent.com/u/2187517/Uploads/ChatHeads/move.m4v">Chathead on IOS</a></p>
+<p><a href="https://dl.dropboxusercontent.com/u/2187517/Uploads/ChatHeads/move.m4v" target="_blank">Chathead on IOS</a></p>
 <ul>
-<li>DEMO源码见<a href="https://github.com/suetming/floatingwindow.git">这里</a>(IDE环境：android studio)</li>
-<li>APK程序见<a href="http://pan.baidu.com/share/link?shareid=691406723&amp;uk=2701585459">这里</a></li>
+<li>DEMO源码见<a href="https://github.com/suetming/floatingwindow.git" target="_blank">这里</a>(IDE环境：android studio)</li>
+<li>APK程序见<a href="http://pan.baidu.com/share/link?shareid=691406723&amp;uk=2701585459" target="_blank">这里</a></li>
 </ul>
 
       
@@ -514,7 +513,7 @@
   
     <li><a href="/categories/android/">android</a><small>2</small></li>
   
-    <li><a href="/categories/deep-learning/">deep learning</a><small>1</small></li>
+    <li><a href="/categories/deep learning/">deep learning</a><small>1</small></li>
   
     <li><a href="/categories/java/">java</a><small>1</small></li>
   
@@ -532,7 +531,7 @@
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/DDOS/" style="font-size: 11.00px;">DDOS</a><a href="/tags/Deep-Learning/" style="font-size: 19.00px;">Deep Learning</a><a href="/tags/IO-performance/" style="font-size: 16.00px;">I/O performance</a><a href="/tags/Scrolling-performance/" style="font-size: 17.00px;">Scrolling performance</a><a href="/tags/UI-performance/" style="font-size: 15.00px;">UI performance</a><a href="/tags/free-bitcoin/" style="font-size: 12.00px;">free bitcoin</a><a href="/tags/javascript/" style="font-size: 14.00px;">javascript</a><a href="/tags/seo/" style="font-size: 10.00px;">seo</a><a href="/tags/历史记录/" style="font-size: 13.00px;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: 18.00px;">悬浮窗</a>
+    <a href="/tags/DDOS/" style="font-size: NaNpx;">DDOS</a><a href="/tags/Deep Learning/" style="font-size: NaNpx;">Deep Learning</a><a href="/tags/I/O performance/" style="font-size: NaNpx;">I/O performance</a><a href="/tags/Scrolling performance/" style="font-size: NaNpx;">Scrolling performance</a><a href="/tags/UI performance/" style="font-size: NaNpx;">UI performance</a><a href="/tags/custom elements/" style="font-size: NaNpx;">custom elements</a><a href="/tags/decorator/" style="font-size: NaNpx;">decorator</a><a href="/tags/free bitcoin/" style="font-size: NaNpx;">free bitcoin</a><a href="/tags/import/" style="font-size: NaNpx;">import</a><a href="/tags/javascript/" style="font-size: NaNpx;">javascript</a><a href="/tags/seo/" style="font-size: NaNpx;">seo</a><a href="/tags/shadow DOM/" style="font-size: NaNpx;">shadow DOM</a><a href="/tags/templates/" style="font-size: NaNpx;">templates</a><a href="/tags/历史记录/" style="font-size: NaNpx;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: NaNpx;">悬浮窗</a>
   </div>
 </div>
 
@@ -560,7 +559,7 @@
   document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5533780f373b71b5d7f93e710ff74bfc' type='text/javascript'%3E%3C/script%3E"));
  </script>
   
-  &copy; 2013 SuetMing
+  &copy; 2014 SuetMing
   
 </div>
 <div class="clearfix"></div>

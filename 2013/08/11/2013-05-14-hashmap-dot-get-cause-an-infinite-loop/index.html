@@ -81,7 +81,7 @@
     <div class="entry">
       
         <p>在以java为主导的web框架开发的APP，并发与多线程是经常出现的，若在高并发的API中用到了HashMap则可能诱发死循环</p>
-<a name="more"></a>
+<a id="more"></a>
 
 <h2>症状</h2>
 <ul>
@@ -243,8 +243,7 @@
 
 <h2>HashMap 原理</h2>
 <p><img src="/images/photos/2013-05-14-hashmap.png" alt="HashMap 数据结构"></p>
-<p>HashMap实现原理其实是一种“链表散列”的数据结构，通过hash算法将key散列，一个<key,value>存进来时，通过hash算出索引i，然后插入到指针数组table[i]中,如果不同的可以存入同一个table[i]中，则发生碰撞，即在table[i]处形成链表存储
-如果table分配size为n，存入m个<key,value>，m 远远大于 n 则碰撞非常频繁，性能o(1)-&gt;o(n)，这是HashMap的不足，所以容量是HashMap的关键点，如果超过已知容量需要rehash，所有key的hash值会被重算</p>
+<p>HashMap实现原理其实是一种“链表散列”的数据结构，通过hash算法将key散列，一个<key,value>存进来时，通过hash算出索引i，然后插入到指针数组table[i]中,如果不同的可以存入同一个table[i]中，则发生碰撞，即在table[i]处形成链表存储<br>如果table分配size为n，存入m个<key,value>，m 远远大于 n 则碰撞非常频繁，性能o(1)-&gt;o(n)，这是HashMap的不足，所以容量是HashMap的关键点，如果超过已知容量需要rehash，所有key的hash值会被重算</p>
 <figure class="highlight lang-java"><figcaption><span>new version </span></figcaption><table><tr><td class="gutter"><pre>1
 2
 3
@@ -350,19 +349,14 @@
 </pre></td></tr></table></figure>
 
 
-<p>根据代码可以发现resize是耗时最大的
-单线程下的resize，假设初始容量为1，hash算法为取余 mod 1，resize后hash算法为 mod 2，则如图所示</p>
+<p>根据代码可以发现resize是耗时最大的<br>单线程下的resize，假设初始容量为1，hash算法为取余 mod 1，resize后hash算法为 mod 2，则如图所示</p>
 <p><img src="/images/photos/2013-05-14-hashmap-resize.png" alt="one thread hashmap resize"></p>
-<p>并发下的resize
-注意transfer()的<code>Entry&lt;K,V&gt; next = e.next;</code>，若thread 1 运行到这行挂起，thread 2 开始执行，如图所示</p>
-<p><img src="/images/photos/2013-05-14-hashmap-resize-two-thread.png" alt="two thread hashmap resize">
-thread 2 resize完成后，thread 1 开始执行，此时执行</p>
-<pre><code><figure class="highlight"><pre><span class="setting">newTalbe[i] = <span class="value">e;</span></span>
-<span class="setting">e = <span class="value">next // 导致 e 指向key(<span class="number">1</span>)</span></span>
-</pre></figure></code></pre>
+<p>并发下的resize<br>注意transfer()的<code>Entry&lt;K,V&gt; next = e.next;</code>，若thread 1 运行到这行挂起，thread 2 开始执行，如图所示</p>
+<p><img src="/images/photos/2013-05-14-hashmap-resize-two-thread.png" alt="two thread hashmap resize"><br>thread 2 resize完成后，thread 1 开始执行，此时执行</p>
+<pre><code><span class="setting">newTalbe[i] = <span class="value">e;</span></span>
+<span class="setting">e = <span class="value">next // 导致 e 指向key(<span class="number">1</span>)</span></span></code></pre>
 <p>下一次循环</p>
-<pre><code><figure class="highlight"><pre><span class="keyword">next</span>=e.<span class="keyword">next</span> /<span class="regexp">/ 导致 e 指向key(3)
-</pre></figure></code></pre>
+<pre><code><span class="keyword">next</span>=e.<span class="keyword">next</span> /<span class="regexp">/ 导致 e 指向key(3)</code></pre>
 <p>thread 1 继续key(1)放入newTable[i]的第一个，然后 e 和 next 移动，死循环出现key(3).next指向了key(1)</p>
 <p>此时调用HashTable.get(5)时死循环出现，CPU100%</p>
 <p>若支持多线程HashMap，需要采用ConcurrentHashmap</p>
@@ -376,14 +370,12 @@ thread 2 resize完成后，thread 1 开始执行，此时执行</p>
 <li>ruby 所有版本</li>
 <li>V8 JavaScript Engine 所有版本</li>
 </ul>
-<p>部分框架：
-- tomcat &lt;= 5.5.34, &lt;= 6.0.34, &lt;= 7.0.22 （目前fix在 5.5.35,  6.0.35,  7.0.23）
-- jetty 所有版本</p>
-<p>详细文章参见<a href="http://coolshell.cn/articles/6424.html">CoolShell</a></p>
+<p>部分框架：<br>- tomcat &lt;= 5.5.34, &lt;= 6.0.34, &lt;= 7.0.22 （目前fix在 5.5.35,  6.0.35,  7.0.23）<br>- jetty 所有版本</p>
+<p>详细文章参见<a href="http://coolshell.cn/articles/6424.html" target="_blank">CoolShell</a></p>
 <h2>深入阅读</h2>
 <ul>
-<li><a href="http://www.cs.rice.edu/~scrosby/hash/CrosbyWallach_UsenixSec2003.pdf">基于HashMap的DOS</a></li>
-<li><a href="http://coolshell.cn/articles/6424.html">CoolShell:Hash Collision DoS</a></li>
+<li><a href="http://www.cs.rice.edu/~scrosby/hash/CrosbyWallach_UsenixSec2003.pdf" target="_blank">基于HashMap的DOS</a></li>
+<li><a href="http://coolshell.cn/articles/6424.html" target="_blank">CoolShell:Hash Collision DoS</a></li>
 </ul>
 
       
@@ -464,7 +456,7 @@ thread 2 resize完成后，thread 1 开始执行，此时执行</p>
   
     <li><a href="/categories/android/">android</a><small>2</small></li>
   
-    <li><a href="/categories/deep-learning/">deep learning</a><small>1</small></li>
+    <li><a href="/categories/deep learning/">deep learning</a><small>1</small></li>
   
     <li><a href="/categories/java/">java</a><small>1</small></li>
   
@@ -482,7 +474,7 @@ thread 2 resize完成后，thread 1 开始执行，此时执行</p>
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/DDOS/" style="font-size: 11.00px;">DDOS</a><a href="/tags/Deep-Learning/" style="font-size: 19.00px;">Deep Learning</a><a href="/tags/IO-performance/" style="font-size: 16.00px;">I/O performance</a><a href="/tags/Scrolling-performance/" style="font-size: 17.00px;">Scrolling performance</a><a href="/tags/UI-performance/" style="font-size: 15.00px;">UI performance</a><a href="/tags/free-bitcoin/" style="font-size: 12.00px;">free bitcoin</a><a href="/tags/javascript/" style="font-size: 14.00px;">javascript</a><a href="/tags/seo/" style="font-size: 10.00px;">seo</a><a href="/tags/历史记录/" style="font-size: 13.00px;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: 18.00px;">悬浮窗</a>
+    <a href="/tags/DDOS/" style="font-size: NaNpx;">DDOS</a><a href="/tags/Deep Learning/" style="font-size: NaNpx;">Deep Learning</a><a href="/tags/I/O performance/" style="font-size: NaNpx;">I/O performance</a><a href="/tags/Scrolling performance/" style="font-size: NaNpx;">Scrolling performance</a><a href="/tags/UI performance/" style="font-size: NaNpx;">UI performance</a><a href="/tags/custom elements/" style="font-size: NaNpx;">custom elements</a><a href="/tags/decorator/" style="font-size: NaNpx;">decorator</a><a href="/tags/free bitcoin/" style="font-size: NaNpx;">free bitcoin</a><a href="/tags/import/" style="font-size: NaNpx;">import</a><a href="/tags/javascript/" style="font-size: NaNpx;">javascript</a><a href="/tags/seo/" style="font-size: NaNpx;">seo</a><a href="/tags/shadow DOM/" style="font-size: NaNpx;">shadow DOM</a><a href="/tags/templates/" style="font-size: NaNpx;">templates</a><a href="/tags/历史记录/" style="font-size: NaNpx;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: NaNpx;">悬浮窗</a>
   </div>
 </div>
 
@@ -510,7 +502,7 @@ thread 2 resize完成后，thread 1 开始执行，此时执行</p>
   document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5533780f373b71b5d7f93e710ff74bfc' type='text/javascript'%3E%3C/script%3E"));
  </script>
   
-  &copy; 2013 SuetMing
+  &copy; 2014 SuetMing
   
 </div>
 <div class="clearfix"></div>

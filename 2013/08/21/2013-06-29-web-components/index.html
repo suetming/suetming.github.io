@@ -3,15 +3,14 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Web组件(Web Components) | HTML5 | shadow DOM,templates,decorator,import,custom elements | 盖世小虫</title>
+  <title>Web组件(Web Components) | HTML5 | 盖世小虫</title>
   <meta name="author" content="SuetMing">
   
   <meta name="description" content="译者：suetming
 原文：W3C: Web Components
 SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
 1 关于本文
-注意文章涉及正在开展的工作. 关系到web组件的一系列概念，每个概念都有各自的规范.
-这是一个迭代的过程
+注意文章涉及正在开展的工作. 关系到web组件的一系列概念，每个概念都有各自的规范.这是一个迭代的过程
 本文描述的概念有时会落后或者超前于专门界定此概念的规范，一旦本文涉及的前瞻性技术被相应的规范所采纳，本文会更新并注明">
   
   <meta name="keywords" content="javascript,shadow DOM,templates,decorator,import,custom elements">
@@ -87,13 +86,12 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
     <div class="entry">
       
         <p>译者：<a href="http://suetming.com">suetming</a></p>
-<p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/">W3C: Web Components</a></p>
-<p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/">CC 3.0 BY-SA 协议</a>”发布</strong></p>
+<p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/" target="_blank">W3C: Web Components</a></p>
+<p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC 3.0 BY-SA 协议</a>”发布</strong></p>
 <h2>1 关于本文</h2>
-<p>注意文章涉及正在开展的工作. 关系到web组件的一系列概念，每个概念都有各自的规范.
-这是一个迭代的过程</p>
+<p>注意文章涉及正在开展的工作. 关系到web组件的一系列概念，每个概念都有各自的规范.<br>这是一个迭代的过程</p>
 <p>本文描述的概念有时会落后或者超前于专门界定此概念的规范，一旦本文涉及的前瞻性技术被相应的规范所采纳，本文会更新并注明</p>
-<p><a name="more"></a></p>
+<p><a id="more"></a></p>
 <h2>2 介绍</h2>
 <p>web组件模型由5部分组成：</p>
 <ul>
@@ -106,10 +104,8 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
 <p>每一部分都有各自的用途. 如果将这5种技术引入，开发人员可以轻松的编写拥有复杂交互体验的组件，并且可以轻松引用和组装，这是今天的CSS和脚本语言所无法达到的</p>
 <p>本文将会讨论这5种技术，并举例说明其在Web组件中的作用</p>
 <h2>3 Templates</h2>
-<p>具体规范参加这篇<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html">HTML Templates</a>
-\<template\>元素及其所包含元素会由解析器进行解析并标记，不过不会立即渲染出来，脚本不会立即执行，包含的图片也不会立即下载
-\<template\>元素有一个属性 <strong>content</strong> 存储元素的实际内容，属性 <strong>content</strong> 的内容可以拷贝移动到HTML节点中</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"commentTemplate"</span>&gt;</span>
+<p>具体规范参加这篇<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html" target="_blank">HTML Templates</a><br>\<template\>元素及其所包含元素会由解析器进行解析并标记，不过不会立即渲染出来，脚本不会立即执行，包含的图片也不会立即下载<br>\<template\>元素有一个属性 <strong>content</strong> 存储元素的实际内容，属性 <strong>content</strong> 的内容可以拷贝移动到HTML节点中</p>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"commentTemplate"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">div</span>&gt;</span>
         <span class="tag">&lt;<span class="title">img</span> <span class="attribute">src</span>=<span class="value">""</span>&gt;</span>
         <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"comment-text"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
@@ -124,13 +120,13 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
   comment.querySelector(<span class="string">'.comment-text'</span>).textContent = text;
   document.body.appendChild(comment);
 }
-</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-</pre></figure></code></pre>
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></code></pre>
 <p><strong>template</strong> 所包含的的元素包含在属性 <strong>content</strong> 中，通过script拷贝里面的元素并插入到HTML中使图片加载进来，脚本开始运行. 例如，在templates引入大型脚本，需要时调用</p>
 <h2>4 Decorators</h2>
 <p>Decorators 目前没有标准文档，<strong>decorator</strong> 主要加强或者重载已经存在的元素，由CSS控制表现，与一般元素不同的是通过标记可以达到额外的效果</p>
-<p><code>&lt;decorator&gt;</code>通过包含<code>&lt;template&gt;</code>来明确具体渲染哪一块</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
+<pre><code class="lang-<decorator>```通过包含```<template>```来明确具体渲染哪一块">
+```html
+<span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">template</span>&gt;</span>
         <span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"summary"</span>&gt;</span>
           &amp;blacktriangledown;
@@ -138,39 +134,30 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
         <span class="tag">&lt;/<span class="title">a</span>&gt;</span>
         <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
     <span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">decorator</span>&gt;</span>
-</pre></figure></code></pre>
-<p><code>&lt;content&gt;</code>包含待渲染的内容，通过CSS控制生效</p>
-<pre><code class="lang-css"><figure class="highlight lang-css"><pre><span class="tag">details</span><span class="attr_selector">[open]</span> <span class="rules">{
+<span class="tag">&lt;/<span class="title">decorator</span>&gt;</span></code></pre>
+<pre><code class="lang-<content>```包含待渲染的内容，通过CSS控制生效">
+```<span class="tag">css</span>
+<span class="tag">details</span><span class="attr_selector">[open]</span> <span class="rules">{
     <span class="rule"><span class="attribute">decorator</span>:<span class="value"> <span class="function">url(#details-open)</span>;</span></span>
-<span class="rule">}</span></span>
-</pre></figure></code></pre>
+<span class="rule">}</span></span></code></pre>
 <p>通过这种方式可以使下面的html代码</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">details</span> <span class="attribute">open</span>&gt;</span>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">details</span> <span class="attribute">open</span>&gt;</span>
     <span class="tag">&lt;<span class="title">summary</span>&gt;</span>Timepieces<span class="tag">&lt;/<span class="title">summary</span>&gt;</span>
     <span class="tag">&lt;<span class="title">ul</span>&gt;</span>
       <span class="tag">&lt;<span class="title">li</span>&gt;</span>Sundial
       <span class="tag">&lt;<span class="title">li</span>&gt;</span>Cuckoo clock
       <span class="tag">&lt;<span class="title">li</span>&gt;</span>Wristwatch
     <span class="tag">&lt;/<span class="title">ul</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">details</span>&gt;</span>
-</pre></figure></code></pre>
+<span class="tag">&lt;/<span class="title">details</span>&gt;</span></code></pre>
 <p>最终渲染成</p>
-<p><a>
-  ▾ Timepieces
-</a></p>
-<ul>
-  <li>Sundial
-  </li><li>Cuckoo clock
-  </li><li>Wristwatch
-</li></ul>
+<p><a><br>  ▾ Timepieces<br></a></p>
+<ul><br>  <li>Sundial<br>  </li><li>Cuckoo clock<br>  </li><li>Wristwatch<br></li></ul>
 
 <p><strong>decorator</strong> CSS属性可以指向任何网络资源，不过只有其“定义”被调用才能申请，生成的标记仅限于展示，永远不会运行脚本包括内联事件，而且也是不可编辑的</p>
-<p>4.1 Decorators的事件
-Decorators可以关联事件增强交互，decorator采用事件控制器当做媒介，因为decorator可能在任何时间生效或者失效，所以关联template中监听节点事件或者获取其状态都是无效的</p>
+<p>4.1 Decorators的事件<br>Decorators可以关联事件增强交互，decorator采用事件控制器当做媒介，因为decorator可能在任何时间生效或者失效，所以关联template中监听节点事件或者获取其状态都是无效的</p>
 <p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-handler-registration.png" alt="事件注册"></p>
 <p>通过事件控制器注册事件监听器，template中插入<code>&lt;script&gt;</code>，decorator元素插入到文档中时脚本会执行，脚本会被插入到注册队列中:</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
         <span class="function"><span class="keyword">function</span> <span class="title">clicked</span><span class="params">(event)</span> {</span>
             event.target.removeAttribute(<span class="string">'open'</span>);
@@ -179,13 +166,12 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
     </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
     <span class="tag">&lt;<span class="title">template</span>&gt;</span>
       <span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"summary"</span>&gt;</span>
-        <span class="comment">&lt;!-- as illustrated above --&gt;</span>
-</pre></figure></code></pre>
+        <span class="comment">&lt;!-- as illustrated above --&gt;</span></code></pre>
 <p>事件控制器解析注册事件如图所示</p>
 <p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-routing-retargeting.png" alt="事件的路由和重定向"></p>
 <p>事件监听器被调用时，事件的目标是最终生成的内容而不是template中的内容. 点击template中定义的▾，将会调用单击事件（在template中定义的<strong>#summary</strong>元素）, event.target指向<code>&lt;details&gt;</code>，事件的重定向不会影响文档DOM结构</p>
 <p>移除属性<strong>open</strong>，由于selector与decorator的属性不匹配，这个decorator不再有效. 未应用的decorator会回到最初的状态. 不过可以再构造一个decorator来渲染<strong>closed</strong>，通过激活不同的decorator可以达到无状态交互，代码如下</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
 <span class="tag">details</span> <span class="rules">{
     <span class="rule"><span class="attribute">decorator</span>:<span class="value"> <span class="function">url(#details-closed)</span>;</span></span>
 <span class="rule">}</span></span>
@@ -209,58 +195,23 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
 <span class="tag">&lt;/<span class="title">decorator</span>&gt;</span>
 
 <span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>&gt;</span>
-    <span class="comment">&lt;!-- as illustrated above --&gt;</span>
-</pre></figure></code></pre>
+    <span class="comment">&lt;!-- as illustrated above --&gt;</span></code></pre>
 <h2>5 Custom Elements</h2>
-<p>技术规范见此<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html">The Custom Elements specification</a></p>
+<p>技术规范见此<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html" target="_blank">The Custom Elements specification</a></p>
 <p>用户可以构造新的DOM元素，这种技术称之为Custom Elements. 不像decorators，自定义元素可以封装状态并提供脚本接口. 下面的数据表表明两者区别</p>
-<blockquote>
-<table>
-   <tr>
-      <td></td>
-      <td>Decorators</td>
-      <td>Custom Elements</td>
-   </tr>
-   <tr>
-      <td>Lifetime</td>
-      <td>Ephemeral, while a CSS selector matches</td>
-      <td>Stable, matches entire element lifetime</td>
-   </tr>
-   <tr>
-      <td>Applied, unapplied dynamically</td>
-      <td>Yes, based on CSS selectors</td>
-      <td>No, fixed at element creation time</td>
-   </tr>
-   <tr>
-      <td>Accessible through script</td>
-      <td>No, transparent to DOM; cannot add interfaces</td>
-      <td>Yes, accessible through DOM; can provide interfaces</td>
-   </tr>
-   <tr>
-      <td>State</td>
-      <td>Stateless projection</td>
-      <td>Stateful DOM object</td>
-   </tr>
-   <tr>
-      <td>Behavior</td>
-      <td>Simulated by changing decorators</td>
-      <td>First-class using script and events</td>
-   </tr>
-</table>
-</blockquote>
+<blockquote><br><table><br>   <tr><br>      <td></td><br>      <td>Decorators</td><br>      <td>Custom Elements</td><br>   </tr><br>   <tr><br>      <td>Lifetime</td><br>      <td>Ephemeral, while a CSS selector matches</td><br>      <td>Stable, matches entire element lifetime</td><br>   </tr><br>   <tr><br>      <td>Applied, unapplied dynamically</td><br>      <td>Yes, based on CSS selectors</td><br>      <td>No, fixed at element creation time</td><br>   </tr><br>   <tr><br>      <td>Accessible through script</td><br>      <td>No, transparent to DOM; cannot add interfaces</td><br>      <td>Yes, accessible through DOM; can provide interfaces</td><br>   </tr><br>   <tr><br>      <td>State</td><br>      <td>Stateless projection</td><br>      <td>Stateful DOM object</td><br>   </tr><br>   <tr><br>      <td>Behavior</td><br>      <td>Simulated by changing decorators</td><br>      <td>First-class using script and events</td><br>   </tr><br></table><br></blockquote>
 
 <h2>5.1 构造一个自定义元素</h2>
 <p>用<code>&lt;element&gt;</code>构造一个元素，并指明继承哪一个属性如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"button"</span> <span class="attribute">name</span>=<span class="value">"fancy-button"</span>&gt;</span>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"button"</span> <span class="attribute">name</span>=<span class="value">"fancy-button"</span>&gt;</span>
     …
-<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
-</pre></figure></code></pre>
+<span class="tag">&lt;/<span class="title">element</span>&gt;</span></code></pre>
 <p><strong>extends</strong>属性标记继承于哪一个元素，自定义元素实例会有此标记名</p>
 <p><strong>name</strong>属性指明元素名称，命名必须包含“-”</p>
-<p>用户的自定义元素应该继承最接近自己想法的实际存在的元素. 如果用户构造不继承任何元素的自定义元素，user agent会抛出异常<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/elements.html#htmlunknownelement">HTMLUnknownElement</a></p>
+<p>用户的自定义元素应该继承最接近自己想法的实际存在的元素. 如果用户构造不继承任何元素的自定义元素，user agent会抛出异常<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/elements.html#htmlunknownelement" target="_blank">HTMLUnknownElement</a></p>
 <h2>5.2 方法和属性</h2>
 <p>将<code>&lt;script&gt;</code>插入到自定义元素中可以对自定义元素增加方法和属性，下面的例子中元素<code>&lt;tick-tock-clock&gt;</code>增加了tick方法</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
     ({
       tick: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
@@ -268,17 +219,15 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
       }
     });
   </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
-</pre></figure></code></pre>
-<p>5.3 生命周期回调函数
-自定义元素有很多回调函数如下：</p>
+<span class="tag">&lt;/<span class="title">element</span>&gt;</span></code></pre>
+<p>5.3 生命周期回调函数<br>自定义元素有很多回调函数如下：</p>
 <ul>
 <li>readyCallback：创建时调用</li>
 <li>insertedCallback：插入文档时调用</li>
 <li>removedCallbakc：删除元素时调用</li>
 </ul>
 <p>下面的例子演示如何用template，Shadow DOM (见下一章节)，以及Custom Elements回调函数创建元素：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">template</span>&gt;</span>
     <span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"hh"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span>
     <span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"sep"</span>&gt;</span>:<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
@@ -318,21 +267,17 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
       chime: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> … }
     });
   </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
-</pre></figure></code></pre>
-<p>5.4 Custom Elements实例化
-自定义元素均继承HTML的标准元素(div/button/option/...)， 当用户想用这些元素的时候需要用到属性<strong>is</strong>，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"button"</span> <span class="attribute">name</span>=<span class="value">"fancy-button"</span>&gt;</span>  <span class="comment">&lt;!-- definition --&gt;</span>
+<span class="tag">&lt;/<span class="title">element</span>&gt;</span></code></pre>
+<p>5.4 Custom Elements实例化<br>自定义元素均继承HTML的标准元素(div/button/option/…)， 当用户想用这些元素的时候需要用到属性<strong>is</strong>，如下：</p>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"button"</span> <span class="attribute">name</span>=<span class="value">"fancy-button"</span>&gt;</span>  <span class="comment">&lt;!-- definition --&gt;</span>
     …
 <span class="tag">&lt;/<span class="title">element</span>&gt;</span>
 
 <span class="tag">&lt;<span class="title">button</span> <span class="attribute">is</span>=<span class="value">"fancy-button"</span>&gt;</span>  <span class="comment">&lt;!-- use --&gt;</span>
     Do something fancy
-<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
-</pre></figure></code></pre>
-<p>5.5 Script实例化Custom Elements
-通过脚本语言也可以实例化自定义元素，方法为<strong>register</strong>，具体见下述代码：</p>
-<pre><code class="lang-javascript"><figure class="highlight lang-javascript"><pre><span class="keyword">var</span> p = Object.create(HTMLButtonElement.prototype, {});
+<span class="tag">&lt;/<span class="title">button</span>&gt;</span></code></pre>
+<p>5.5 Script实例化Custom Elements<br>通过脚本语言也可以实例化自定义元素，方法为<strong>register</strong>，具体见下述代码：</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> p = Object.create(HTMLButtonElement.prototype, {});
 p.dazzle = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> … };
 
 <span class="comment">// 返回实例化对象</span>
@@ -341,34 +286,28 @@ p.dazzle = <span class="function"><span class="keyword">function</span> <span cl
 document.body.appendChild(b);
 b.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(event)</span> {</span>
     event.target.dazzle();
-});
-</pre></figure></code></pre>
+});</code></pre>
 <p>也可以直接通过createElement生成：</p>
-<pre><code class="lang-javascript"><figure class="highlight lang-javascript"><pre><span class="keyword">var</span> b = document.createElement(<span class="string">'button'</span>, <span class="string">'fancy-button'</span>);
+<pre><code class="lang-javascript"><span class="keyword">var</span> b = document.createElement(<span class="string">'button'</span>, <span class="string">'fancy-button'</span>);
 alert(b.outerHTML); <span class="comment">// will display '&lt;button is="fancy-button"&gt;&lt;/button&gt;'</span>
 <span class="keyword">var</span> c = document.createElement(<span class="string">'tick-tock-clock'</span>);
-alert(c.outerHTML); <span class="comment">// will display '&lt;tick-tock-clock&gt;&lt;/tick-tock-clock&gt;'</span>
-</pre></figure></code></pre>
+alert(c.outerHTML); <span class="comment">// will display '&lt;tick-tock-clock&gt;&lt;/tick-tock-clock&gt;'</span></code></pre>
 <h2>5.6 元素更新</h2>
-<p>当元素定义调用的时候，每一个匹配的元素都会进行更新. 更新元素后，元素相应API会生效，生命周期相关函数会被调用.
-通过CSS<strong>:unresolved</strong>可以匹配所有为构造的自定义元素，通过这种方式避免更新元素所造成的闪烁</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
+<p>当元素定义调用的时候，每一个匹配的元素都会进行更新. 更新元素后，元素相应API会生效，生命周期相关函数会被调用.<br>通过CSS<strong>:unresolved</strong>可以匹配所有为构造的自定义元素，通过这种方式避免更新元素所造成的闪烁</p>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
 <span class="tag">tick</span>-<span class="tag">tock</span>-<span class="tag">clock</span><span class="pseudo">:unresolved</span> <span class="rules">{
   <span class="rule"><span class="attribute">content</span>:<span class="value"> <span class="string">'??:??'</span>;</span></span>  
 <span class="rule">}</span></span>
 </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-<span class="tag">&lt;<span class="title">tick-tock-clock</span>&gt;</span><span class="tag">&lt;/<span class="title">tick-tock-clock</span>&gt;</span> <span class="comment">&lt;!-- will show ??:?? --&gt;</span>
-</pre></figure></code></pre>
+<span class="tag">&lt;<span class="title">tick-tock-clock</span>&gt;</span><span class="tag">&lt;/<span class="title">tick-tock-clock</span>&gt;</span> <span class="comment">&lt;!-- will show ??:?? --&gt;</span></code></pre>
 <p>也可以通过脚本进行控制</p>
-<pre><code class="lang-javascript"><figure class="highlight lang-javascript"><pre><span class="comment">// Chime ALL the clocks!</span>
+<pre><code class="lang-javascript"><span class="comment">// Chime ALL the clocks!</span>
 Array.prototype.forEach.call(
   document.querySelectorAll(<span class="string">'tick-tock-clock:not(:unresolved)'</span>),
-  <span class="function"><span class="keyword">function</span> <span class="params">(clock)</span> {</span> clock.chime(); });
-</pre></figure></code></pre>
+  <span class="function"><span class="keyword">function</span> <span class="params">(clock)</span> {</span> clock.chime(); });</code></pre>
 <p>通过自定义事件元素可以通知页面其他部分元素已经更新，可以等到元素更新完成，脚本在对其进行操作</p>
-<p>5.7 扩展Custom Elements
-元素也可以继承自定义元素，代码如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"tick-tock-clock"</span> <span class="attribute">name</span>=<span class="value">"grand-father-clock"</span>&gt;</span>
+<p>5.7 扩展Custom Elements<br>元素也可以继承自定义元素，代码如下：</p>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"tick-tock-clock"</span> <span class="attribute">name</span>=<span class="value">"grand-father-clock"</span>&gt;</span>
     …
 <span class="tag">&lt;/<span class="title">element</span>&gt;</span>
 <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
@@ -378,22 +317,20 @@ p.popOutBirdie = <span class="function"><span class="keyword">function</span> <s
 <span class="keyword">var</span> c = <span class="keyword">new</span> CuckooClock();
 c.tick();         <span class="comment">// inherited from tick-tock-clock</span>
 c.popOutBirdie(); <span class="comment">// specific to cuckoo-clock</span>
-</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-</pre></figure></code></pre>
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></code></pre>
 <h2>6 Shadow DOM</h2>
-<p>相应规范见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html">The Shadow DOM specification</a></p>
+<p>相应规范见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html" target="_blank">The Shadow DOM specification</a></p>
 <p>Shadow DOM 是一种DOM节点的辅助树. Shadow DOM 子树能够关联某个元素，但不会显示在元素子节点中，子树有自己的作用域. 例如，一个shadow DOM 子树可以和文档中相同ID和风格的元素而不冲突，因为shadow DOM 子树与文档是完全分离的</p>
-<p>Shadow DOM 通过<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-partial-element-create-shadow-root"><strong>createShadowRoot</strong></a>方法生效，返回shadow DOM的根节点并填充到DOM节点中</p>
+<p>Shadow DOM 通过<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-partial-element-create-shadow-root" target="_blank"><strong>createShadowRoot</strong></a>方法生效，返回shadow DOM的根节点并填充到DOM节点中</p>
 <p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg" alt="shadow trees"></p>
 <object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg" width="800" height="430"></object>
 
-<p>关联shadow DOM的元素称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-shadow-host">shadow host</a>. 当元素存在shadow DOM，元素的子节点不会渲染；渲染的是shadow DOM的内容</p>
+<p>关联shadow DOM的元素称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-shadow-host" target="_blank">shadow host</a>. 当元素存在shadow DOM，元素的子节点不会渲染；渲染的是shadow DOM的内容</p>
 <p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" alt="shadow rendering"></p>
 <object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" width="450" height="400"></object>
 
-<p>6.1 插入点
-shadow DOM 子树通过<code>&lt;content&gt;</code>元素作为渲染输出插入点. <code>&lt;content&gt;</code>只是作为渲染输出的插入点，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- document --&gt;</span>
+<p>6.1 插入点<br>shadow DOM 子树通过<code>&lt;content&gt;</code>元素作为渲染输出插入点. <code>&lt;content&gt;</code>只是作为渲染输出的插入点，如下：</p>
+<pre><code class="lang-html"><span class="comment">&lt;!-- document --&gt;</span>
 <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
   <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
@@ -426,31 +363,27 @@ r.appendChild(t.content.cloneNode(<span class="literal">true</span>));
 <span class="keyword">var</span> s = ticker.createShadowRoot();
 <span class="keyword">var</span> u = document.querySelector(<span class="string">'#u'</span>);
 s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
-</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-</pre></figure></code></pre>
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></code></pre>
 <p>理论上，第一部分文档和第一部分shadow根节点生成了下面的DOM树. 宿主元素的子节点显示在插入点的位置. </p>
-<pre><code><figure class="highlight"><pre><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
+<pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
   <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
     <span class="tag">&lt;<span class="title">div</span>&gt;</span>Area kitten "adorable"&amp;mdash;owner<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
     <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Jiggled piece of yarn derails kitten kongress<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
   <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-</pre></figure></code></pre>
-<p>第二部分，由于<code>&lt;content class=&quot;highlight&quot; select=&quot;.breaking&quot;&gt;</code>所有类属性为breaking的排在顶部，这种方式称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#reprojection">reprojection</a></p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></pre>
+<p>第二部分，由于<code>&lt;content class=&quot;highlight&quot; select=&quot;.breaking&quot;&gt;</code>所有类属性为breaking的排在顶部，这种方式称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#reprojection" target="_blank">reprojection</a></p>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
   <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
     <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>&gt;</span>Jiggled piece of yarn derails kitten kongress<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
     <span class="tag">&lt;<span class="title">div</span>&gt;</span>Area kitten "adorable"&amp;mdash;owner<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
   <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-</pre></figure></code></pre>
-<p>6.3 备用内容
-插入点可以有<em>content</em>，称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-fallback-content">备用内容</a>，当插入点没有任何文本时，会显示此信息，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #news' shadow --&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></pre>
+<p>6.3 备用内容<br>插入点可以有<em>content</em>，称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-fallback-content" target="_blank">备用内容</a>，当插入点没有任何文本时，会显示此信息，如下：</p>
+<pre><code class="lang-html"><span class="comment">&lt;!-- #news' shadow --&gt;</span>
 <span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"t"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"h1"</span>&gt;</span>Today's top headlines<span class="tag">&lt;/<span class="title">content</span>&gt;</span>
   <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>&gt;</span>
@@ -459,12 +392,10 @@ s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
       <span class="tag">&lt;<span class="title">button</span> <span class="attribute">onclick</span>=<span class="value">"window.location.reload(true);"</span>&gt;</span>Reload<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
     <span class="tag">&lt;/<span class="title">content</span>&gt;</span>
   <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-</pre></figure></code></pre>
+<span class="tag">&lt;/<span class="title">template</span>&gt;</span></code></pre>
 <h2>6.4 多重Shadow子树</h2>
-<p>一个元素可以含有不止一个shadow DOM 子树. 继承一个已具有shadow DOM子树的自定义元素是很常见的. 不过要是想重用原先的元素时怎么处理? 如何重用?
-利用<code>&lt;shadow&gt;</code>可以调用原先申请的shadow DOM 子树，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"sailing-watch"</span> <span class="attribute">extends</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
+<p>一个元素可以含有不止一个shadow DOM 子树. 继承一个已具有shadow DOM子树的自定义元素是很常见的. 不过要是想重用原先的元素时怎么处理? 如何重用?<br>利用<code>&lt;shadow&gt;</code>可以调用原先申请的shadow DOM 子树，如下：</p>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"sailing-watch"</span> <span class="attribute">extends</span>=<span class="value">"tick-tock-clock"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">template</span>&gt;</span>
     <span class="tag">&lt;<span class="title">shadow</span>&gt;</span><span class="tag">&lt;/<span class="title">shadow</span>&gt;</span>
     <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"compass"</span>&gt;</span>N<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
@@ -472,8 +403,7 @@ s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
   <span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
     …
   </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">element</span>&gt;</span>
-</pre></figure></code></pre>
+<span class="tag">&lt;/<span class="title">element</span>&gt;</span></code></pre>
 <p>由于一个元素可以有多个shadow，我们需要了解这些shadow如何相互影响，如何作用元素的子节点</p>
 <p>由于你不能删除shadow root，所以shadow DOM子树生效时的顺序很重要，如下：</p>
 <ul>
@@ -490,7 +420,7 @@ s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
 </ol>
 </li>
 <li><ol>
-<li>...</li>
+<li>…</li>
 </ol>
 </li>
 <li><ol>
@@ -516,10 +446,10 @@ s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
 <h2>6.5 CSS 和 Shadow DOM</h2>
 <p>当构建自定义元素时自然要考虑属性、内容和API接口. 这与页面渲染同等重要. Shadow DOM 提供给开发者很多方式控制shadow DOM内容的样式.</p>
 <p>shadow DOM 子树有一个不看见的边界，user agent的样式默认生效，而不是定制的样式. 派生的元素依旧有效，这不是我们想要的. 在上面的scailing-watch的例子里，如果页面内容被渲染成绿色，如果要保持整体风格，shadow DOM内的文本由于color属性由于继承性质也会是绿色，不过设定了所有<code>&lt;div&gt;</code>元素橙色边框， 那direction indicator不会有橙色边框因为<strong>border</strong>并不是具有继承性质的属性</p>
-<p>一个shadow根节点有两个属性控制行为. applyAuthorStyles（开发者样式）属性，shadow DOM 会匹配最接近的样式，注意这个属性只能匹配shadow DOM 子树. 使用时要注意&quot;n&quot;代选择器</p>
+<p>一个shadow根节点有两个属性控制行为. applyAuthorStyles（开发者样式）属性，shadow DOM 会匹配最接近的样式，注意这个属性只能匹配shadow DOM 子树. 使用时要注意“n”代选择器</p>
 <p>如果<strong>applyAuthorStyles</strong>设置为false，<strong>resetStyleInheritance</strong>设置为true，样式会清空. 元素会被与页面样式隔离，你可以通过浏览器重置样式</p>
-<p>在插入点有相似的界限. shadow DOM子树的样式不会再插入点分布的元素上生效. 不过要是通过选择器想渲染某一部分特定内容， 可以用<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#distributed-pseudo-element">::distributed pseudo-selector</a>，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
+<p>在插入点有相似的界限. shadow DOM子树的样式不会再插入点分布的元素上生效. 不过要是通过选择器想渲染某一部分特定内容， 可以用<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#distributed-pseudo-element" target="_blank">::distributed pseudo-selector</a>，如下：</p>
+<pre><code class="lang-html"><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
 <span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
     <span class="tag">content</span><span class="pseudo">::distributed(</span>*) <span class="rules">{
@@ -532,11 +462,10 @@ s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
   </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
   <span class="tag">&lt;<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
   <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-</pre></figure></code></pre>
+<span class="tag">&lt;/<span class="title">template</span>&gt;</span></code></pre>
 <p>上述包含了两个规则，选择器的左半部分是shadow DOM 生效；括号内代表适用元素。第一个选择器对<code>&lt;content&gt;</code>的所有元素有效；第二个选择器对类对象为breaking的元素有效</p>
 <p>ShadowDOM 也可以定制宿主元素的样式. 代码如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
+<pre><code class="lang-html"><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
 <span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
     <span class="at_rule">@host </span>{
@@ -556,10 +485,9 @@ s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
   </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
   <span class="tag">&lt;<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
   <span class="tag">&lt;<span class="title">content</span>&gt;</span><span class="tag">&lt;/<span class="title">content</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">template</span>&gt;</span>
-</pre></figure></code></pre>
+<span class="tag">&lt;/<span class="title">template</span>&gt;</span></code></pre>
 <p>最后，有两种方式可以使shadow DOM 子树的样式与页面保持一致. 首先通过分配一个伪ID暴漏shadow DOM 子树中的特定元素，开发者可以定制其样式. 例如：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
 <span class="comment">// Set up shadow DOM</span>
 …
 <span class="keyword">var</span> ticker = r.querySelector(<span class="string">'#ticker'</span>);
@@ -573,10 +501,9 @@ ticker.pseudo = <span class="string">'x-ticker'</span>;
   <span class="rule"><span class="attribute">background</span>:<span class="value"> gray;</span></span>
   <span class="rule"><span class="attribute">color</span>:<span class="value"> lightblue;</span></span>
 <span class="rule">}</span></span>
-</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-</pre></figure></code></pre>
+</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></code></pre>
 <p>另一种方法是通过CSS变量进行控制，如下：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
+<pre><code class="lang-html"><span class="comment">&lt;!-- #ticker's shadow --&gt;</span>
 <span class="tag">&lt;<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
     <span class="at_rule">@host </span>{
@@ -606,17 +533,14 @@ ticker.pseudo = <span class="string">'x-ticker'</span>;
   <span class="rule"><span class="attribute">var-highlight-primary</span>:<span class="value"> green;</span></span>
   <span class="rule"><span class="attribute">var-highlight-accent</span>:<span class="value"> yellow;</span></span>
 <span class="rule">}</span></span>
-</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-</pre></figure></code></pre>
+</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></code></pre>
 <p>伪元素方法针对特定元素保持页面样式非常有用，而CSS变量则对不想重复指定的属性集（主题风格）非常有用. </p>
 <h2>6.6 Shadow DOM中的事件</h2>
-<p>为了确保shadow DOM子树中的元素不会暴露给外部子树，会有很多工作来分发内部子树事件. 
-首先，shadow DOM 子树会阻止事件如mutation和selectstart外部监听. 那些能够穿过shadow DOM的范围并且重定向的的事件，它们的<strong>target</strong>和<strong>relatedTarget</strong>的会指向shadow DOM子树的宿主元素. 在一些情况下，如<strong>DOMFocusIn</strong>，<strong>mouseover</strong>，<strong>mouseout</strong>事件需要特别注意，如果你在shadow DOM的两个元素中间移动鼠标，会出现鼠标从本身移动到它本身这种诡异的事件</p>
+<p>为了确保shadow DOM子树中的元素不会暴露给外部子树，会有很多工作来分发内部子树事件.<br>首先，shadow DOM 子树会阻止事件如mutation和selectstart外部监听. 那些能够穿过shadow DOM的范围并且重定向的的事件，它们的<strong>target</strong>和<strong>relatedTarget</strong>的会指向shadow DOM子树的宿主元素. 在一些情况下，如<strong>DOMFocusIn</strong>，<strong>mouseover</strong>，<strong>mouseout</strong>事件需要特别注意，如果你在shadow DOM的两个元素中间移动鼠标，会出现鼠标从本身移动到它本身这种诡异的事件</p>
 <h2>7 Imports</h2>
-<p>规范标准见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html">The HTML Imports specification</a></p>
+<p>规范标准见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html" target="_blank">The HTML Imports specification</a></p>
 <p>Custom elements 和 decorators可以通过文件的方式引入：</p>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"import"</span> <span class="attribute">href</span>=<span class="value">"goodies.html"</span>&gt;</span>
-</pre></figure></code></pre>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"import"</span> <span class="attribute">href</span>=<span class="value">"goodies.html"</span>&gt;</span></code></pre>
 <p>只有<code>&lt;decorator&gt;</code>元素和<code>&lt;element&gt;</code>能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行.</p>
 
       
@@ -631,6 +555,11 @@ ticker.pseudo = <span class="string">'x-ticker'</span>;
   </div>
 
         
+  
+  <div class="tags">
+    <a href="/tags/shadow DOM/">shadow DOM</a>, <a href="/tags/templates/">templates</a>, <a href="/tags/decorator/">decorator</a>, <a href="/tags/import/">import</a>, <a href="/tags/custom elements/">custom elements</a>
+  </div>
+
         <!--
   <div class="addthis addthis_toolbox addthis_default_style">
     
@@ -692,7 +621,7 @@ ticker.pseudo = <span class="string">'x-ticker'</span>;
   
     <li><a href="/categories/android/">android</a><small>2</small></li>
   
-    <li><a href="/categories/deep-learning/">deep learning</a><small>1</small></li>
+    <li><a href="/categories/deep learning/">deep learning</a><small>1</small></li>
   
     <li><a href="/categories/java/">java</a><small>1</small></li>
   
@@ -710,7 +639,7 @@ ticker.pseudo = <span class="string">'x-ticker'</span>;
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/DDOS/" style="font-size: 11.00px;">DDOS</a><a href="/tags/Deep-Learning/" style="font-size: 19.00px;">Deep Learning</a><a href="/tags/IO-performance/" style="font-size: 16.00px;">I/O performance</a><a href="/tags/Scrolling-performance/" style="font-size: 17.00px;">Scrolling performance</a><a href="/tags/UI-performance/" style="font-size: 15.00px;">UI performance</a><a href="/tags/free-bitcoin/" style="font-size: 12.00px;">free bitcoin</a><a href="/tags/javascript/" style="font-size: 14.00px;">javascript</a><a href="/tags/seo/" style="font-size: 10.00px;">seo</a><a href="/tags/历史记录/" style="font-size: 13.00px;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: 18.00px;">悬浮窗</a>
+    <a href="/tags/DDOS/" style="font-size: NaNpx;">DDOS</a><a href="/tags/Deep Learning/" style="font-size: NaNpx;">Deep Learning</a><a href="/tags/I/O performance/" style="font-size: NaNpx;">I/O performance</a><a href="/tags/Scrolling performance/" style="font-size: NaNpx;">Scrolling performance</a><a href="/tags/UI performance/" style="font-size: NaNpx;">UI performance</a><a href="/tags/custom elements/" style="font-size: NaNpx;">custom elements</a><a href="/tags/decorator/" style="font-size: NaNpx;">decorator</a><a href="/tags/free bitcoin/" style="font-size: NaNpx;">free bitcoin</a><a href="/tags/import/" style="font-size: NaNpx;">import</a><a href="/tags/javascript/" style="font-size: NaNpx;">javascript</a><a href="/tags/seo/" style="font-size: NaNpx;">seo</a><a href="/tags/shadow DOM/" style="font-size: NaNpx;">shadow DOM</a><a href="/tags/templates/" style="font-size: NaNpx;">templates</a><a href="/tags/历史记录/" style="font-size: NaNpx;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: NaNpx;">悬浮窗</a>
   </div>
 </div>
 
@@ -738,7 +667,7 @@ ticker.pseudo = <span class="string">'x-ticker'</span>;
   document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5533780f373b71b5d7f93e710ff74bfc' type='text/javascript'%3E%3C/script%3E"));
  </script>
   
-  &copy; 2013 SuetMing
+  &copy; 2014 SuetMing
   
 </div>
 <div class="clearfix"></div>

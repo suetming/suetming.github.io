@@ -83,7 +83,7 @@
       
         <h2>引言</h2>
 <p>本文主要介绍jekyll的博客引擎octopress如何配置、定制和增加评论分享插件，如何部署至github，以及如何注册绑定域名</p>
-<p><a name="more"></a></p>
+<p><a id="more"></a></p>
 <h2>环境</h2>
 <ul>
 <li>git </li>
@@ -91,30 +91,26 @@
 <li>gem</li>
 </ul>
 <h2>安装octopress</h2>
-<pre><code><figure class="highlight"><pre><span class="title">git</span> clone <span class="url">git://github.com/imathis/octopress.git</span> octopress
+<pre><code><span class="title">git</span> clone <span class="url">git://github.com/imathis/octopress.git</span> octopress
 cd octopress
 bundle install <span class="comment">#安装依赖</span>
-rake install <span class="comment">#安装主题</span>
-</pre></figure></code></pre>
+rake install <span class="comment">#安装主题</span></code></pre>
 <h2>主题theme</h2>
 <p>google搜索主题定位github,输入如下代码切换主题</p>
-<pre><code class="lang-sh"><figure class="highlight lang-sh"><pre><span class="title">cd</span> octopress
+<pre><code class="lang-sh"><span class="title">cd</span> octopress
 <span class="title">git</span> clone git://github.com/tommy351/<span class="type">Octopress</span>-<span class="type">Theme</span>-<span class="type">Slash</span>.git .themes/slash
 <span class="title">rake</span> install['slash']
-<span class="title">rake</span> generate
-</pre></figure></code></pre>
+<span class="title">rake</span> generate</code></pre>
 <h2>发布到github</h2>
-<pre><code><figure class="highlight"><pre><span class="title">rake</span> setup_github_pages <span class="comment">#建立连接按照提示输入url如：git@github.com:用户名/用户名.github.com.git</span>
+<pre><code><span class="title">rake</span> setup_github_pages <span class="comment">#建立连接按照提示输入url如：git@github.com:用户名/用户名.github.com.git</span>
 rake generate <span class="comment">#生成静态页面</span>
 rake preview <span class="comment">#本地预览 http://localhost:4000</span>
-rake deploy <span class="comment">#部署到github，访问 http://用户名.github.com 查看博客服务器运行效果</span>
-</pre></figure></code></pre>
+rake deploy <span class="comment">#部署到github，访问 http://用户名.github.com 查看博客服务器运行效果</span></code></pre>
 <h2>添加评论</h2>
-<p>默认的评论系统disqus主要针对twitter、facebook等不适合中国国情，选用时候国内的评论系统目前主要有友言、灯鹭、多说，<a href="http://www.zoum5.com/ue/310.html">对比文章见此处</a>
-本文选用多说</p>
+<p>默认的评论系统disqus主要针对twitter、facebook等不适合中国国情，选用时候国内的评论系统目前主要有友言、灯鹭、多说，<a href="http://www.zoum5.com/ue/310.html" target="_blank">对比文章见此处</a><br>本文选用多说</p>
 <ul>
 <li>注册多说，绑定shortname</li>
-<li>修改octopress，详细步骤见<a href="http://ihavanna.org/Internet/2013-02/add-duoshuo-commemt-system-into-octopress.html">此处</a></li>
+<li>修改octopress，详细步骤见<a href="http://ihavanna.org/Internet/2013-02/add-duoshuo-commemt-system-into-octopress.html" target="_blank">此处</a></li>
 </ul>
 <h2>添加分享</h2>
 <p>octopress自带的分享不适合中国国情，本文在查看了国内几个分享插件后，选用bshare</p>
@@ -122,24 +118,21 @@ rake deploy <span class="comment">#部署到github，访问 http://用户名.git
 <li>注册bshare，定制分享控件样式，复制代码</li>
 <li>修改_config.yml文件增加下述代码</li>
 </ul>
-<pre><code><figure class="highlight"><pre><span class="method">bshare_user:</span>
-<span class="method">bshare_button:</span> <span class="keyword">true</span>
-</pre></figure></code></pre>
+<pre><code><span class="method">bshare_user:</span>
+<span class="method">bshare_button:</span> <span class="keyword">true</span></code></pre>
 <ul>
 <li>将_config.yml中的twitter_tweet_button设置为false</li>
 <li>修改source\includes\post\sharing.html文件，插入</li>
 </ul>
-<pre><code><figure class="highlight"><pre>
-
-</pre></figure></code></pre>
+<pre><code>
+</code></pre>
 <ul>
 <li>将下述代码注释</li>
 </ul>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"addthis_counter addthis_pill_style"</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span>
-</pre></figure></code></pre>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"addthis_counter addthis_pill_style"</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span></code></pre>
 <h2>SEO</h2>
 <p>octopress 默认提供关键字和描述，默认new_post不生成，可以手动添加</p>
-<pre><code><figure class="highlight"><pre><span class="comment">---</span>
+<pre><code><span class="comment">---</span>
 <span class="title">layout</span>: post
 <span class="title">title</span>: <span class="string">"Octopress SEO"</span>
 <span class="title">date</span>: <span class="number">2013</span>-<span class="number">01</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">13</span>
@@ -147,10 +140,9 @@ rake deploy <span class="comment">#部署到github，访问 http://用户名.git
 <span class="title">categories</span>: <span class="type">Internet</span>
 <span class="title">keywords</span>: octopress, seo, keywords, description
 <span class="title">description</span>: octopress系列-从零搭建部署
-<span class="comment">---</span>
-</pre></figure></code></pre>
+<span class="comment">---</span></code></pre>
 <p>或者编辑Rakefile，找到相应行插入</p>
-<pre><code class="lang-sh"><figure class="highlight lang-sh"><pre>puts <span class="string">"Creating new post: #{filename}"</span>
+<pre><code class="lang-sh">puts <span class="string">"Creating new post: #{filename}"</span>
   open(filename, <span class="string">'w'</span>) <span class="keyword">do</span> |post|
     post<span class="variable">.puts</span> <span class="string">"---"</span>
     post<span class="variable">.puts</span> <span class="string">"layout: post"</span>
@@ -161,14 +153,12 @@ rake deploy <span class="comment">#部署到github，访问 http://用户名.git
     post<span class="variable">.puts</span> <span class="string">"categories: "</span>
     post<span class="variable">.puts</span> <span class="string">"keywords: "</span>
     post<span class="variable">.puts</span> <span class="string">"description: "</span>
-    post<span class="variable">.puts</span> <span class="string">"---"</span>
-</pre></figure></code></pre>
+    post<span class="variable">.puts</span> <span class="string">"---"</span></code></pre>
 <p>编辑_config.yml，添加keywords和description，如下</p>
-<pre><code><figure class="highlight"><pre><span class="attribute">keywords</span>: <span class="string">browser, internet, media, sql</span>
-<span class="attribute">description</span>: <span class="string">Coding is my life。</span>
-</pre></figure></code></pre>
+<pre><code><span class="attribute">keywords</span>: <span class="string">browser, internet, media, sql</span>
+<span class="attribute">description</span>: <span class="string">Coding is my life。</span></code></pre>
 <p>修改.themes/classic/source/_includes/head.html文件，替换description/keywords</p>
-<pre><code><figure class="highlight"><pre><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"author"</span> <span class="attribute">content</span>=<span class="value">"<span class="variable">{{ site.author }}</span>"</span>&gt;</span>
+<pre><code><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"author"</span> <span class="attribute">content</span>=<span class="value">"<span class="variable">{{ site.author }}</span>"</span>&gt;</span>
 <span class="template_tag">{% capture description %}</span>
     <span class="template_tag">{% <span class="keyword">if</span> page.description %}</span>
         <span class="variable">{{ page.description }}</span>
@@ -184,21 +174,17 @@ rake deploy <span class="comment">#部署到github，访问 http://用户名.git
     <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"keywords"</span> <span class="attribute">content</span>=<span class="value">"<span class="variable">{{ page.keywords }}</span>"</span>&gt;</span>
 <span class="template_tag">{%<span class="keyword">else</span>%}</span>
     <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"keywords"</span> <span class="attribute">content</span>=<span class="value">"<span class="variable">{{ site.keywords }}</span>"</span>&gt;</span>
-<span class="template_tag">{% <span class="keyword">endif</span> %}</span>
-</pre></figure></code></pre>
+<span class="template_tag">{% <span class="keyword">endif</span> %}</span></code></pre>
 <h2>绑定域名</h2>
 <ul>
 <li>去域名提供商购买TLD域名(如<a href="www.namecheap.com">namecheap</a>)</li>
-<li>在source文件下新建CNAME文件<pre><code><figure class="highlight"><pre>域名<span class="variable">.com</span>
-</pre></figure></code></pre>
+<li>在source文件下新建CNAME文件<pre><code>域名<span class="variable">.com</span></code></pre>
 </li>
-<li>上传至github<pre><code><figure class="highlight"><pre><span class="title">rake</span> deploy
-</pre></figure></code></pre>
+<li>上传至github<pre><code><span class="title">rake</span> deploy</code></pre>
 </li>
 <li>域名提供商点击all host records</li>
 </ul>
-<p><img src="/images/photos/2013-03-27-namecheap-all-host-records.png" alt="all host records">
-- 设置如图所示</p>
+<p><img src="/images/photos/2013-03-27-namecheap-all-host-records.png" alt="all host records"><br>- 设置如图所示</p>
 <p><img src="/images/photos/2013-03-27-namecheap-dns-settings.png" alt="namecheap dns settings"></p>
 <h2>添加google统计分析</h2>
 <ul>
@@ -206,33 +192,28 @@ rake deploy <span class="comment">#部署到github，访问 http://用户名.git
 <li>获取跟踪ID</li>
 <li>将跟踪ID加入octopress的_config.yml中</li>
 </ul>
-<pre><code><figure class="highlight"><pre><span class="attribute">google_analytics_tracking_id</span>: <span class="string">xxxx</span>
-</pre></figure></code></pre>
+<pre><code><span class="attribute">google_analytics_tracking_id</span>: <span class="string">xxxx</span></code></pre>
 <h2>移动设备(ios|android)增加touch icon</h2>
 <ul>
 <li>制作APP图标保存为png(114 X 144)</li>
 <li>在/source/_includes/head.html插入</li>
 </ul>
-<pre><code class="lang-html"><figure class="highlight lang-html"><pre><span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"apple-touch-icon"</span> <span class="attribute">href</span>=<span class="value">"apple-touch-icon-precomposed.png"</span>/&gt;</span>
-</pre></figure></code></pre>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"apple-touch-icon"</span> <span class="attribute">href</span>=<span class="value">"apple-touch-icon-precomposed.png"</span>/&gt;</span></code></pre>
 <ul>
-<li>详细APP ICON 方法可参考
-<a href="http://www.ravelrumba.com/blog/android-apple-touch-icon/">ravelrumba</a>
-<a href="http://developer.apple.com/library/safari/#documentation/appleapplications/reference/safariwebcontent/ConfiguringWebApplications/ConfiguringWebApplications.html">developer.apple.com</a></li>
+<li>详细APP ICON 方法可参考<br><a href="http://www.ravelrumba.com/blog/android-apple-touch-icon/" target="_blank">ravelrumba</a><br><a href="http://developer.apple.com/library/safari/#documentation/appleapplications/reference/safariwebcontent/ConfiguringWebApplications/ConfiguringWebApplications.html" target="_blank">developer.apple.com</a></li>
 </ul>
 <h2>可能的问题</h2>
-<p>&#39;Liquid error: incompatible character encodings: UTF-8 and IBM437&#39;</p>
+<p>‘Liquid error: incompatible character encodings: UTF-8 and IBM437’</p>
 <ul>
 <li>mygit: 添加两对用户自定义的环境变量，LC_ALL=en_US.UTF-8 和 LANG=en_US.UTF-8</li>
 <li>cmd: 在octopress的Rakefile最后添加如下代码:</li>
 </ul>
-<pre><code><figure class="highlight"><pre>task :runwindows <span class="operator"><span class="keyword">do</span>
+<pre><code>task :runwindows <span class="operator"><span class="keyword">do</span>
     puts <span class="string">'* Changing the codepage'</span>
     <span class="string">`chcp 65001`</span>
     puts <span class="string">'* Running Jekyll'</span>
     <span class="string">`jekyll --server --auto`</span>
-<span class="keyword">end</span>
-</pre></figure></code></pre>
+<span class="keyword">end</span></code></pre>
 <p>cmd下执行rake runwindows</p>
 
       
@@ -313,7 +294,7 @@ rake deploy <span class="comment">#部署到github，访问 http://用户名.git
   
     <li><a href="/categories/android/">android</a><small>2</small></li>
   
-    <li><a href="/categories/deep-learning/">deep learning</a><small>1</small></li>
+    <li><a href="/categories/deep learning/">deep learning</a><small>1</small></li>
   
     <li><a href="/categories/java/">java</a><small>1</small></li>
   
@@ -331,7 +312,7 @@ rake deploy <span class="comment">#部署到github，访问 http://用户名.git
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/DDOS/" style="font-size: 11.00px;">DDOS</a><a href="/tags/Deep-Learning/" style="font-size: 19.00px;">Deep Learning</a><a href="/tags/IO-performance/" style="font-size: 16.00px;">I/O performance</a><a href="/tags/Scrolling-performance/" style="font-size: 17.00px;">Scrolling performance</a><a href="/tags/UI-performance/" style="font-size: 15.00px;">UI performance</a><a href="/tags/free-bitcoin/" style="font-size: 12.00px;">free bitcoin</a><a href="/tags/javascript/" style="font-size: 14.00px;">javascript</a><a href="/tags/seo/" style="font-size: 10.00px;">seo</a><a href="/tags/历史记录/" style="font-size: 13.00px;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: 18.00px;">悬浮窗</a>
+    <a href="/tags/DDOS/" style="font-size: NaNpx;">DDOS</a><a href="/tags/Deep Learning/" style="font-size: NaNpx;">Deep Learning</a><a href="/tags/I/O performance/" style="font-size: NaNpx;">I/O performance</a><a href="/tags/Scrolling performance/" style="font-size: NaNpx;">Scrolling performance</a><a href="/tags/UI performance/" style="font-size: NaNpx;">UI performance</a><a href="/tags/custom elements/" style="font-size: NaNpx;">custom elements</a><a href="/tags/decorator/" style="font-size: NaNpx;">decorator</a><a href="/tags/free bitcoin/" style="font-size: NaNpx;">free bitcoin</a><a href="/tags/import/" style="font-size: NaNpx;">import</a><a href="/tags/javascript/" style="font-size: NaNpx;">javascript</a><a href="/tags/seo/" style="font-size: NaNpx;">seo</a><a href="/tags/shadow DOM/" style="font-size: NaNpx;">shadow DOM</a><a href="/tags/templates/" style="font-size: NaNpx;">templates</a><a href="/tags/历史记录/" style="font-size: NaNpx;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: NaNpx;">悬浮窗</a>
   </div>
 </div>
 
@@ -359,7 +340,7 @@ rake deploy <span class="comment">#部署到github，访问 http://用户名.git
   document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5533780f373b71b5d7f93e710ff74bfc' type='text/javascript'%3E%3C/script%3E"));
  </script>
   
-  &copy; 2013 SuetMing
+  &copy; 2014 SuetMing
   
 </div>
 <div class="clearfix"></div>

@@ -81,8 +81,7 @@
     <div class="entry">
       
         <p>android开发有几年了，对其相关有些许认识，虽然现在手机的硬件配置以极快的速度提升，但是优化仍然占有重要的位置，是必不可少的重要环节，本文主要是写自己在学习和实际开发app过程中的吸取的教训和对优化相关认识的总结，如有不周之处，还请批评指正</p>
-<p><a name="more"></a>
-本文主要由以下几部分组成：</p>
+<p><a id="more"></a><br>本文主要由以下几部分组成：</p>
 <ul>
 <li>framework API</li>
 <li>UI 性能优化</li>
@@ -94,14 +93,13 @@
 <ul>
 <li>Thread、Runnable、Future、ExecutorService、AsyncTask</li>
 </ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() {
+<pre><code class="lang-java"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() {
     <span class="annotation">@Override</span>
     <span class="keyword">public</span> <span class="keyword">void</span> run() {
         <span class="comment">// 后台任务</span>
     }
-}).start();
-</pre></figure></code></pre>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> AsyncTask&lt;URL, Integer, Integer&gt;() {
+}).start();</code></pre>
+<pre><code class="lang-java"><span class="keyword">new</span> AsyncTask&lt;URL, Integer, Integer&gt;() {
     <span class="keyword">protected</span> Long doInBackground(URL... urls) {
         <span class="comment">// background thread</span>
         <span class="comment">// fetch url/save open file/...</span>
@@ -114,9 +112,8 @@
     <span class="keyword">protected</span> <span class="keyword">void</span> onPostExecute(Integer result) {
         <span class="comment">// frontend thread</span>
     }
-}
-</pre></figure></code></pre>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre>HandlerThread mHandlerThread = <span class="keyword">new</span> HandlerThread(<span class="string">"WorkerThread"</span>);
+}</code></pre>
+<pre><code class="lang-java">HandlerThread mHandlerThread = <span class="keyword">new</span> HandlerThread(<span class="string">"WorkerThread"</span>);
     Handler handler = <span class="keyword">new</span> Handler(mHandlerThread.getLooper()) {
         <span class="annotation">@Override</span>
         <span class="keyword">public</span> <span class="keyword">void</span> handleMessage(Message msg) {
@@ -144,11 +141,10 @@ handler.post(<span class="keyword">new</span> Runnable() {
 <span class="keyword">protected</span> <span class="keyword">void</span> onDestroy() {
     mHandlerThread.quit();
     <span class="keyword">super</span>.onDestroy();
-}
-</pre></figure></code></pre>
+}</code></pre>
 <p>由于thread比较简单，不支持并发中的很多特性，如果要求同步和调度等功能需要自己实现，可选用Asynctask来处理，不过如果需要和frontend有更多的交互，则thread+handler+looper更灵活</p>
 <p>如果要处理ContentProvider相关内容，这些耗时操作可以用AsyncQueryHandler来处理</p>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> AsyncQueryHandler(getContentResolver()) {
+<pre><code class="lang-java"><span class="keyword">new</span> AsyncQueryHandler(getContentResolver()) {
     <span class="annotation">@Override</span>
     <span class="keyword">protected</span> <span class="keyword">void</span> onQueryComplete(<span class="keyword">int</span> token, Object cookie,Cursor cursor) {
         <span class="keyword">if</span> (token == <span class="number">0</span>) {
@@ -160,10 +156,9 @@ handler.post(<span class="keyword">new</span> Runnable() {
             RawContacts.CONTENT_URI, <span class="keyword">null</span>, <span class="comment">// projection</span>
             RawContacts.CONTACT_ID + <span class="string">"&lt;?"</span>, <span class="comment">// selection</span>
             <span class="keyword">new</span> String[] { <span class="string">"888"</span> }, <span class="comment">// selectionArgs</span>
-            RawContacts.DISPLAY_NAME_PRIMARY + <span class="string">" ASC"</span>);  <span class="comment">// orderby</span>
-</pre></figure></code></pre>
+            RawContacts.DISPLAY_NAME_PRIMARY + <span class="string">" ASC"</span>);  <span class="comment">// orderby</span></code></pre>
 <p>如果后台运行服务需要做耗时操作请采用IntentService而不是Service，因为Service和应用程序在同一个进程不是单独的进程; Service也不是线程，所以需要避免做耗时操作</p>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WorkerService</span> <span class="keyword">extends</span> <span class="title">IntentService</span> {</span>
+<pre><code class="lang-java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WorkerService</span> <span class="keyword">extends</span> <span class="title">IntentService</span> {</span>
     <span class="keyword">public</span> WorkerService() {
         <span class="keyword">super</span>(<span class="string">"WorkerThread"</span>);
     }
@@ -177,8 +172,7 @@ handler.post(<span class="keyword">new</span> Runnable() {
     }
 }
 
-startService(<span class="keyword">new</span> Intent(<span class="string">"com.test.DO_JOB_1"</span>));
-</pre></figure></code></pre>
+startService(<span class="keyword">new</span> Intent(<span class="string">"com.test.DO_JOB_1"</span>));</code></pre>
 <p>总结，采用下述API避免在UI线程做耗时操作</p>
 <ul>
 <li>Activity or Fragment<ul>
@@ -217,7 +211,7 @@ startService(<span class="keyword">new</span> Intent(<span class="string">"com.t
 <ul>
 <li>缓存Item避免重复Inflate：</li>
 </ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="annotation">@Override</span>
+<pre><code class="lang-java"><span class="annotation">@Override</span>
 <span class="keyword">public</span> View getView(<span class="keyword">int</span> position, View convertView, ViewGroup parent) {
     <span class="keyword">if</span> (convertView == <span class="keyword">null</span>) {
         convertView = mInflater.inflate(R.layout.main, parent, <span class="keyword">false</span>);
@@ -235,32 +229,29 @@ startService(<span class="keyword">new</span> Intent(<span class="string">"com.t
 <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> {</span>
     ImageView img;
     TextView txt;
-}
-</pre></figure></code></pre>
+}</code></pre>
 <ul>
 <li>尽量缓存view避免findviewById()</li>
 <li>避免不必要的drawing</li>
 </ul>
 <p>通常情况下即使一个实体的子类view在最前面，android也会绘制每一个父类view，所以如果有不可见的父类视图则需要禁用draw来减少消耗</p>
 <p>其次大多数情况下Window的背景也不需要绘制</p>
-<pre><code><figure class="highlight"><pre>getWindow()<span class="preprocessor">.setBackgroundDrawable</span>(null)<span class="comment">;</span>
+<pre><code>getWindow()<span class="preprocessor">.setBackgroundDrawable</span>(null)<span class="comment">;</span>
 
-<span class="label">android:</span>windowBackground=<span class="string">"@null"</span> // XML
-</pre></figure></code></pre>
+<span class="label">android:</span>windowBackground=<span class="string">"@null"</span> // XML</code></pre>
 <ul>
 <li>运行时要避免图像放缩等耗时操作</li>
-<li>滚动时避免animations(AnimationDrawable...)</li>
+<li>滚动时避免animations(AnimationDrawable…)</li>
 <li>如果要用animations，设置ListView.setDrawableCacheEnabled(false)</li>
 </ul>
 <h2>I/O 性能优化</h2>
 <ul>
 <li>SharedPreferences是耗时I/O操作请采用异步方式</li>
 </ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre>SharedPreferences.Editor.apply();  <span class="comment">// asynchronous</span>
-SharedPreferences.Editor.commit(); <span class="comment">// synchronous</span>
-</pre></figure></code></pre>
+<pre><code class="lang-java">SharedPreferences.Editor.apply();  <span class="comment">// asynchronous</span>
+SharedPreferences.Editor.commit(); <span class="comment">// synchronous</span></code></pre>
 <p>可以采用下面的封装</p>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SharedPreferencesUtils</span> {</span>
+<pre><code class="lang-java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SharedPreferencesUtils</span> {</span>
     <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Method sApplyMethod = findApplyMethod();
     <span class="keyword">private</span> <span class="keyword">static</span> Method findApplyMethod() {
         <span class="keyword">try</span> {
@@ -284,28 +275,26 @@ SharedPreferences.Editor.commit(); <span class="comment">// synchronous</span>
         }
         editor.commit();
     }
-}
-</pre></figure></code></pre>
+}</code></pre>
 <ul>
-<li>数据库查询可以采用<a href="http://www.sqlite.org/eqp.html">EXPLAIN QUERY PLAN</a>来确定哪些信息需要优化或者用TraceView查看</li>
+<li>数据库查询可以采用<a href="http://www.sqlite.org/eqp.html" target="_blank">EXPLAIN QUERY PLAN</a>来确定哪些信息需要优化或者用TraceView查看</li>
 <li>SQLITE的某些字段可以添加索引提高查询速度</li>
 </ul>
 <p><img src="/images/photos/2013-07-sqlite-db-index.png" alt="sqlite添加索引"></p>
 <ul>
 <li><p>如无必要请对查询的数据增加限制LIMIT来减少耗时</p>
 </li>
-<li><p>可以用<a href="http://developer.android.com/reference/android/database/sqlite/SQLiteStatement.html">SQLiteStatement</a>来预编译一些频繁使用的sql语句</p>
+<li><p>可以用<a href="http://developer.android.com/reference/android/database/sqlite/SQLiteStatement.html" target="_blank">SQLiteStatement</a>来预编译一些频繁使用的sql语句</p>
 </li>
 </ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre>SQLiteDatabase db = dbHelper.getWritableDatabase();
+<pre><code class="lang-java">SQLiteDatabase db = dbHelper.getWritableDatabase();
 SQLiteStatement stmt = db.compileStatement(<span class="string">"SELECT * FROM Country WHERE code = ?"</span>);
 stmt.bindString(<span class="number">1</span>, <span class="string">"US"</span>);
-stmt.execute();
-</pre></figure></code></pre>
+stmt.execute();</code></pre>
 <ul>
 <li>如果用了ContentObserver，请延迟查询操作</li>
 </ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre>getContentResolver().registerContentObserver(uri, <span class="keyword">true</span>,
+<pre><code class="lang-java">getContentResolver().registerContentObserver(uri, <span class="keyword">true</span>,
     <span class="keyword">new</span> ContentObserver(<span class="keyword">new</span> Handler()) {
             <span class="annotation">@Override</span>
             <span class="keyword">public</span> <span class="keyword">void</span> onChange(<span class="keyword">boolean</span> selfChange) {
@@ -321,13 +310,12 @@ stmt.execute();
         <span class="comment">// start query again</span>
         mDirty = <span class="keyword">false</span>;
     }
-})
-</pre></figure></code></pre>
+})</code></pre>
 <ul>
 <li>能批量操作的尽量批量操作ContentProviderOperation、ContentProviderOperation.Builder、ContentResolver.applyBatch()</li>
 <li>多线程情况下可以采用SQLITEDatabase.yieldIfContendedSafely()</li>
 </ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="annotation">@Override</span>
+<pre><code class="lang-java"><span class="annotation">@Override</span>
 <span class="keyword">public</span> <span class="keyword">int</span> bulkInsert(Uri uri, ContentValues[] values) {
     <span class="keyword">int</span> numValues = values.length;
     mDb = mOpenHelper.getWritableDatabase();
@@ -347,45 +335,30 @@ stmt.execute();
 
     onEndTransaction();
     <span class="keyword">return</span> numValues;
-}
-</pre></figure></code></pre>
+}</code></pre>
 <ul>
 <li>输出事件日志分析耗时操作并优化</li>
 </ul>
-<pre><code><figure class="highlight"><pre><span class="tag">adb</span> <span class="tag">logcat</span> -<span class="tag">b</span> <span class="tag">events</span> <span class="tag">content_query_sample</span><span class="pseudo">:I</span> *<span class="pseudo">:S</span>
-</pre></figure></code></pre>
-<p>内存性能优化
-内存这块比较大，从底层的Linux的就有OOM killer到Android系统层的OOM killer，我们只讨论应用层</p>
+<pre><code><span class="tag">adb</span> <span class="tag">logcat</span> -<span class="tag">b</span> <span class="tag">events</span> <span class="tag">content_query_sample</span><span class="pseudo">:I</span> *<span class="pseudo">:S</span></code></pre>
+<p>内存性能优化<br>内存这块比较大，从底层的Linux的就有OOM killer到Android系统层的OOM killer，我们只讨论应用层</p>
 <p>在应用层上，android严格控制每一个应用程序分配多少内存，当应用超出这个限制会抛出OutOfMemoryError</p>
 <p>打开ADT的heap可以查看里面每一列</p>
 <p><img src="/images/photos/2013-07-heap.png" alt="heap"></p>
-<p>这里要说明几个概念：
-- Heap limit：Dalvik heap最大值
-- Heap size: Dalvik heap当前值
-- Allocated： Dalvik heap分配的字节数
-- Free：还能分配的Heap size
-- %Used: free / heap size * 100%
-- External allocation: Bitmap内存(HoneyComb版本之前的参数)</p>
+<p>这里要说明几个概念：<br>- Heap limit：Dalvik heap最大值<br>- Heap size: Dalvik heap当前值<br>- Allocated： Dalvik heap分配的字节数<br>- Free：还能分配的Heap size<br>- %Used: free / heap size * 100%<br>- External allocation: Bitmap内存(HoneyComb版本之前的参数)</p>
 <p>其次不同机型的Heap size limit是不同的，通过ActivityManager.getMemoryClass()获取内存信息</p>
 <p>出现OOM的条件：</p>
 <ul>
 <li>Honeycomb之前</li>
 </ul>
-<pre><code><figure class="highlight"><pre><span class="comment">Heap</span> <span class="comment">size</span> <span class="literal">+</span> <span class="comment">external</span> <span class="comment">allocation</span> <span class="literal">+</span> <span class="comment">new</span> <span class="comment">allocation</span> <span class="comment">request</span> &gt;<span class="comment">=</span> <span class="comment">Heap</span> <span class="comment">limit
-</pre></figure></code></pre>
+<pre><code><span class="comment">Heap</span> <span class="comment">size</span> <span class="literal">+</span> <span class="comment">external</span> <span class="comment">allocation</span> <span class="literal">+</span> <span class="comment">new</span> <span class="comment">allocation</span> <span class="comment">request</span> &gt;<span class="comment">=</span> <span class="comment">Heap</span> <span class="comment">limit</code></pre>
 <ul>
 <li>Honeycomb之后</li>
 </ul>
-<pre><code><figure class="highlight"><pre><span class="title">Heap</span> size + new allocation request &gt;= Heap limit
-<span class="number">104</span>
-</pre></figure></code></pre>
-<p>不过上述情况并不能代表应用进程的实际使用情况，要注意以下几点
-- 每一个进程初始情况下有2MB+的开销
-- 本地下可以分配更多的内存：android app 运行在Dalvik VM上，但是通过JNI可以调用本地lib，并且可以在lib中做相关操作
-- 如果开启硬件加速（ICS默认开启），会给OpenGL分配8MB初始内存</p>
+<pre><code><span class="title">Heap</span> size + new allocation request &gt;= Heap limit
+<span class="number">104</span></code></pre>
+<p>不过上述情况并不能代表应用进程的实际使用情况，要注意以下几点<br>- 每一个进程初始情况下有2MB+的开销<br>- 本地下可以分配更多的内存：android app 运行在Dalvik VM上，但是通过JNI可以调用本地lib，并且可以在lib中做相关操作<br>- 如果开启硬件加速（ICS默认开启），会给OpenGL分配8MB初始内存</p>
 <p>通过下述命令查看内存使用情况</p>
-<pre><code><figure class="highlight"><pre><span class="title">adb</span> shell procrank -p
-</pre></figure></code></pre>
+<pre><code><span class="title">adb</span> shell procrank -p</code></pre>
 <p><img src="/images/photos/2013-07-memory-usage.png" alt="memory useage"></p>
 <p>图解说明：</p>
 <ul>
@@ -395,10 +368,9 @@ stmt.execute();
 <li>USS(Unique Set Size))：进程可以取得的未分配的页数</li>
 </ul>
 <p>打印进程虚拟内存相关命令如下：</p>
-<pre><code><figure class="highlight"><pre>adb shell procmem -p <span class="tag">&lt;<span class="title">pid</span>&gt;</span>
-adb shell dumpsys meminfo <span class="tag">&lt;<span class="title">pid</span>&gt;</span>
-</pre></figure></code></pre>
-<p>stackoverflow：<a href="http://stackoverflow.com/questions/2298208/how-to-discover-memory-usage-of-my-application-in-android">http://stackoverflow.com/questions/2298208/how-to-discover-memory-usage-of-my-application-in-android</a></p>
+<pre><code>adb shell procmem -p <span class="tag">&lt;<span class="title">pid</span>&gt;</span>
+adb shell dumpsys meminfo <span class="tag">&lt;<span class="title">pid</span>&gt;</span></code></pre>
+<p>stackoverflow：<a href="http://stackoverflow.com/questions/2298208/how-to-discover-memory-usage-of-my-application-in-android" target="_blank">http://stackoverflow.com/questions/2298208/how-to-discover-memory-usage-of-my-application-in-android</a></p>
 <p>如何避免内存泄露？</p>
 <p>想要避免内存泄露，那么就需要了解垃圾回收(GC)</p>
 <ul>
@@ -418,9 +390,8 @@ adb shell dumpsys meminfo <span class="tag">&lt;<span class="title">pid</span>&g
 </li>
 </ul>
 <p>内存泄露主要是有代码本身造成的，GC无法阻止人为的内存泄露问题；只要有生命周期长度的引用引用了没用的对象，GC就无法回收；那么最有可能出现这种内存泄露的是那些对象呢？你猜对了，是Context/Activity</p>
-<p>参考：<a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/附图如下：">http://dubroy.com/blog/google-io-memory-management-for-android-apps/附图如下：</a>
-<img src="/images/photos/2013-07-memory-leak.png" alt="memory leak"></p>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> <span class="keyword">extends</span> <span class="title">Activity</span> <span class="keyword">implements</span> <span class="title">ActionBar</span>.<span class="title">TabListener</span> {</span>
+<p>参考：<a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/附图如下：" target="_blank">http://dubroy.com/blog/google-io-memory-management-for-android-apps/附图如下：</a><br><img src="/images/photos/2013-07-memory-leak.png" alt="memory leak"></p>
+<pre><code class="lang-java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> <span class="keyword">extends</span> <span class="title">Activity</span> <span class="keyword">implements</span> <span class="title">ActionBar</span>.<span class="title">TabListener</span> {</span>
     <span class="keyword">static</span> Leaky leak = <span class="keyword">null</span>;
     <span class="class"><span class="keyword">class</span> <span class="title">Leaky</span> {</span>
         <span class="keyword">void</span> doSomething(){
@@ -434,18 +405,16 @@ adb shell dumpsys meminfo <span class="tag">&lt;<span class="title">pid</span>&g
             leak = <span class="keyword">new</span> Leaky();
         }
     }
-}
-</pre></figure></code></pre>
+}</code></pre>
 <p>上述代码引用了一个私有非静态内部类的实例对象，情况可想而知：</p>
 <p><img src="/images/photos/2013-07-inner-class-object.png" alt="inner class"></p>
 <p>一个超过Activity生命周期的线程，会发生什么情况？内存泄露</p>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() {
+<pre><code class="lang-java"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() {
     <span class="annotation">@Override</span>
     <span class="keyword">public</span> <span class="keyword">void</span> run() {
         <span class="comment">// do some heavy work</span>
     }
-}).start();
-</pre></figure></code></pre>
+}).start();</code></pre>
 <p>如何检测内存泄露?</p>
 <p>1.LOGCAT</p>
 <p><img src="/images/photos/2013-07-logcat.png" alt="logcat"></p>
@@ -453,9 +422,7 @@ adb shell dumpsys meminfo <span class="tag">&lt;<span class="title">pid</span>&g
 <p>2.Allocation Tracker可以查看已经分配内存去没有用到的对象</p>
 <p><img src="/images/photos/2013-07-reference-object.png" alt="look up object"></p>
 <p>3.Eclipse Memory Analyzer (MAT)可以查看潜在的内存泄露</p>
-<p>DEMO：
-- <a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/">dubroy</a>
-- <a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=_CruQY55HOk">youtube</a></p>
+<p>DEMO：<br>- <a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/" target="_blank">dubroy</a><br>- <a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=_CruQY55HOk" target="_blank">youtube</a></p>
 <p>4.Histogram：查看Activity的实例数量，一个activity不止一个实例在运行是潜在内存泄露信号</p>
 <p><img src="/images/photos/2013-07-histogram.png" alt="histogram"></p>
 <p>5.Dominator Tree：帮助辨别占用很多内存且没有释放的对象</p>
@@ -470,7 +437,7 @@ adb shell dumpsys meminfo <span class="tag">&lt;<span class="title">pid</span>&g
 </ul>
 </li>
 </ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre>BitmapFactory.Options opts = <span class="keyword">new</span> BitmapFactory.Options();
+<pre><code class="lang-java">BitmapFactory.Options opts = <span class="keyword">new</span> BitmapFactory.Options();
 opts.inJustDecodeBounds = <span class="keyword">true</span>;
 BitmapFactory.decodeFile(path, opts);
 <span class="keyword">final</span> <span class="keyword">int</span> originalWidth = opts.outWidth;
@@ -482,8 +449,7 @@ opts.inSampleSize = <span class="number">1</span>;
     opts.inSampleSize *= <span class="number">2</span>;
     originalDim /= <span class="number">2</span>;
 }
-<span class="keyword">return</span> BitmapFactory.decodeFile(path, opts);
-</pre></figure></code></pre>
+<span class="keyword">return</span> BitmapFactory.decodeFile(path, opts);</code></pre>
 <ul>
 <li>Java Object：<ul>
 <li>用SoftReference替换直接引用</li>
@@ -491,7 +457,7 @@ opts.inSampleSize = <span class="number">1</span>;
 </ul>
 </li>
 </ul>
-<pre><code class="lang-java"><figure class="highlight lang-java"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> {</span>
+<pre><code class="lang-java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> {</span>
     <span class="keyword">static</span> Leaky leak = <span class="keyword">null</span>;
     <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Leaky</span> {</span>
         <span class="keyword">private</span> <span class="keyword">final</span> WeakReference&lt;Context&gt; mContext;
@@ -517,19 +483,18 @@ opts.inSampleSize = <span class="number">1</span>;
             leak = <span class="keyword">new</span> Leaky(<span class="keyword">this</span>);
         }
     }
-}
-</pre></figure></code></pre>
+}</code></pre>
 <h2>速度优化</h2>
 <p>经常会有引用一些开源的底层库，比如pdf或者doc解析库，ffmppeg编解码库等等，除了对库做底层的裁剪移植，我们有时也需要将解码后的图形等信息输出到设备上，或者url fetch了某些网页或者图片，为了避免下次重复这种耗时操作，有效的方法就是缓存</p>
-<p>图像的缓存见<a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html">android developer</a>已经有例子写的很详细，使用LRU(最近最少使用)算法实现</p>
+<p>图像的缓存见<a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html" target="_blank">android developer</a>已经有例子写的很详细，使用LRU(最近最少使用)算法实现</p>
 <h2>主要参考文献：</h2>
 <ul>
-<li>1.<a href="http://stackoverflow.com/questions/2630158/detect-application-heap-size-in-android/2634738#2634738">http://stackoverflow.com/questions/2630158/detect-application-heap-size-in-android/2634738#2634738</a></li>
-<li>2.<a href="http://developer.android.com/reference/java/lang/ref/WeakReference.html">http://developer.android.com/reference/java/lang/ref/WeakReference.html</a></li>
-<li>3.<a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html">http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html</a></li>
-<li>4.<a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/">http://dubroy.com/blog/google-io-memory-management-for-android-apps/</a></li>
-<li>5.<a href="http://cyrilmottier.com/2013/01/09/back-to-top-android-vs-ios/">http://cyrilmottier.com/2013/01/09/back-to-top-android-vs-ios/</a></li>
-<li>6.<a href="http://blog.csdn.net/luoshengyang/article/details/6745181">http://blog.csdn.net/luoshengyang/article/details/6745181</a></li>
+<li>1.<a href="http://stackoverflow.com/questions/2630158/detect-application-heap-size-in-android/2634738#2634738" target="_blank">http://stackoverflow.com/questions/2630158/detect-application-heap-size-in-android/2634738#2634738</a></li>
+<li>2.<a href="http://developer.android.com/reference/java/lang/ref/WeakReference.html" target="_blank">http://developer.android.com/reference/java/lang/ref/WeakReference.html</a></li>
+<li>3.<a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html" target="_blank">http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html</a></li>
+<li>4.<a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/" target="_blank">http://dubroy.com/blog/google-io-memory-management-for-android-apps/</a></li>
+<li>5.<a href="http://cyrilmottier.com/2013/01/09/back-to-top-android-vs-ios/" target="_blank">http://cyrilmottier.com/2013/01/09/back-to-top-android-vs-ios/</a></li>
+<li>6.<a href="http://blog.csdn.net/luoshengyang/article/details/6745181" target="_blank">http://blog.csdn.net/luoshengyang/article/details/6745181</a></li>
 </ul>
 
       
@@ -546,7 +511,7 @@ opts.inSampleSize = <span class="number">1</span>;
         
   
   <div class="tags">
-    <a href="/tags/UI-performance/">UI performance</a>, <a href="/tags/IO-performance/">I/O performance</a>, <a href="/tags/Scrolling-performance/">Scrolling performance</a>
+    <a href="/tags/UI performance/">UI performance</a>, <a href="/tags/I/O performance/">I/O performance</a>, <a href="/tags/Scrolling performance/">Scrolling performance</a>
   </div>
 
         <!--
@@ -610,7 +575,7 @@ opts.inSampleSize = <span class="number">1</span>;
   
     <li><a href="/categories/android/">android</a><small>2</small></li>
   
-    <li><a href="/categories/deep-learning/">deep learning</a><small>1</small></li>
+    <li><a href="/categories/deep learning/">deep learning</a><small>1</small></li>
   
     <li><a href="/categories/java/">java</a><small>1</small></li>
   
@@ -628,7 +593,7 @@ opts.inSampleSize = <span class="number">1</span>;
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/DDOS/" style="font-size: 11.00px;">DDOS</a><a href="/tags/Deep-Learning/" style="font-size: 19.00px;">Deep Learning</a><a href="/tags/IO-performance/" style="font-size: 16.00px;">I/O performance</a><a href="/tags/Scrolling-performance/" style="font-size: 17.00px;">Scrolling performance</a><a href="/tags/UI-performance/" style="font-size: 15.00px;">UI performance</a><a href="/tags/free-bitcoin/" style="font-size: 12.00px;">free bitcoin</a><a href="/tags/javascript/" style="font-size: 14.00px;">javascript</a><a href="/tags/seo/" style="font-size: 10.00px;">seo</a><a href="/tags/历史记录/" style="font-size: 13.00px;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: 18.00px;">悬浮窗</a>
+    <a href="/tags/DDOS/" style="font-size: NaNpx;">DDOS</a><a href="/tags/Deep Learning/" style="font-size: NaNpx;">Deep Learning</a><a href="/tags/I/O performance/" style="font-size: NaNpx;">I/O performance</a><a href="/tags/Scrolling performance/" style="font-size: NaNpx;">Scrolling performance</a><a href="/tags/UI performance/" style="font-size: NaNpx;">UI performance</a><a href="/tags/custom elements/" style="font-size: NaNpx;">custom elements</a><a href="/tags/decorator/" style="font-size: NaNpx;">decorator</a><a href="/tags/free bitcoin/" style="font-size: NaNpx;">free bitcoin</a><a href="/tags/import/" style="font-size: NaNpx;">import</a><a href="/tags/javascript/" style="font-size: NaNpx;">javascript</a><a href="/tags/seo/" style="font-size: NaNpx;">seo</a><a href="/tags/shadow DOM/" style="font-size: NaNpx;">shadow DOM</a><a href="/tags/templates/" style="font-size: NaNpx;">templates</a><a href="/tags/历史记录/" style="font-size: NaNpx;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: NaNpx;">悬浮窗</a>
   </div>
 </div>
 
@@ -656,7 +621,7 @@ opts.inSampleSize = <span class="number">1</span>;
   document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5533780f373b71b5d7f93e710ff74bfc' type='text/javascript'%3E%3C/script%3E"));
  </script>
   
-  &copy; 2013 SuetMing
+  &copy; 2014 SuetMing
   
 </div>
 <div class="clearfix"></div>
