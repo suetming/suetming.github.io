@@ -349,7 +349,7 @@ FaceDetector detector = <span class="keyword">new</span> FaceDetector(
 <p>实验结果还是不错的，不过仍然有两个问题：</p>
 <ul>
 <li>人脸检测效果不是很完美如何保证人脸效果？</li>
-<li>打码运算量大，消耗时间多，如何进行快速打码？</li>
+<li>上述打码是基本算法，运算量大，消耗时间多，怎样能进行实时打码、快速打码呢？</li>
 </ul>
 <p>问题解决思路：<br>替换成熟解决方案直接采用OpenCV进行人脸检测和打码，有很多样例，请google。其次打码算法可以通过OpenCV自带的图像处理进行打码或者采用android系统自带的RenderScripts（专门针对规模图像计算优化过的解决方案）进行打码处理</p>
 

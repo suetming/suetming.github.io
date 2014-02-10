@@ -4,7 +4,7 @@
   <subtitle><![CDATA[清静心性现，水清月影明]]></subtitle>
   <link href="http://suetming.com/atom.xml" rel="self"/>
   <link href="http://suetming.com"/>
-  <updated>2014-02-10T09:25:31.647Z</updated>
+  <updated>2014-02-10T09:29:31.801Z</updated>
   <id>http://suetming.com/</id>
   <author>
     <name><![CDATA[SuetMing]]></name>
@@ -16,7 +16,7 @@
     <link href="http://suetming.com/2014/02/10/人脸检测与打码/"/>
     <id>http://suetming.com/2014/02/10/人脸检测与打码/</id>
     <published>2014-02-10T08:45:53.000Z</published>
-    <updated>2014-02-10T09:25:16.000Z</updated>
+    <updated>2014-02-10T09:29:01.000Z</updated>
     <content type="html"><![CDATA[<p>拍摄照片后，想将里面的人脸打上马赛克该如何实现？</p>
 <p>思路：拍摄照片保存图片 -&gt; 对图片进行人脸检测 -&gt; 将检测区域打码处理</p>
 <p>步骤1：</p>
@@ -287,7 +287,7 @@ FaceDetector detector = <span class="keyword">new</span> FaceDetector(
 <p>实验结果还是不错的，不过仍然有两个问题：</p>
 <ul>
 <li>人脸检测效果不是很完美如何保证人脸效果？</li>
-<li>打码运算量大，消耗时间多，如何进行快速打码？</li>
+<li>上述打码是基本算法，运算量大，消耗时间多，怎样能进行实时打码、快速打码呢？</li>
 </ul>
 <p>问题解决思路：<br>替换成熟解决方案直接采用OpenCV进行人脸检测和打码，有很多样例，请google。其次打码算法可以通过OpenCV自带的图像处理进行打码或者采用android系统自带的RenderScripts（专门针对规模图像计算优化过的解决方案）进行打码处理</p>
 ]]></content>
