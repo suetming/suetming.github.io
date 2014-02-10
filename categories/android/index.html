@@ -73,6 +73,312 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2014-02-10T08:45:53.000Z"><a href="/2014/02/10/人脸检测与打码/">2月 10 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/02/10/人脸检测与打码/">人脸检测与打码</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>拍摄照片后，想将里面的人脸打上马赛克该如何实现？</p>
+<p>思路：拍摄照片保存图片 -&gt; 对图片进行人脸检测 -&gt; 将检测区域打码处理</p>
+<p>步骤1：</p>
+<p>首先利用android自带的人脸检测获取人脸数据</p>
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="code"><pre>
+Bitmap dstBmp = bmp.copy(Bitmap.Config.RGB_565, <span class="keyword">true</span>);
+		
+FaceDetector.Face[] faces = <span class="keyword">new</span> FaceDetector.Face[<span class="number">3</span>];
+FaceDetector detector = <span class="keyword">new</span> FaceDetector(
+	    dstBmp.getWidth(),
+	    dstBmp.getHeight(),
+	    faces.length);
+<span class="keyword">int</span> numFaces = detector.findFaces(dstBmp, faces); <span class="comment">// 人脸识别</span>
+<span class="keyword">if</span> (numFaces == <span class="number">0</span>) {
+	<span class="keyword">return</span> bmp;
+}
+</pre></td></tr></table></figure>
+
+<p>步骤2：</p>
+<p>将人脸打码，根据基本打码算法将一个m<em>n大小的图像设定特定范围内a</em>a的像素取像素中点值，依次进行即可</p>
+<p>打码算法如下：</p>
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+</pre></td><td class="code"><pre><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numFaces; i++) {
+	Face face = faces[i];
+	PointF midPoint = <span class="keyword">new</span> PointF(<span class="number">0</span>, <span class="number">0</span>);
+	face.getMidPoint(midPoint);
+
+	<span class="comment">// 取两眼距离的两倍作为人脸区域</span>
+	<span class="keyword">float</span> eyesDist = face.eyesDist();
+	<span class="keyword">int</span> width  = (<span class="keyword">int</span>) eyesDist * <span class="number">2</span>;
+	<span class="keyword">int</span> height = (<span class="keyword">int</span>) eyesDist * <span class="number">2</span>;
+	<span class="keyword">int</span> pixels[] = <span class="keyword">new</span> <span class="keyword">int</span>[width * height];
+	dstBmp.getPixels(pixels, <span class="number">0</span>,
+            width,
+            (<span class="keyword">int</span>) midPoint.x - (<span class="keyword">int</span>) eyesDist,
+            (<span class="keyword">int</span>) midPoint.y - (<span class="keyword">int</span>) eyesDist,
+            width,
+            height);
+	
+	<span class="keyword">int</span> dot = <span class="number">30</span>; <span class="comment">// a * a 的特定打码区域</span>
+	<span class="keyword">int</span> rr = <span class="number">0</span>, gg = <span class="number">0</span>, bb = <span class="number">0</span>, dotColor = <span class="number">0</span>;
+	<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; height; y++) {
+		<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; width; x++) {
+			<span class="comment">// 取平均值进行打码</span>
+            <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; dot; k++) {
+            	<span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">0</span>; l &lt; dot; l++) {
+
+            		<span class="keyword">int</span> dotX = ((<span class="keyword">int</span>) midPoint.x - (<span class="keyword">int</span>) eyesDist) + x + k -dot / <span class="number">2</span>;
+            		<span class="keyword">int</span> dotY = ((<span class="keyword">int</span>) midPoint.y - (<span class="keyword">int</span>) eyesDist) + y + l -dot / <span class="number">2</span>);
+            		dotColor = dstBmp.getPixel(
+            				dotX,
+                            dotY;
+            		rr += Color.red(dotColor);
+            		gg += Color.green(dotColor);
+            		bb += Color.blue(dotColor);
+            	}
+            }
+            rr = rr / (dot * dot);
+            gg = gg / (dot * dot);
+            bb = bb / (dot * dot);
+            
+            pixels[x + y * width] = Color.rgb(rr, gg, bb);
+		}
+	}
+	dstBmp.setPixels(pixels, <span class="number">0</span>,
+            width,
+            (<span class="keyword">int</span>) midPoint.x - (<span class="keyword">int</span>) eyesDist,
+            (<span class="keyword">int</span>) midPoint.y - (<span class="keyword">int</span>) eyesDist,
+            width,
+            height);
+}
+</pre></td></tr></table></figure>
+
+<p>实验效果：</p>
+<p>人脸检测和打码前：<br><img src="/images/photos/2014-02-10-image-blur.jpg" alt=""></p>
+<p>人脸检测和打码后：<br><img src="/images/photos/2014-02-10-image.jpg" alt=""></p>
+<p>完整代码如下：</p>
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+</pre></td><td class="code"><pre><span class="keyword">public</span> Bitmap faceBlur(Bitmap bmp) {
+	Bitmap dstBmp = bmp.copy(Bitmap.Config.RGB_565, <span class="keyword">true</span>);
+		
+	FaceDetector.Face[] faces = <span class="keyword">new</span> FaceDetector.Face[<span class="number">3</span>];
+	FaceDetector detector = <span class="keyword">new</span> FaceDetector(
+		    dstBmp.getWidth(),
+		    dstBmp.getHeight(),
+		    faces.length);
+	<span class="keyword">int</span> numFaces = detector.findFaces(dstBmp, faces); <span class="comment">// 人脸识别</span>
+	<span class="keyword">if</span> (numFaces == <span class="number">0</span>) {
+		<span class="keyword">return</span> bmp;
+	}
+
+	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numFaces; i++) {
+		Face face = faces[i];
+		PointF midPoint = <span class="keyword">new</span> PointF(<span class="number">0</span>, <span class="number">0</span>);
+		face.getMidPoint(midPoint);
+
+		<span class="comment">// 取两眼距离的两倍作为人脸区域</span>
+		<span class="keyword">float</span> eyesDist = face.eyesDist();
+		<span class="keyword">int</span> width  = (<span class="keyword">int</span>) eyesDist * <span class="number">2</span>;
+		<span class="keyword">int</span> height = (<span class="keyword">int</span>) eyesDist * <span class="number">2</span>;
+		<span class="keyword">int</span> pixels[] = <span class="keyword">new</span> <span class="keyword">int</span>[width * height];
+		dstBmp.getPixels(pixels, <span class="number">0</span>,
+	            width,
+	            (<span class="keyword">int</span>) midPoint.x - (<span class="keyword">int</span>) eyesDist,
+	            (<span class="keyword">int</span>) midPoint.y - (<span class="keyword">int</span>) eyesDist,
+	            width,
+	            height);
+		
+		<span class="keyword">int</span> dot = <span class="number">30</span>; <span class="comment">// a * a 的特定打码区域</span>
+		<span class="keyword">int</span> rr = <span class="number">0</span>, gg = <span class="number">0</span>, bb = <span class="number">0</span>, dotColor = <span class="number">0</span>;
+		<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; height; y++) {
+			<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; width; x++) {
+				<span class="comment">// 取平均值进行打码</span>
+	            <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; dot; k++) {
+	            	<span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">0</span>; l &lt; dot; l++) {
+
+	            		<span class="keyword">int</span> dotX = ((<span class="keyword">int</span>) midPoint.x - (<span class="keyword">int</span>) eyesDist) + x + k -dot / <span class="number">2</span>;
+	            		<span class="keyword">int</span> dotY = ((<span class="keyword">int</span>) midPoint.y - (<span class="keyword">int</span>) eyesDist) + y + l -dot / <span class="number">2</span>);
+	            		dotColor = dstBmp.getPixel(
+	            				dotX,
+	                            dotY;
+	            		rr += Color.red(dotColor);
+	            		gg += Color.green(dotColor);
+	            		bb += Color.blue(dotColor);
+	            	}
+	            }
+	            rr = rr / (dot * dot);
+	            gg = gg / (dot * dot);
+	            bb = bb / (dot * dot);
+	            
+	            pixels[x + y * width] = Color.rgb(rr, gg, bb);
+			}
+		}
+		dstBmp.setPixels(pixels, <span class="number">0</span>,
+	            width,
+	            (<span class="keyword">int</span>) midPoint.x - (<span class="keyword">int</span>) eyesDist,
+	            (<span class="keyword">int</span>) midPoint.y - (<span class="keyword">int</span>) eyesDist,
+	            width,
+	            height);
+	}
+	<span class="keyword">return</span> dstBmp;
+}
+</pre></td></tr></table></figure>
+
+<p>实验结果还是不错的，不过仍然有两个问题：</p>
+<ul>
+<li>人脸检测效果不是很完美如何保证人脸效果？</li>
+<li>打码运算量大，消耗时间多，如何进行快速打码？</li>
+</ul>
+<p>问题解决思路：<br>替换成熟解决方案直接采用OpenCV进行人脸检测和打码，有很多样例，请google。其次打码算法可以通过OpenCV自带的图像处理进行打码或者采用android系统自带的RenderScripts（专门针对规模图像计算优化过的解决方案）进行打码处理</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-08-14T01:02:09.000Z"><a href="/2013/08/14/2013-07-13-android-performance/">8月 14 2013</a></time>
       
       
@@ -164,7 +470,7 @@
   <h3 class="title">分类</h3>
   <ul class="entry">
   
-    <li><a href="/categories/android/">android</a><small>2</small></li>
+    <li><a href="/categories/android/">android</a><small>3</small></li>
   
     <li><a href="/categories/deep learning/">deep learning</a><small>1</small></li>
   
@@ -184,7 +490,7 @@
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/DDOS/" style="font-size: NaNpx;">DDOS</a><a href="/tags/Deep Learning/" style="font-size: NaNpx;">Deep Learning</a><a href="/tags/I/O performance/" style="font-size: NaNpx;">I/O performance</a><a href="/tags/Scrolling performance/" style="font-size: NaNpx;">Scrolling performance</a><a href="/tags/UI performance/" style="font-size: NaNpx;">UI performance</a><a href="/tags/custom elements/" style="font-size: NaNpx;">custom elements</a><a href="/tags/decorator/" style="font-size: NaNpx;">decorator</a><a href="/tags/free bitcoin/" style="font-size: NaNpx;">free bitcoin</a><a href="/tags/import/" style="font-size: NaNpx;">import</a><a href="/tags/javascript/" style="font-size: NaNpx;">javascript</a><a href="/tags/seo/" style="font-size: NaNpx;">seo</a><a href="/tags/shadow DOM/" style="font-size: NaNpx;">shadow DOM</a><a href="/tags/templates/" style="font-size: NaNpx;">templates</a><a href="/tags/历史记录/" style="font-size: NaNpx;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: NaNpx;">悬浮窗</a>
+    <a href="/tags/DDOS/" style="font-size: NaNpx;">DDOS</a><a href="/tags/Deep Learning/" style="font-size: NaNpx;">Deep Learning</a><a href="/tags/I/O performance/" style="font-size: NaNpx;">I/O performance</a><a href="/tags/Scrolling performance/" style="font-size: NaNpx;">Scrolling performance</a><a href="/tags/UI performance/" style="font-size: NaNpx;">UI performance</a><a href="/tags/custom elements/" style="font-size: NaNpx;">custom elements</a><a href="/tags/decorator/" style="font-size: NaNpx;">decorator</a><a href="/tags/free bitcoin/" style="font-size: NaNpx;">free bitcoin</a><a href="/tags/import/" style="font-size: NaNpx;">import</a><a href="/tags/javascript/" style="font-size: NaNpx;">javascript</a><a href="/tags/seo/" style="font-size: NaNpx;">seo</a><a href="/tags/shadow DOM/" style="font-size: NaNpx;">shadow DOM</a><a href="/tags/templates/" style="font-size: NaNpx;">templates</a><a href="/tags/人脸检测/" style="font-size: NaNpx;">人脸检测</a><a href="/tags/历史记录/" style="font-size: NaNpx;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: NaNpx;">悬浮窗</a>
   </div>
 </div>
 
