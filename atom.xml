@@ -4,7 +4,7 @@
   <subtitle><![CDATA[清静心性现，水清月影明]]></subtitle>
   <link href="http://suetming.com/atom.xml" rel="self"/>
   <link href="http://suetming.com"/>
-  <updated>2014-02-10T09:24:09.512Z</updated>
+  <updated>2014-02-10T09:25:31.647Z</updated>
   <id>http://suetming.com/</id>
   <author>
     <name><![CDATA[SuetMing]]></name>
@@ -16,7 +16,7 @@
     <link href="http://suetming.com/2014/02/10/人脸检测与打码/"/>
     <id>http://suetming.com/2014/02/10/人脸检测与打码/</id>
     <published>2014-02-10T08:45:53.000Z</published>
-    <updated>2014-02-10T09:24:03.000Z</updated>
+    <updated>2014-02-10T09:25:16.000Z</updated>
     <content type="html"><![CDATA[<p>拍摄照片后，想将里面的人脸打上马赛克该如何实现？</p>
 <p>思路：拍摄照片保存图片 -&gt; 对图片进行人脸检测 -&gt; 将检测区域打码处理</p>
 <p>步骤1：</p>
@@ -256,8 +256,8 @@ FaceDetector detector = <span class="keyword">new</span> FaceDetector(
 	            <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; dot; k++) {
 	            	<span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">0</span>; l &lt; dot; l++) {
 
-	            		<span class="keyword">int</span> dotX = ((<span class="keyword">int</span>) midPoint.x - (<span class="keyword">int</span>) eyesDist) + x + k -dot / <span class="number">2</span>;
-	            		<span class="keyword">int</span> dotY = ((<span class="keyword">int</span>) midPoint.y - (<span class="keyword">int</span>) eyesDist) + y + l -dot / <span class="number">2</span>);
+	            		<span class="keyword">int</span> dotX = (<span class="keyword">int</span>) midPoint.x - (<span class="keyword">int</span>) eyesDist) + x + k -dot / <span class="number">2</span>;
+	        			<span class="keyword">int</span> dotY = (<span class="keyword">int</span>) midPoint.y - (<span class="keyword">int</span>) eyesDist) + y + l -dot / <span class="number">2</span>;
 	            		dotColor = dstBmp.getPixel(
 	            				dotX,
 	                            dotY;

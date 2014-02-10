@@ -322,8 +322,8 @@ FaceDetector detector = <span class="keyword">new</span> FaceDetector(
 	            <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; dot; k++) {
 	            	<span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">0</span>; l &lt; dot; l++) {
 
-	            		<span class="keyword">int</span> dotX = ((<span class="keyword">int</span>) midPoint.x - (<span class="keyword">int</span>) eyesDist) + x + k -dot / <span class="number">2</span>;
-	            		<span class="keyword">int</span> dotY = ((<span class="keyword">int</span>) midPoint.y - (<span class="keyword">int</span>) eyesDist) + y + l -dot / <span class="number">2</span>);
+	            		<span class="keyword">int</span> dotX = (<span class="keyword">int</span>) midPoint.x - (<span class="keyword">int</span>) eyesDist) + x + k -dot / <span class="number">2</span>;
+	        			<span class="keyword">int</span> dotY = (<span class="keyword">int</span>) midPoint.y - (<span class="keyword">int</span>) eyesDist) + y + l -dot / <span class="number">2</span>;
 	            		dotColor = dstBmp.getPixel(
 	            				dotX,
 	                            dotY;
