@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title><![CDATA[盖世小虫]]></title>
   <subtitle><![CDATA[清静心性现，水清月影明]]></subtitle>
-  <link href="http://suetming.github.io/atom.xml" rel="self"/>
-  <link href="http://suetming.github.io"/>
-  <updated>2014-06-08T05:49:20.244Z</updated>
-  <id>http://suetming.github.io/</id>
+  <link href="http://suetming.cn/atom.xml" rel="self"/>
+  <link href="http://suetming.cn"/>
+  <updated>2014-06-08T05:53:25.296Z</updated>
+  <id>http://suetming.cn/</id>
   <author>
     <name><![CDATA[SuetMing]]></name>
     <email><![CDATA[suetming.ma@gmail.com]]></email>
