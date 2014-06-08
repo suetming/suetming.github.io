@@ -3,15 +3,13 @@
 <head>
   <meta charset="utf-8">
   
-  <title>利用history api截获返回事件 | 盖世小虫</title>
+  <title>Archives: 2014/6 | 盖世小虫</title>
   <meta name="author" content="suetming">
   
-  <meta name="description" content="如果你看过这个视频(需要翻墙)，浏览网页时点击链接进入另一个网页后，点击返回或者右键返回，你会发现返回的不是之前的网站而是一个新的网站,这是通过history api替换之前记录然后调用location.">
   
-  <meta name="keywords" content="js,javascript,history api,截获右键返回按钮,历史记录">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="利用history api截获返回事件"/>
+  
   <meta property="og:site_name" content="盖世小虫"/>
 
   
@@ -64,7 +62,12 @@
 </nav>
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2014/6</h2>
+
+
+  
+    <article class="post">
   
     <div class="gallery">
   <div class="photoset">
@@ -82,100 +85,49 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2013-08-11T10:53:55.000Z"><a href="/2013/08/11/2013-06-08-capture-back-menu-with-history-api/">Aug 11 2013</a></time>
+        <time datetime="2014-06-08T06:56:33.000Z"><a href="/2014/06/08/hello-world/">Jun 8 2014</a></time>
       
       
   
-    <h1 class="title">利用history api截获返回事件</h1>
+    <h1 class="title"><a href="/2014/06/08/hello-world/">Hello World</a></h1>
   
 
     </header>
     <div class="entry">
       
-        <p>如果你看过这个<a href="http://vimeo.com/64567684" target="_blank" rel="external">视频</a>(需要翻墙)，浏览网页时点击链接进入另一个网页后，点击返回或者右键返回，你会发现返回的不是之前的网站而是一个新的网站,这是通过history api替换之前记录然后调用location.</p>
-<p><a id="more"></a><br>replace造成的实现方式如下:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-</pre></td><td class="code"><pre>history.replaceState(<span class="literal">null</span>
-	, document.title
-	, location.pathname + <span class="string">"#!/history"</span>);
-
-history.pushState(<span class="literal">null</span>, document.title, location.pathname);
-
-window.addEventListener(<span class="string">"popstate"</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-  <span class="keyword">if</span>(location.hash === <span class="string">"#!/history"</span>) {
-	history.replaceState(<span class="literal">null</span>
-		, document.title
-		, location.pathname);
-	setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
-	  location.replace(<span class="string">"http://www.suetming.com/"</span>);
-	},<span class="number">0</span>);
-  }
-}, <span class="literal">false</span>);
+        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/tommy351/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick_Start">Quick Start</h2>
+<h3 id="Create_a_new_post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>$ hexo new <span class="string">"My New Post"</span>
 </pre></td></tr></table></figure>
 
-<p>上述实例通过“#!/history”替换当前url，通过“popstate”，偷偷改变为其他域名</p>
-<p>Firefox/Chrome 会有闪屏后返回新页面，Opera/Safari则会立即返回,通过replaceState重置url可以消除这种现象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>history.replaceState(<span class="literal">null</span>, document.title, location.pathname);
+<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run_server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>$ hexo server
 </pre></td></tr></table></figure>
 
-<ul>
-<li><a href="http://jsfiddle.net/elastix/JNwDq/embedded/result/" target="_blank" rel="external">demo地址</a></li>
-<li><a href="http://jsfiddle.net/elastix/JNwDq/" target="_blank" rel="external">源码地址</a></li>
-</ul>
-<p>说明了上述原理，是为了说明浏览器API仍有很多用户体验不佳的情况，请不要用于web</p>
+<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate_static_files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>$ hexo generate
+</pre></td></tr></table></figure>
+
+<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>$ hexo deploy
+</pre></td></tr></table></figure>
+
+<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
 
       
     </div>
     <footer>
       
-        <strong style="text-color:#ff0000">转载本站文章请注明作者和出处 [盖世小虫-suetming.com],请勿用于任何商业目的</strong>
         
-  
-  <div class="categories">
-    <a href="/categories/javascript/">javascript</a>
-  </div>
-
         
-  
-  <div class="tags">
-    <a href="/tags/历史记录/">历史记录</a>
-  </div>
-
-        <!--
-  <div class="addthis addthis_toolbox addthis_default_style">
-    
-      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-    
-    
-      <a class="addthis_button_tweet"></a>
-    
-    
-      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-    
-    
-      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
-    
-    <a class="addthis_counter addthis_pill_style"></a>
-  </div>
-  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
--->
-        <a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=c55eb60c-b08a-4141-9020-2b3128ca0cc6&style=11&bp=qqmb,bsharesync,sinaminiblog,qzone,sohuminiblog,renren,xinhuamb,tianya,shouji,ifengmb,neteasemb,qqxiaoyou,kaixin001,peoplemb,baiduhi,douban,qqim"></script>
       
       <div class="clearfix"></div>
     </footer>
@@ -184,6 +136,14 @@ window.addEventListener(<span class="string">"popstate"</span>, <span class="fun
 
 
 
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
