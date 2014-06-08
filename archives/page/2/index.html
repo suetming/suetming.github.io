@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>利用history api截获返回事件 | 盖世小虫</title>
+  <title>Archives | 盖世小虫</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="如果你看过这个视频(需要翻墙)，浏览网页时点击链接进入另一个网页后，点击返回或者右键返回，你会发现返回的不是之前的网站而是一个新的网站,这是通过history api替换之前记录然后调用location.">
-<meta property="og:type" content="article">
-<meta property="og:title" content="利用history api截获返回事件">
-<meta property="og:url" content="http://suetming.cn/2013/08/11/2013-06-08-capture-back-menu-with-history-api/">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="盖世小虫">
+<meta property="og:url" content="http://suetming.cn/archives/page/2/">
 <meta property="og:site_name" content="盖世小虫">
-<meta property="og:description" content="如果你看过这个视频(需要翻墙)，浏览网页时点击链接进入另一个网页后，点击返回或者右键返回，你会发现返回的不是之前的网站而是一个新的网站,这是通过history api替换之前记录然后调用location.">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="利用history api截获返回事件">
-<meta name="twitter:description" content="如果你看过这个视频(需要翻墙)，浏览网页时点击链接进入另一个网页后，点击返回或者右键返回，你会发现返回的不是之前的网站而是一个新的网站,这是通过history api替换之前记录然后调用location.">
+<meta name="twitter:title" content="盖世小虫">
+<meta name="twitter:description">
   
     <link rel="alternative" href="/atom.xml" title="盖世小虫" type="application/atom+xml">
   
@@ -59,14 +59,16 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-2013-06-08-capture-back-menu-with-history-api" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main">
+  
+    <article id="post-2013-05-14-hashmap-dot-get-cause-an-infinite-loop" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2013/08/11/2013-06-08-capture-back-menu-with-history-api/" class="article-date">
-  <time datetime="2013-08-11T10:53:55.000Z" itemprop="datePublished">Aug 11 2013</time>
+    <a href="/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/" class="article-date">
+  <time datetime="2013-08-11T03:30:06.000Z" itemprop="datePublished">Aug 11 2013</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+    <a class="article-category-link" href="/categories/java/">java</a>
   </div>
 
   </div>
@@ -76,8 +78,8 @@
       <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      利用history api截获返回事件
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/">HashMap.get()所导致的的死循环</a>
     </h1>
   
 
@@ -85,88 +87,33 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>如果你看过这个<a href="http://vimeo.com/64567684" target="_blank" rel="external">视频</a>(需要翻墙)，浏览网页时点击链接进入另一个网页后，点击返回或者右键返回，你会发现返回的不是之前的网站而是一个新的网站,这是通过history api替换之前记录然后调用location.</p>
-<p><a id="more"></a><br>replace造成的实现方式如下:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-</pre></td><td class="code"><pre>history.replaceState(<span class="literal">null</span>
-	, document.title
-	, location.pathname + <span class="string">"#!/history"</span>);
+        <p>在以java为主导的web框架开发的APP，并发与多线程是经常出现的，若在高并发的API中用到了HashMap则可能诱发死循环</p>
 
-history.pushState(<span class="literal">null</span>, document.title, location.pathname);
-
-window.addEventListener(<span class="string">"popstate"</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-  <span class="keyword">if</span>(location.hash === <span class="string">"#!/history"</span>) {
-	history.replaceState(<span class="literal">null</span>
-		, document.title
-		, location.pathname);
-	setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
-	  location.replace(<span class="string">"http://www.suetming.com/"</span>);
-	},<span class="number">0</span>);
-  }
-}, <span class="literal">false</span>);
-</pre></td></tr></table></figure>
-
-<p>上述实例通过“#!/history”替换当前url，通过“popstate”，偷偷改变为其他域名</p>
-<p>Firefox/Chrome 会有闪屏后返回新页面，Opera/Safari则会立即返回,通过replaceState重置url可以消除这种现象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>history.replaceState(<span class="literal">null</span>, document.title, location.pathname);
-</pre></td></tr></table></figure>
-
-<ul>
-<li><a href="http://jsfiddle.net/elastix/JNwDq/embedded/result/" target="_blank" rel="external">demo地址</a></li>
-<li><a href="http://jsfiddle.net/elastix/JNwDq/" target="_blank" rel="external">源码地址</a></li>
-</ul>
-<p>说明了上述原理，是为了说明浏览器API仍有很多用户体验不佳的情况，请不要用于web</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://suetming.cn/2013/08/11/2013-06-08-capture-back-menu-with-history-api/" data-id="c16u3nmvagwoh7p7" class="article-share-link">Share</a>
+      <a data-url="http://suetming.cn/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/" data-id="lscxswyy1ri92ra7" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/历史记录/">历史记录</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DDOS/">DDOS</a></li></ul>
 
     </footer>
   </div>
   
-    
-<nav id="article-nav">
-  
-    <a href="/2013/08/11/2013-06-23-overwrite-global-methods/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          重写全局方法 | JavaScript
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2013/08/11/2013-05-22-free-bitcoin/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">如果偷取别人的比特币</div>
-    </a>
-  
-</nav>
-
-  
 </article>
 
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/archives/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
+    </nav>
+  
 </section>
         
           <aside id="sidebar">
