@@ -1,209 +1,220 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   
-  <title>Page 2 | 盖世小虫</title>
-  <meta name="author" content="suetming">
-  
-  
+  <title>盖世小虫</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="盖世小虫">
+<meta property="og:url" content="http://suetming.cn/page/2/">
+<meta property="og:site_name" content="盖世小虫">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="盖世小虫">
+<meta name="twitter:description">
   
-  <meta property="og:site_name" content="盖世小虫"/>
-
+    <link rel="alternative" href="/atom.xml" title="盖世小虫" type="application/atom+xml">
   
-    <meta property="og:image" content="undefined"/>
   
-
-  <meta name="ujianVerification" content="c7a5b14d01398b6bf2275703e3accf06" />
-  <meta name="baidu-site-verification" content="8a5djZlscm" />
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="盖世小虫" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="http://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-40716915-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
-
 </head>
-
-
 <body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">盖世小虫</a></h1>
-  <h2><a href="/"></a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">首页</a></li>
-    
-      <li><a href="/archives">归档</a></li>
-    
-      <li><a href="http://essays.suetming.com">糗事与观点</a></li>
-    
-      <li><a href="/atom.xml">RSS</a></li>
-    
-      <li><a href="/about">关于</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div></header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">盖世小虫</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://suetming.cn"></form>
+      </div>
+    </div>
   </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-2013-05-14-hashmap-dot-get-cause-an-infinite-loop" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/" class="article-date">
+  <time datetime="2013-08-11T03:30:06.000Z" itemprop="datePublished">Aug 11 2013</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
   </div>
-</div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-08-11T03:30:06.000Z"><a href="/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/">Aug 11 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/">HashMap.get()所导致的的死循环</a></h1>
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/">HashMap.get()所导致的的死循环</a>
+    </h1>
   
 
-    </header>
-    <div class="entry">
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
       
         <p>在以java为主导的web框架开发的APP，并发与多线程是经常出现的，若在高并发的API中用到了HashMap则可能诱发死循环</p>
 
+        
+          <p class="article-more-link">
+            <a href="/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/#more">Read More</a>
+          </p>
+        
       
     </div>
-    <footer>
+    <footer class="article-footer">
+      <a data-url="http://suetming.cn/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/" data-id="oavc2la2163mqaq5" class="article-share-link">Share</a>
       
-        
-          <div class="alignleft">
-            <a href="/2013/08/11/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/#more" class="more-link">Read More</a>
-          </div>
-        
-        
       
-      <div class="clearfix"></div>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DDOS/">DDOS</a></li></ul>
+
     </footer>
   </div>
+  
 </article>
 
 
-
-
-
-
-<nav id="pagination">
-  
-    <a href="/" class="alignleft prev">Prev</a>
   
   
-  <div class="clearfix"></div>
-</nav></div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="Search">
-    <input type="hidden" name="q" value="site:suetming.cn">
-  </form>
-</div>
-
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    </nav>
   
-<div class="widget tag">
-  <h3 class="title">Categories</h3>
-  <ul class="entry">
+</section>
+        
+          <aside id="sidebar">
   
-    <li><a href="/categories/android/">android</a><small>3</small></li>
-  
-    <li><a href="/categories/deep-learning/">deep learning</a><small>1</small></li>
-  
-    <li><a href="/categories/java/">java</a><small>1</small></li>
-  
-    <li><a href="/categories/javascript/">javascript</a><small>3</small></li>
-  
-    <li><a href="/categories/octopress/">octopress</a><small>1</small></li>
-  
-    <li><a href="/categories/虚拟货币/">虚拟货币</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">Tag Cloud</h3>
-  <div class="entry">
-    <a href="/tags/DDOS/" style="font-size: NaNpx;">DDOS</a><a href="/tags/Deep-Learning/" style="font-size: NaNpx;">Deep Learning</a><a href="/tags/IO-performance/" style="font-size: NaNpx;">I/O performance</a><a href="/tags/Scrolling-performance/" style="font-size: NaNpx;">Scrolling performance</a><a href="/tags/UI-performance/" style="font-size: NaNpx;">UI performance</a><a href="/tags/custom-elements/" style="font-size: NaNpx;">custom elements</a><a href="/tags/decorator/" style="font-size: NaNpx;">decorator</a><a href="/tags/free-bitcoin/" style="font-size: NaNpx;">free bitcoin</a><a href="/tags/import/" style="font-size: NaNpx;">import</a><a href="/tags/javascript/" style="font-size: NaNpx;">javascript</a><a href="/tags/seo/" style="font-size: NaNpx;">seo</a><a href="/tags/shadow-DOM/" style="font-size: NaNpx;">shadow DOM</a><a href="/tags/templates/" style="font-size: NaNpx;">templates</a><a href="/tags/人脸检测/" style="font-size: NaNpx;">人脸检测</a><a href="/tags/历史记录/" style="font-size: NaNpx;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: NaNpx;">悬浮窗</a>
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/deep-learning/">deep learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/octopress/">octopress</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟货币/">虚拟货币</a><span class="category-list-count">1</span></li></ul>
+    </div>
   </div>
-</div>
 
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDOS/">DDOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Deep-Learning/">Deep Learning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO-performance/">I/O performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrolling-performance/">Scrolling performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI-performance/">UI performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-elements/">custom elements</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decorator/">decorator</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/free-bitcoin/">free bitcoin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/import/">import</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/seo/">seo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shadow-DOM/">shadow DOM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/templates/">templates</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/人脸检测/">人脸检测</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/历史记录/">历史记录</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/悬浮窗/">悬浮窗</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
 
-  <div class="widget tag">
-<h3 class="title">友情链接</h3>
-<ul class="entry">
-<li><a href="http://worrydream.com/" title="Bret Victor">Bret Victor</a></li>
-<li><a href="http://coolshell.cn/" title="酷壳">Cool Shell</a></li>
-</ul>
-</div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DDOS/" style="font-size: NaNpx;">DDOS</a><a href="/tags/Deep-Learning/" style="font-size: NaNpx;">Deep Learning</a><a href="/tags/IO-performance/" style="font-size: NaNpx;">I/O performance</a><a href="/tags/Scrolling-performance/" style="font-size: NaNpx;">Scrolling performance</a><a href="/tags/UI-performance/" style="font-size: NaNpx;">UI performance</a><a href="/tags/custom-elements/" style="font-size: NaNpx;">custom elements</a><a href="/tags/decorator/" style="font-size: NaNpx;">decorator</a><a href="/tags/free-bitcoin/" style="font-size: NaNpx;">free bitcoin</a><a href="/tags/import/" style="font-size: NaNpx;">import</a><a href="/tags/javascript/" style="font-size: NaNpx;">javascript</a><a href="/tags/seo/" style="font-size: NaNpx;">seo</a><a href="/tags/shadow-DOM/" style="font-size: NaNpx;">shadow DOM</a><a href="/tags/templates/" style="font-size: NaNpx;">templates</a><a href="/tags/人脸检测/" style="font-size: NaNpx;">人脸检测</a><a href="/tags/历史记录/" style="font-size: NaNpx;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: NaNpx;">悬浮窗</a>
+    </div>
+  </div>
 
-  <div class="widget tag">
-<h3 class="title">微信号</h3>
-<img src="/images/photos/2013-08-11-code-weixin2.png" alt="微信" width="100%">
-</div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06">June 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02">February 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08">August 2013</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
 
-  <iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1651218572&verifier=80fcc888&dpc=1"></iframe>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2014/06/08/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2014/02/10/人脸检测与打码/">人脸自动检测与打码【基础篇】</a>
+          </li>
+        
+          <li>
+            <a href="/2013/08/25/deep-learning---round-1/">Deep Learning Reserch - Round 1</a>
+          </li>
+        
+          <li>
+            <a href="/2013/08/21/2013-06-29-web-components/">Web组件(Web Components) | HTML5</a>
+          </li>
+        
+          <li>
+            <a href="/2013/08/14/2013-07-13-android-performance/">android深度优化</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
 </aside>
-    <div class="clearfix"></div>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2014 suetming<br>
+      Powered by <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a>
+    </div>
   </div>
-  <footer id="footer" class="inner"><div class="alignleft">
- <script type="text/javascript">
-  var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-  document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5533780f373b71b5d7f93e710ff74bfc' type='text/javascript'%3E%3C/script%3E"));
- </script>
-  
-  &copy; 2014 suetming
-  
-</div>
-<div class="clearfix"></div>
-<!-- UJian Button BEGIN -->
-<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?type=slide&btn=4&fade=1&uid=1825970"></script>
-<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
-<!-- UJian Button END -->
 </footer>
-  <script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
 
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
 
+
+<script type="text/javascript" src="/js/script.js"></script>
+  </div>
 </body>
 </html>
