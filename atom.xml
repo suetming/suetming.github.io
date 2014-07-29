@@ -3,7 +3,7 @@
   <title><![CDATA[盖世小虫]]></title>
   <link href="http://suetming.cn/atom.xml" rel="self"/>
   <link href="http://suetming.cn"/>
-  <updated>2014-07-29T13:55:20.220Z</updated>
+  <updated>2014-07-29T13:58:09.547Z</updated>
   <id>http://suetming.cn/</id>
   <author>
     <name><![CDATA[suetming]]></name>
@@ -13,8 +13,8 @@
     <title type="html"><![CDATA[Web组件(Web Components) | HTML5]]></title>
     <link href="http://suetming.cn/2014/07/29/2013-06-29-web-components/"/>
     <id>http://suetming.cn/2014/07/29/2013-06-29-web-components/</id>
-    <published>2014-07-29T13:54:23.000Z</published>
-    <updated>2014-07-29T13:54:23.000Z</updated>
+    <published>2014-07-29T13:57:45.000Z</published>
+    <updated>2014-07-29T13:57:45.000Z</updated>
     <content type="html"><![CDATA[<p>译者：<a href="http://suetming.com" target="_blank" rel="external">suetming</a></p>
 <p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/" target="_blank" rel="external">W3C: Web Components</a></p>
 <p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="external">CC 3.0 BY-SA 协议</a>”发布</strong></p>
@@ -134,11 +134,7 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
 
 ![<span class="link_label">事件注册</span>](<span class="link_url">http://www.w3.org/TR/2013/WD-components-intro-20130606/event-handler-registration.png</span>)
 
-通过事件控制器注册事件监听器，template中插入
-</pre></td></tr></table></figure><script><figure class="highlight ，decorator元素插入到文档中时脚本会执行，脚本会被插入到注册队列中:"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-
+通过事件控制器注册事件监听器，template中插入<span class="strong">__script__</span>，decorator元素插入到文档中时脚本会执行，脚本会被插入到注册队列中:
 </pre></td></tr></table></figure>html<br><decorator id="details-open"><br>    <script><br>        function clicked(event) {<br>            event.target.removeAttribute(‘open’);<br>        }<br>        [{selector: ‘#summary’, type: ‘click’, handler: clicked}];<br>    </script><br>    <template><br>      <a id="summary"><br>        <!-- as illustrated above --><br><figure class="highlight"><table><tr><td class="gutter"><pre>1
 2
 3
@@ -623,7 +619,7 @@ Custom elements 和 decorators可以通过文件的方式引入：
 </pre></td><td class="code"><pre>
 只有
 </pre></td></tr></table></figure><decorator><code>元素和</code><element>```能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行. </element></decorator></p>
-</content></div></shadow></content></shadow></content></shadow></content></content></details></a></template></content>]]></content>
+</content></div></shadow></content></shadow></content></shadow></content></content></details></a></template></decorator></content>]]></content>
     <category scheme="http://suetming.cn/tags/shadow-DOM/" term="shadow DOM"/>
     <category scheme="http://suetming.cn/tags/templates/" term="templates"/>
     <category scheme="http://suetming.cn/tags/decorator/" term="decorator"/>

@@ -77,7 +77,7 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
         <section id="main"><article id="post-2013-06-29-web-components" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2014/07/29/2013-06-29-web-components/" class="article-date">
-  <time datetime="2014-07-29T13:54:23.000Z" itemprop="datePublished">7月 29 2014</time>
+  <time datetime="2014-07-29T13:57:45.000Z" itemprop="datePublished">7月 29 2014</time>
 </a>
     
   <div class="article-category">
@@ -219,11 +219,7 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
 
 ![<span class="link_label">事件注册</span>](<span class="link_url">http://www.w3.org/TR/2013/WD-components-intro-20130606/event-handler-registration.png</span>)
 
-通过事件控制器注册事件监听器，template中插入
-</pre></td></tr></table></figure><script><figure class="highlight ，decorator元素插入到文档中时脚本会执行，脚本会被插入到注册队列中:"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-
+通过事件控制器注册事件监听器，template中插入<span class="strong">__script__</span>，decorator元素插入到文档中时脚本会执行，脚本会被插入到注册队列中:
 </pre></td></tr></table></figure>html<br><decorator id="details-open"><br>    <script><br>        function clicked(event) {<br>            event.target.removeAttribute(‘open’);<br>        }<br>        [{selector: ‘#summary’, type: ‘click’, handler: clicked}];<br>    </script><br>    <template><br>      <a id="summary"><br>        <!-- as illustrated above --><br><figure class="highlight"><table><tr><td class="gutter"><pre>1
 2
 3
@@ -708,11 +704,11 @@ Custom elements 和 decorators可以通过文件的方式引入：
 </pre></td><td class="code"><pre>
 只有
 </pre></td></tr></table></figure><decorator><code>元素和</code><element>```能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行. </element></decorator></p>
-</content></div></shadow></content></shadow></content></shadow></content></content></details></a></template></content>
+</content></div></shadow></content></shadow></content></shadow></content></content></details></a></template></decorator></content>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://suetming.cn/2014/07/29/2013-06-29-web-components/" data-id="4fv3vt95vf31077k" class="article-share-link">Share</a>
+      <a data-url="http://suetming.cn/2014/07/29/2013-06-29-web-components/" data-id="qvz1jh6g31geaeuh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/custom-elements/">custom elements</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/decorator/">decorator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/import/">import</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shadow-DOM/">shadow DOM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/templates/">templates</a></li></ul>
