@@ -3,7 +3,7 @@
   <title><![CDATA[盖世小虫]]></title>
   <link href="http://suetming.cn/atom.xml" rel="self"/>
   <link href="http://suetming.cn"/>
-  <updated>2014-07-29T14:15:26.604Z</updated>
+  <updated>2014-07-29T14:18:22.450Z</updated>
   <id>http://suetming.cn/</id>
   <author>
     <name><![CDATA[suetming]]></name>
@@ -13,8 +13,8 @@
     <title type="html"><![CDATA[Web组件(Web Components) | HTML5]]></title>
     <link href="http://suetming.cn/2014/07/29/2013-06-29-web-components/"/>
     <id>http://suetming.cn/2014/07/29/2013-06-29-web-components/</id>
-    <published>2014-07-29T14:15:17.000Z</published>
-    <updated>2014-07-29T14:15:17.000Z</updated>
+    <published>2014-07-29T14:18:14.000Z</published>
+    <updated>2014-07-29T14:18:14.000Z</updated>
     <content type="html"><![CDATA[<p>译者：<a href="http://suetming.com" target="_blank" rel="external">suetming</a></p>
 <p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/" target="_blank" rel="external">W3C: Web Components</a></p>
 <p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="external">CC 3.0 BY-SA 协议</a>”发布</strong></p>
@@ -531,251 +531,8 @@ c.popOutBirdie(); <span class="comment">// specific to cuckoo-clock</span>
 <p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" alt="shadow rendering"></p>
 <object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" width="450" height="400"></object>
 
-<p>6.1 插入点<br>shadow DOM 子树通过<figure class="highlight <content>```元素作为渲染输出插入点."><figcaption><span>```<content>```只是作为渲染输出的插入点，如下：</content></span></figcaption><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-
-</pre></td></tr></table></figure>html<br><!-- document --></p>
-<div id="news"><br>  <h1>Good day for kittens</h1><br>  <div class="breaking">Kitten rescued from tree</div><br>  <div>Area kitten “adorable”—owner</div><br>  <div class="breaking">Jiggled piece of yarn derails kitten kongress</div><br></div>
-
-<p><!-- #news' shadow --></p>
-<template id="t"><br>  <content select="h1"></content><br>  <div id="ticker"><br>    <content id="stories"></content><br>  </div><br></template>
-
-<p><!-- #ticker's shadow --></p>
-<template id="u"><br>  <content class="highlight" select=".breaking"></content><br>  <content></content><br></template>
-
-<script>
-// Set up shadow DOM
-var news = document.querySelector('#news');
-var r = news.createShadowRoot();
-var t = document.querySelector('#t');
-r.appendChild(t.content.cloneNode(true));
-
-var ticker = r.querySelector('#ticker');
-var s = ticker.createShadowRoot();
-var u = document.querySelector('#u');
-s.appendChild(u.content.cloneNode(true));
-</script>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-理论上，第一部分文档和第一部分<span class="built_in">shadow</span>根节点生成了下面的DOM树. 宿主元素的子节点显示在插入点的位置.
-</pre></td></tr></table></figure>html
-<div id="news">
-  <h1>Good day for kittens</h1>
-  <div id="ticker">
-    <div class="breaking">Kitten rescued from tree</div>
-    <div>Area kitten "adorable"—owner</div>
-    <div class="breaking">Jiggled piece of yarn derails kitten kongress</div>
-  </div>
-</div>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-第二部分，由于
-</pre></td></tr></table></figure><content class="highlight" select=".breaking"><figure class="highlight 所有类属性为breaking的排在顶部，这种方式称为[reprojection](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#reprojection)"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-
-</pre></td></tr></table></figure>html
-<div id="news">
-  <h1>Good day for kittens</h1>
-  <div id="ticker">
-    <div class="breaking">Kitten rescued from tree</div>
-    <div class="breaking">Jiggled piece of yarn derails kitten kongress</div>
-    <div>Area kitten "adorable"—owner</div>
-  </div>
-</div>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-</pre></td><td class="code"><pre>
-6.3 备用内容
-插入点可以有<span class="emphasis">_content_</span>，称为[<span class="link_label">备用内容</span>](<span class="link_url">https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-fallback-content</span>)，当插入点没有任何文本时，会显示此信息，如下：
-</pre></td></tr></table></figure>html
-<!-- #news' shadow -->
-<template id="t">
-  <content select="h1">Today's top headlines</content>
-  <div id="ticker">
-    <content id="stories">
-      No news
-      <button onclick="window.location.reload(true);">Reload</button>
-    </content>
-  </div>
-</template>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-</pre></td><td class="code"><pre>
-<span class="header">6.4 多重Shadow子树
----------------------------</span>
-一个元素可以含有不止一个shadow DOM 子树. 继承一个已具有shadow DOM子树的自定义元素是很常见的. 不过要是想重用原先的元素时怎么处理? 如何重用?
-利用
-</pre></td></tr></table></figure><shadow><figure class="highlight 可以调用原先申请的shadow"><figcaption><span>DOM 子树，如下：</span></figcaption><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-
-</pre></td></tr></table></figure>html
-<element name="sailing-watch" extends="tick-tock-clock">
-  <template>
-    <shadow></shadow>
-    <div id="compass">N</div>
-  </template>
-  <script>
-    …
-  </script>
-</element>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-</pre></td><td class="code"><pre>
-由于一个元素可以有多个shadow，我们需要了解这些shadow如何相互影响，如何作用元素的子节点
-
-由于你不能删除shadow root，所以shadow DOM子树生效时的顺序很重要，如下：
-
--<span class="ruby"> <span class="number">1</span>. user agent shadow <span class="constant">DOM</span>
-</span>-<span class="ruby"> <span class="number">2</span>. 自定义元素的shadow <span class="constant">DOM</span>
-</span>-<span class="ruby"> <span class="number">3</span>. 第一个派生自定义元素的shadow <span class="constant">DOM</span>
-</span>-<span class="ruby"> <span class="number">4</span>. ...
-</span>-<span class="ruby"> <span class="number">5</span>. 用脚本添加的<span class="constant">Ad</span>-hoc shadow <span class="constant">DOM</span>
-</span>-<span class="ruby"> <span class="number">6</span>. <span class="constant">Decorator</span> shadow (applied <span class="keyword">and</span> removed with <span class="constant">CSS</span> rules—<span class="keyword">not</span> technically shadow <span class="constant">DOM</span>, but its insertion points work similarly to shadow <span class="constant">DOM</span>.)
-</span>
-其次，根据顺序从最新生效的子树反向推倒，每一个
-</pre></td></tr></table></figure><content><figure class="highlight 插入点，根据规则，可以定位任何宿主元素子节点"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-一旦子节点在正确的地方渲染，我们可以检查是否有
-</pre></td></tr></table></figure><shadow><figure class="highlight 元素，如果没有，表明成功；如果有，从```<shadow>```队列元素中取出子树重复替换```<content>```插入点，直到队尾."><figcaption><span>具体见如下图：</span></figcaption><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-</pre></td><td class="code"><pre>
-![<span class="link_label">shadow stack</span>](<span class="link_url">https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg</span>)
-
-<span class="xml"><span class="tag"><<span class="title">object</span> <span class="attribute">data</span>=<span class="value">"https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg"</span> <span class="attribute">width</span>=<span class="value">"500"</span> <span class="attribute">height</span>=<span class="value">"600"</span>></span></span><span class="xml"><span class="tag"></<span class="title">object</span>></span></span>
-
-总结一下：
-
-<span class="bullet">- </span>最近申请的shadow DOM 子树最可能在
-</pre></td></tr></table></figure><content><figure class="highlight 插入点获得最新的子树"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>-<span class="ruby"> 以此类推
-</span>-<span class="ruby"> 直到当前的shadow <span class="constant">DOM</span>子树没有</span>
-</pre></td></tr></table></figure><shadow><figure class="highlight ，那么其就是这个元素最后的DOM子树"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-</pre></td><td class="code"><pre>
-<span class="header">6.5 CSS 和 Shadow DOM
--------------------------------------</span>
-当构建自定义元素时自然要考虑属性、内容和API接口. 这与页面渲染同等重要. Shadow DOM 提供给开发者很多方式控制shadow DOM内容的样式.
-
-shadow DOM 子树有一个不看见的边界，user agent的样式默认生效，而不是定制的样式. 派生的元素依旧有效，这不是我们想要的. 在上面的scailing-watch的例子里，如果页面内容被渲染成绿色，如果要保持整体风格，shadow DOM内的文本由于color属性由于继承性质也会是绿色，不过设定了所有
-</pre></td></tr></table></figure><div><figure class="highlight 元素橙色边框，"><figcaption><span>那direction indicator不会有橙色边框因为__border__并不是具有继承性质的属性</span></figcaption><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-</pre></td><td class="code"><pre>
-一个shadow根节点有两个属性控制行为. applyAuthorStyles（开发者样式）属性，shadow DOM 会匹配最接近的样式，注意这个属性只能匹配shadow DOM 子树. 使用时要注意"n"代选择器
-
-如果<span class="strong">__applyAuthorStyles__</span>设置为false，<span class="strong">__resetStyleInheritance__</span>设置为true，样式会清空. 元素会被与页面样式隔离，你可以通过浏览器重置样式
-
-在插入点有相似的界限. shadow DOM子树的样式不会再插入点分布的元素上生效. 不过要是通过选择器想渲染某一部分特定内容， 可以用[<span class="link_label">::distributed pseudo-selector</span>](<span class="link_url">https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#distributed-pseudo-element</span>)，如下：
-</pre></td></tr></table></figure>html
-<!-- #ticker's shadow -->
-<template id="u">
-  <style>
-    content::distributed(*) {
-      display: inline-block;
-    }
-    *::distributed(.breaking) {
-      text-shadow: 0 0 0.2em maroon;
-      color: orange;
-    }
-  </style>
-  <content class="highlight" select=".breaking"></content>
-  <content></content>
-</template>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-上述包含了两个规则，选择器的左半部分是<span class="built_in">shadow</span> DOM 生效；括号内代表适用元素。第一个选择器对
-</pre></td></tr></table></figure><content><figure class="highlight 的所有元素有效；第二个选择器对类对象为breaking的元素有效"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-ShadowDOM 也可以定制宿主元素的样式. 代码如下：
-</pre></td></tr></table></figure>html
-<!-- #ticker's shadow -->
-<template id="u">
-  <style>
-    @host {
-      :scope {
-        white-space: nowrap;
-        overflow-style: marquee-line;
-        overflow-x: marquee;
-      }
-    }
-    content::distributed(*) {
-      display: inline-block;
-    }
-    *::distributed(.breaking) {
-      text-shadow: 0 0 0.2em maroon;
-      color: orange;
-    }
-  </style>
-  <content class="highlight" select=".breaking"></content>
-  <content></content>
-</template>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-最后，有两种方式可以使<span class="built_in">shadow</span> DOM 子树的样式与页面保持一致. 首先通过分配一个伪ID暴漏<span class="built_in">shadow</span> DOM 子树中的特定元素，开发者可以定制其样式. 例如：
-</pre></td></tr></table></figure>html
-<script>
-// Set up shadow DOM
-…
-var ticker = r.querySelector('#ticker');
-ticker.pseudo = 'x-ticker';
-…
-</script>
-
-<p><!-- change the appearance of the ticker part --></p>
-<p><style></p>
-<h1 id="news::x-ticker_{">news::x-ticker {</h1>
-<p>  background: gray;<br>  color: lightblue;<br>}<br></style></p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-另一种方法是通过CSS变量进行控制，如下：
-</pre></td></tr></table></figure>html<br><!-- #ticker's shadow --></p>
-<template id="u"><br>  <style><br>    @host {<br>      :scope {<br>        white-space: nowrap;<br>        overflow-style: marquee-line;<br>        overflow-x: marquee;<br>      }<br>    }<br>    content::distributed(<em>) {<br>      display: inline-block;<br>    }
-    </em>::distributed(.breaking) {<br>      text-shadow: 0 0 0.2em var(highlight-accent, maroon);<br>      color: var(highlight-primary, orange);<br>    }<br>  </style><br>  <content class="highlight" select=".breaking"></content><br>  <content></content><br></template>
-
-<p><!-- change the appearance of the ticker part --></p>
-<p><style></p>
-<h1 id="news::x-ticker_{-1">news::x-ticker {</h1>
-<p>  background: gray;<br>  color: lightblue;<br>  var-highlight-primary: green;<br>  var-highlight-accent: yellow;<br>}<br></style></p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre>1
+<p>6.1 插入点<br>shadow DOM 子树通过<strong>content</strong>元素作为渲染输出插入点. <strong>content</strong>只是作为渲染输出的插入点，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
 2
 3
 4
@@ -789,28 +546,376 @@ ticker.pseudo = 'x-ticker';
 12
 13
 14
-</pre></td><td class="code"><pre>
-伪元素方法针对特定元素保持页面样式非常有用，而CSS变量则对不想重复指定的属性集（主题风格）非常有用. 
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre></td><td class="code"><pre><span class="comment"><!-- document --></span>
+<span class="tag"><<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>></span>
+  <span class="tag"><<span class="title">h1</span>></span>Good day for kittens<span class="tag"></<span class="title">h1</span>></span>
+  <span class="tag"><<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>></span>Kitten rescued from tree<span class="tag"></<span class="title">div</span>></span>
+  <span class="tag"><<span class="title">div</span>></span>Area kitten "adorable"—owner<span class="tag"></<span class="title">div</span>></span>
+  <span class="tag"><<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>></span>Jiggled piece of yarn derails kitten kongress<span class="tag"></<span class="title">div</span>></span>
+<span class="tag"></<span class="title">div</span>></span>
 
-<span class="header">6.6 Shadow DOM中的事件
-----------------------------------------</span>
-为了确保shadow DOM子树中的元素不会暴露给外部子树，会有很多工作来分发内部子树事件. 
-首先，shadow DOM 子树会阻止事件如mutation和selectstart外部监听. 那些能够穿过shadow DOM的范围并且重定向的的事件，它们的_<span class="emphasis">_target_</span><span class="emphasis">_和_</span><span class="emphasis">_relatedTarget_</span><span class="emphasis">_的会指向shadow DOM子树的宿主元素. 在一些情况下，如_</span><span class="emphasis">_DOMFocusIn_</span><span class="emphasis">_，_</span><span class="emphasis">_mouseover_</span><span class="emphasis">_，_</span><span class="emphasis">_mouseout_</span><span class="emphasis">_事件需要特别注意，如果你在shadow DOM的两个元素中间移动鼠标，会出现鼠标从本身移动到它本身这种诡异的事件
+<span class="comment"><!-- #news' shadow --></span>
+<span class="tag"><<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"t"</span>></span>
+  <span class="tag"><<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"h1"</span>></span><span class="tag"></<span class="title">content</span>></span>
+  <span class="tag"><<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>></span>
+    <span class="tag"><<span class="title">content</span> <span class="attribute">id</span>=<span class="value">"stories"</span>></span><span class="tag"></<span class="title">content</span>></span>
+  <span class="tag"></<span class="title">div</span>></span>
+<span class="tag"></<span class="title">template</span>></span>
 
-</span>
-<span class="header">7 Imports
-----------------------------------------</span>
-规范标准见这里[The HTML Imports specification](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html)
+<span class="comment"><!-- #ticker's shadow --></span>
+<span class="tag"><<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>></span>
+  <span class="tag"><<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>></span><span class="tag"></<span class="title">content</span>></span>
+  <span class="tag"><<span class="title">content</span>></span><span class="tag"></<span class="title">content</span>></span>
+<span class="tag"></<span class="title">template</span>></span>
 
-Custom elements 和 decorators可以通过文件的方式引入：
-</pre></td></tr></table></figure>html</p>
-<p><link rel="import" href="goodies.html"></p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre>1
+<span class="tag"><<span class="title">script</span>></span><span class="javascript">
+<span class="comment">// Set up shadow DOM</span>
+<span class="keyword">var</span> news = document.querySelector(<span class="string">'#news'</span>);
+<span class="keyword">var</span> r = news.createShadowRoot();
+<span class="keyword">var</span> t = document.querySelector(<span class="string">'#t'</span>);
+r.appendChild(t.content.cloneNode(<span class="literal">true</span>));
+
+<span class="keyword">var</span> ticker = r.querySelector(<span class="string">'#ticker'</span>);
+<span class="keyword">var</span> s = ticker.createShadowRoot();
+<span class="keyword">var</span> u = document.querySelector(<span class="string">'#u'</span>);
+s.appendChild(u.content.cloneNode(<span class="literal">true</span>));
+</span><span class="tag"></<span class="title">script</span>></span>
+</pre></td></tr></table></figure>
+
+<p>理论上，第一部分文档和第一部分shadow根节点生成了下面的DOM树. 宿主元素的子节点显示在插入点的位置. </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
 2
-</pre></td><td class="code"><pre>
-只有
-</pre></td></tr></table></figure><decorator><code>元素和</code><element>```能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行. </element></decorator></p>
-</content></div></shadow></content></shadow></content></shadow></content>]]></content>
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>></span>
+  <span class="tag"><<span class="title">h1</span>></span>Good day for kittens<span class="tag"></<span class="title">h1</span>></span>
+  <span class="tag"><<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>></span>
+    <span class="tag"><<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>></span>Kitten rescued from tree<span class="tag"></<span class="title">div</span>></span>
+    <span class="tag"><<span class="title">div</span>></span>Area kitten "adorable"—owner<span class="tag"></<span class="title">div</span>></span>
+    <span class="tag"><<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>></span>Jiggled piece of yarn derails kitten kongress<span class="tag"></<span class="title">div</span>></span>
+  <span class="tag"></<span class="title">div</span>></span>
+<span class="tag"></<span class="title">div</span>></span>
+</pre></td></tr></table></figure>
+
+<p>第二部分，由于<strong>content class=”highlight” select=”.breaking”</strong>所有类属性为breaking的排在顶部，这种方式称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#reprojection" target="_blank" rel="external">reprojection</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"news"</span>></span>
+  <span class="tag"><<span class="title">h1</span>></span>Good day for kittens<span class="tag"></<span class="title">h1</span>></span>
+  <span class="tag"><<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>></span>
+    <span class="tag"><<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>></span>Kitten rescued from tree<span class="tag"></<span class="title">div</span>></span>
+    <span class="tag"><<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"breaking"</span>></span>Jiggled piece of yarn derails kitten kongress<span class="tag"></<span class="title">div</span>></span>
+    <span class="tag"><<span class="title">div</span>></span>Area kitten "adorable"—owner<span class="tag"></<span class="title">div</span>></span>
+  <span class="tag"></<span class="title">div</span>></span>
+<span class="tag"></<span class="title">div</span>></span>
+</pre></td></tr></table></figure>
+
+<p>6.3 备用内容<br>插入点可以有<em>content</em>，称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-fallback-content" target="_blank" rel="external">备用内容</a>，当插入点没有任何文本时，会显示此信息，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="code"><pre><span class="comment"><!-- #news' shadow --></span>
+<span class="tag"><<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"t"</span>></span>
+  <span class="tag"><<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"h1"</span>></span>Today's top headlines<span class="tag"></<span class="title">content</span>></span>
+  <span class="tag"><<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"ticker"</span>></span>
+    <span class="tag"><<span class="title">content</span> <span class="attribute">id</span>=<span class="value">"stories"</span>></span>
+      No news
+      <span class="tag"><<span class="title">button</span> <span class="attribute">onclick</span>=<span class="value">"window.location.reload(true);"</span>></span>Reload<span class="tag"></<span class="title">button</span>></span>
+    <span class="tag"></<span class="title">content</span>></span>
+  <span class="tag"></<span class="title">div</span>></span>
+<span class="tag"></<span class="title">template</span>></span>
+</pre></td></tr></table></figure>
+
+<h2 id="6-4_多重Shadow子树">6.4 多重Shadow子树</h2>
+<p>一个元素可以含有不止一个shadow DOM 子树. 继承一个已具有shadow DOM子树的自定义元素是很常见的. 不过要是想重用原先的元素时怎么处理? 如何重用?<br>利用<strong>shadow</strong>可以调用原先申请的shadow DOM 子树，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"sailing-watch"</span> <span class="attribute">extends</span>=<span class="value">"tick-tock-clock"</span>></span>
+  <span class="tag"><<span class="title">template</span>></span>
+    <span class="tag"><<span class="title">shadow</span>></span><span class="tag"></<span class="title">shadow</span>></span>
+    <span class="tag"><<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"compass"</span>></span>N<span class="tag"></<span class="title">div</span>></span>
+  <span class="tag"></<span class="title">template</span>></span>
+  <span class="tag"><<span class="title">script</span>></span><span class="javascript">
+    …
+  </span><span class="tag"></<span class="title">script</span>></span>
+<span class="tag"></<span class="title">element</span>></span>
+</pre></td></tr></table></figure>
+
+<p>由于一个元素可以有多个shadow，我们需要了解这些shadow如何相互影响，如何作用元素的子节点</p>
+<p>由于你不能删除shadow root，所以shadow DOM子树生效时的顺序很重要，如下：</p>
+<ul>
+<li><ol>
+<li>user agent shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>自定义元素的shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>第一个派生自定义元素的shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>…</li>
+</ol>
+</li>
+<li><ol>
+<li>用脚本添加的Ad-hoc shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>Decorator shadow (applied and removed with CSS rules—not technically shadow DOM, but its insertion points work similarly to shadow DOM.)</li>
+</ol>
+</li>
+</ul>
+<p>其次，根据顺序从最新生效的子树反向推倒，每一个<strong>content</strong>插入点，根据规则，可以定位任何宿主元素子节点</p>
+<p>一旦子节点在正确的地方渲染，我们可以检查是否有<strong>shadow</strong>元素，如果没有，表明成功；如果有，从<strong>shadow</strong>队列元素中取出子树重复替换<strong>content</strong>插入点，直到队尾. 具体见如下图：</p>
+<p><img src="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg" alt="shadow stack"></p>
+<object data="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg" width="500" height="600"></object>
+
+<p>总结一下：</p>
+<ul>
+<li>最近申请的shadow DOM 子树最可能在<strong>content</strong>插入点获得最新的子树</li>
+<li>以此类推</li>
+<li>直到当前的shadow DOM子树没有<strong>shadow</strong>，那么其就是这个元素最后的DOM子树</li>
+</ul>
+<h2 id="6-5_CSS_和_Shadow_DOM">6.5 CSS 和 Shadow DOM</h2>
+<p>当构建自定义元素时自然要考虑属性、内容和API接口. 这与页面渲染同等重要. Shadow DOM 提供给开发者很多方式控制shadow DOM内容的样式.</p>
+<p>shadow DOM 子树有一个不看见的边界，user agent的样式默认生效，而不是定制的样式. 派生的元素依旧有效，这不是我们想要的. 在上面的scailing-watch的例子里，如果页面内容被渲染成绿色，如果要保持整体风格，shadow DOM内的文本由于color属性由于继承性质也会是绿色，不过设定了所有<strong>div</strong>元素橙色边框， 那direction indicator不会有橙色边框因为<strong>border</strong>并不是具有继承性质的属性</p>
+<p>一个shadow根节点有两个属性控制行为. applyAuthorStyles（开发者样式）属性，shadow DOM 会匹配最接近的样式，注意这个属性只能匹配shadow DOM 子树. 使用时要注意”n”代选择器</p>
+<p>如果<strong>applyAuthorStyles</strong>设置为false，<strong>resetStyleInheritance</strong>设置为true，样式会清空. 元素会被与页面样式隔离，你可以通过浏览器重置样式</p>
+<p>在插入点有相似的界限. shadow DOM子树的样式不会再插入点分布的元素上生效. 不过要是通过选择器想渲染某一部分特定内容， 可以用<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#distributed-pseudo-element" target="_blank" rel="external">::distributed pseudo-selector</a>，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="code"><pre><span class="comment"><!-- #ticker's shadow --></span>
+<span class="tag"><<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>></span>
+  <span class="tag"><<span class="title">style</span>></span><span class="css">
+    <span class="tag">content</span><span class="pseudo">::distributed(</span>*) <span class="rules">{
+      <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block</span></span>;
+    <span class="rule">}</span></span>
+    *<span class="pseudo">::distributed(</span><span class="class">.breaking</span>) <span class="rules">{
+      <span class="rule"><span class="attribute">text-shadow</span>:<span class="value"> <span class="number">0</span> <span class="number">0</span> <span class="number">0.2</span>em maroon</span></span>;
+      <span class="rule"><span class="attribute">color</span>:<span class="value"> orange</span></span>;
+    <span class="rule">}</span></span>
+  </span><span class="tag"></<span class="title">style</span>></span>
+  <span class="tag"><<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>></span><span class="tag"></<span class="title">content</span>></span>
+  <span class="tag"><<span class="title">content</span>></span><span class="tag"></<span class="title">content</span>></span>
+<span class="tag"></<span class="title">template</span>></span>
+</pre></td></tr></table></figure>
+
+<p>上述包含了两个规则，选择器的左半部分是shadow DOM 生效；括号内代表适用元素。第一个选择器对<strong>content</strong>的所有元素有效；第二个选择器对类对象为breaking的元素有效</p>
+<p>ShadowDOM 也可以定制宿主元素的样式. 代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="code"><pre><span class="comment"><!-- #ticker's shadow --></span>
+<span class="tag"><<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>></span>
+  <span class="tag"><<span class="title">style</span>></span><span class="css">
+    <span class="at_rule">@<span class="keyword">host</span> </span>{
+      <span class="pseudo">:scope</span> <span class="rules">{
+        <span class="rule"><span class="attribute">white-space</span>:<span class="value"> nowrap</span></span>;
+        <span class="rule"><span class="attribute">overflow-style</span>:<span class="value"> marquee-line</span></span>;
+        <span class="rule"><span class="attribute">overflow-x</span>:<span class="value"> marquee</span></span>;
+      <span class="rule">}</span></span>
+    }
+    <span class="tag">content</span><span class="pseudo">::distributed(</span>*) <span class="rules">{
+      <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block</span></span>;
+    <span class="rule">}</span></span>
+    *<span class="pseudo">::distributed(</span><span class="class">.breaking</span>) <span class="rules">{
+      <span class="rule"><span class="attribute">text-shadow</span>:<span class="value"> <span class="number">0</span> <span class="number">0</span> <span class="number">0.2</span>em maroon</span></span>;
+      <span class="rule"><span class="attribute">color</span>:<span class="value"> orange</span></span>;
+    <span class="rule">}</span></span>
+  </span><span class="tag"></<span class="title">style</span>></span>
+  <span class="tag"><<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>></span><span class="tag"></<span class="title">content</span>></span>
+  <span class="tag"><<span class="title">content</span>></span><span class="tag"></<span class="title">content</span>></span>
+<span class="tag"></<span class="title">template</span>></span>
+</pre></td></tr></table></figure>
+
+<p>最后，有两种方式可以使shadow DOM 子树的样式与页面保持一致. 首先通过分配一个伪ID暴漏shadow DOM 子树中的特定元素，开发者可以定制其样式. 例如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">script</span>></span><span class="javascript">
+<span class="comment">// Set up shadow DOM</span>
+…
+<span class="keyword">var</span> ticker = r.querySelector(<span class="string">'#ticker'</span>);
+ticker.pseudo = <span class="string">'x-ticker'</span>;
+…
+</span><span class="tag"></<span class="title">script</span>></span>
+
+<span class="comment"><!-- change the appearance of the ticker part --></span>
+<span class="tag"><<span class="title">style</span>></span><span class="css">
+<span class="id">#news</span><span class="pseudo">::x-ticker</span> <span class="rules">{
+  <span class="rule"><span class="attribute">background</span>:<span class="value"> gray</span></span>;
+  <span class="rule"><span class="attribute">color</span>:<span class="value"> lightblue</span></span>;
+<span class="rule">}</span></span>
+</span><span class="tag"></<span class="title">style</span>></span>
+</pre></td></tr></table></figure>
+
+<p>另一种方法是通过CSS变量进行控制，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></td><td class="code"><pre><span class="comment"><!-- #ticker's shadow --></span>
+<span class="tag"><<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"u"</span>></span>
+  <span class="tag"><<span class="title">style</span>></span><span class="css">
+    <span class="at_rule">@<span class="keyword">host</span> </span>{
+      <span class="pseudo">:scope</span> <span class="rules">{
+        <span class="rule"><span class="attribute">white-space</span>:<span class="value"> nowrap</span></span>;
+        <span class="rule"><span class="attribute">overflow-style</span>:<span class="value"> marquee-line</span></span>;
+        <span class="rule"><span class="attribute">overflow-x</span>:<span class="value"> marquee</span></span>;
+      <span class="rule">}</span></span>
+    }
+    <span class="tag">content</span><span class="pseudo">::distributed(</span>*) <span class="rules">{
+      <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block</span></span>;
+    <span class="rule">}</span></span>
+    *<span class="pseudo">::distributed(</span><span class="class">.breaking</span>) <span class="rules">{
+      <span class="rule"><span class="attribute">text-shadow</span>:<span class="value"> <span class="number">0</span> <span class="number">0</span> <span class="number">0.2</span>em <span class="function">var(highlight-accent, maroon)</span></span></span>;
+      <span class="rule"><span class="attribute">color</span>:<span class="value"> <span class="function">var(highlight-primary, orange)</span></span></span>;
+    <span class="rule">}</span></span>
+  </span><span class="tag"></<span class="title">style</span>></span>
+  <span class="tag"><<span class="title">content</span> <span class="attribute">class</span>=<span class="value">"highlight"</span> <span class="attribute">select</span>=<span class="value">".breaking"</span>></span><span class="tag"></<span class="title">content</span>></span>
+  <span class="tag"><<span class="title">content</span>></span><span class="tag"></<span class="title">content</span>></span>
+<span class="tag"></<span class="title">template</span>></span>
+
+<span class="comment"><!-- change the appearance of the ticker part --></span>
+<span class="tag"><<span class="title">style</span>></span><span class="css">
+<span class="id">#news</span><span class="pseudo">::x-ticker</span> <span class="rules">{
+  <span class="rule"><span class="attribute">background</span>:<span class="value"> gray</span></span>;
+  <span class="rule"><span class="attribute">color</span>:<span class="value"> lightblue</span></span>;
+  <span class="rule"><span class="attribute">var-highlight-primary</span>:<span class="value"> green</span></span>;
+  <span class="rule"><span class="attribute">var-highlight-accent</span>:<span class="value"> yellow</span></span>;
+<span class="rule">}</span></span>
+</span><span class="tag"></<span class="title">style</span>></span>
+</pre></td></tr></table></figure>
+
+<p>伪元素方法针对特定元素保持页面样式非常有用，而CSS变量则对不想重复指定的属性集（主题风格）非常有用. </p>
+<h2 id="6-6_Shadow_DOM中的事件">6.6 Shadow DOM中的事件</h2>
+<p>为了确保shadow DOM子树中的元素不会暴露给外部子树，会有很多工作来分发内部子树事件.<br>首先，shadow DOM 子树会阻止事件如mutation和selectstart外部监听. 那些能够穿过shadow DOM的范围并且重定向的的事件，它们的<strong>target</strong>和<strong>relatedTarget</strong>的会指向shadow DOM子树的宿主元素. 在一些情况下，如<strong>DOMFocusIn</strong>，<strong>mouseover</strong>，<strong>mouseout</strong>事件需要特别注意，如果你在shadow DOM的两个元素中间移动鼠标，会出现鼠标从本身移动到它本身这种诡异的事件</p>
+<h2 id="7_Imports">7 Imports</h2>
+<p>规范标准见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html" target="_blank" rel="external">The HTML Imports specification</a></p>
+<p>Custom elements 和 decorators可以通过文件的方式引入：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"import"</span> <span class="attribute">href</span>=<span class="value">"goodies.html"</span>></span>
+</pre></td></tr></table></figure>
+
+<p>只有<strong>decorator</strong>元素和<strong>element</strong>能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行. </p>
+]]></content>
     <category scheme="http://suetming.cn/tags/shadow-DOM/" term="shadow DOM"/>
     <category scheme="http://suetming.cn/tags/templates/" term="templates"/>
     <category scheme="http://suetming.cn/tags/decorator/" term="decorator"/>
