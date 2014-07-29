@@ -3,7 +3,7 @@
   <title><![CDATA[盖世小虫]]></title>
   <link href="http://suetming.cn/atom.xml" rel="self"/>
   <link href="http://suetming.cn"/>
-  <updated>2014-07-29T13:17:01.935Z</updated>
+  <updated>2014-07-29T13:19:36.724Z</updated>
   <id>http://suetming.cn/</id>
   <author>
     <name><![CDATA[suetming]]></name>
@@ -13,8 +13,8 @@
     <title type="html"><![CDATA[Web组件(Web Components) | HTML5]]></title>
     <link href="http://suetming.cn/2014/07/29/2013-06-29-web-components/"/>
     <id>http://suetming.cn/2014/07/29/2013-06-29-web-components/</id>
-    <published>2014-07-29T13:16:54.000Z</published>
-    <updated>2014-07-29T13:16:54.000Z</updated>
+    <published>2014-07-29T13:19:32.000Z</published>
+    <updated>2014-07-29T13:19:32.000Z</updated>
     <content type="html"><![CDATA[<p>译者：<a href="http://suetming.com" target="_blank" rel="external">suetming</a></p>
 <p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/" target="_blank" rel="external">W3C: Web Components</a></p>
 <p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="external">CC 3.0 BY-SA 协议</a>”发布</strong></p>
@@ -34,10 +34,8 @@
 <p>每一部分都有各自的用途. 如果将这5种技术引入，开发人员可以轻松的编写拥有复杂交互体验的组件，并且可以轻松引用和组装，这是今天的CSS和脚本语言所无法达到的</p>
 <p>本文将会讨论这5种技术，并举例说明其在Web组件中的作用</p>
 <h2 id="3_Templates">3 Templates</h2>
-<p>具体规范参加这篇<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html" target="_blank" rel="external">HTML Templates</a></p>
-<figure class="highlight <template\>```元素及其所包含元素会由解析器进行解析并标记，不过不会立即渲染出来，脚本不会立即执行，包含的图片也不会立即下载"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre><span class="escape">``</span><span class="escape">`<</span>template\>
-</pre></td></tr></table></figure>元素有一个属性 <strong>content</strong> 存储元素的实际内容，属性 <strong>content</strong> 的内容可以拷贝移动到HTML节点中<br><br><figure class="highlight html"><table><tr><td class="gutter"><pre>1
+<p>具体规范参加这篇<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html" target="_blank" rel="external">HTML Templates</a><br><code><template\></code>元素及其所包含元素会由解析器进行解析并标记，不过不会立即渲染出来，脚本不会立即执行，包含的图片也不会立即下载<br><code><template\></code>元素有一个属性 <strong>content</strong> 存储元素的实际内容，属性 <strong>content</strong> 的内容可以拷贝移动到HTML节点中</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
 2
 3
 4
