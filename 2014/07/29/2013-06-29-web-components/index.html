@@ -77,7 +77,7 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
         <section id="main"><article id="post-2013-06-29-web-components" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2014/07/29/2013-06-29-web-components/" class="article-date">
-  <time datetime="2014-07-29T13:08:42.000Z" itemprop="datePublished">Jul 29 2014</time>
+  <time datetime="2014-07-29T13:14:35.000Z" itemprop="datePublished">Jul 29 2014</time>
 </a>
     
   <div class="article-category">
@@ -120,7 +120,7 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
 <p>本文将会讨论这5种技术，并举例说明其在Web组件中的作用</p>
 <h2 id="3_Templates">3 Templates</h2>
 <p>具体规范参加这篇<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html" target="_blank" rel="external">HTML Templates</a><br>\<template\>元素及其所包含元素会由解析器进行解析并标记，不过不会立即渲染出来，脚本不会立即执行，包含的图片也不会立即下载<br>\<template\>元素有一个属性 <strong>content</strong> 存储元素的实际内容，属性 <strong>content</strong> 的内容可以拷贝移动到HTML节点中</template\></template\></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
 2
 3
 4
@@ -194,6 +194,7 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
 18
 19
 20
+21
 </pre></td><td class="code"><pre>
 最终渲染成
 
@@ -205,6 +206,7 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
   <span class="xml"><span class="tag"></<span class="title">li</span>></span></span><span class="xml"><span class="tag"><<span class="title">li</span>></span></span>Cuckoo clock
   <span class="xml"><span class="tag"></<span class="title">li</span>></span></span><span class="xml"><span class="tag"><<span class="title">li</span>></span></span>Wristwatch
 <span class="xml"><span class="tag"></<span class="title">li</span>></span></span><span class="xml"><span class="tag"></<span class="title">ul</span>></span></span>
+
 
 <span class="strong">__decorator__</span> CSS属性可以指向任何网络资源，不过只有其“定义”被调用才能申请，生成的标记仅限于展示，永远不会运行脚本包括内联事件，而且也是不可编辑的
 
@@ -244,88 +246,23 @@ Decorators可以关联事件增强交互，decorator采用事件控制器当做�
 5
 6
 7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-</pre></td><td class="code"><pre>5 Custom Elements
-----------------------------
+</pre></td><td class="code"><pre>
+<span class="header">5 Custom Elements
+----------------------------</span>
 
-技术规范见此[The Custom Elements specification](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html)
+技术规范见此[<span class="link_label">The Custom Elements specification</span>](<span class="link_url">https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html</span>)
 
 用户可以构造新的DOM元素，这种技术称之为Custom Elements. 不像decorators，自定义元素可以封装状态并提供脚本接口. 下面的数据表表明两者区别
-
-<span class="tag"><<span class="title">blockquote</span>></span>
-<span class="tag"><<span class="title">table</span>></span>
-   <span class="tag"><<span class="title">tr</span>></span>
-      <span class="tag"><<span class="title">td</span>></span><span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Decorators<span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Custom Elements<span class="tag"></<span class="title">td</span>></span>
-   <span class="tag"></<span class="title">tr</span>></span>
-   <span class="tag"><<span class="title">tr</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Lifetime<span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Ephemeral, while a CSS selector matches<span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Stable, matches entire element lifetime<span class="tag"></<span class="title">td</span>></span>
-   <span class="tag"></<span class="title">tr</span>></span>
-   <span class="tag"><<span class="title">tr</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Applied, unapplied dynamically<span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Yes, based on CSS selectors<span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>No, fixed at element creation time<span class="tag"></<span class="title">td</span>></span>
-   <span class="tag"></<span class="title">tr</span>></span>
-   <span class="tag"><<span class="title">tr</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Accessible through script<span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>No, transparent to DOM; cannot add interfaces<span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Yes, accessible through DOM; can provide interfaces<span class="tag"></<span class="title">td</span>></span>
-   <span class="tag"></<span class="title">tr</span>></span>
-   <span class="tag"><<span class="title">tr</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>State<span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Stateless projection<span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Stateful DOM object<span class="tag"></<span class="title">td</span>></span>
-   <span class="tag"></<span class="title">tr</span>></span>
-   <span class="tag"><<span class="title">tr</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Behavior<span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>Simulated by changing decorators<span class="tag"></<span class="title">td</span>></span>
-      <span class="tag"><<span class="title">td</span>></span>First-class using script and events<span class="tag"></<span class="title">td</span>></span>
-   <span class="tag"></<span class="title">tr</span>></span>
-<span class="tag"></<span class="title">table</span>></span>
-<span class="tag"></<span class="title">blockquote</span>></span>
-
-5.1 构造一个自定义元素
--------------------------------------------
+</pre></td></tr></table></figure>html</p>
+<p><blockquote></blockquote></p>
+<p><table><br>   <tr><br>      <td></td><br>      <td>Decorators</td><br>      <td>Custom Elements</td><br>   </tr><br>   <tr><br>      <td>Lifetime</td><br>      <td>Ephemeral, while a CSS selector matches</td><br>      <td>Stable, matches entire element lifetime</td><br>   </tr><br>   <tr><br>      <td>Applied, unapplied dynamically</td><br>      <td>Yes, based on CSS selectors</td><br>      <td>No, fixed at element creation time</td><br>   </tr><br>   <tr><br>      <td>Accessible through script</td><br>      <td>No, transparent to DOM; cannot add interfaces</td><br>      <td>Yes, accessible through DOM; can provide interfaces</td><br>   </tr><br>   <tr><br>      <td>State</td><br>      <td>Stateless projection</td><br>      <td>Stateful DOM object</td><br>   </tr><br>   <tr><br>      <td>Behavior</td><br>      <td>Simulated by changing decorators</td><br>      <td>First-class using script and events</td><br>   </tr><br></table><br></p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre>
+<span class="header">5.1 构造一个自定义元素
+-------------------------------------------</span>
 用
 </pre></td></tr></table></figure><element><figure class="highlight 构造一个元素，并指明继承哪一个属性如下："><table><tr><td class="gutter"><pre>1
 2
@@ -452,6 +389,7 @@ c.popOutBirdie(); // specific to cuckoo-clock
 18
 19
 20
+21
 </pre></td><td class="code"><pre>
 <span class="header">6 Shadow DOM
 ------------------------</span>
@@ -468,6 +406,7 @@ Shadow DOM 通过[<span class="link_label">__createShadowRoot__</span>](<span cl
 关联shadow DOM的元素称为[<span class="link_label">shadow host</span>](<span class="link_url">https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-shadow-host</span>). 当元素存在shadow DOM，元素的子节点不会渲染；渲染的是shadow DOM的内容
 
 ![<span class="link_label">shadow rendering</span>](<span class="link_url">http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg</span>)
+
 <span class="xml"><span class="tag"><<span class="title">object</span> <span class="attribute">data</span>=<span class="value">"http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg"</span> <span class="attribute">width</span>=<span class="value">"450"</span> <span class="attribute">height</span>=<span class="value">"400"</span>></span></span><span class="xml"><span class="tag"></<span class="title">object</span>></span></span>
 
 6.1 插入点
@@ -512,8 +451,10 @@ var u = document.querySelector('#u');
 s.appendChild(u.content.cloneNode(true));
 </script>
 <figure class="highlight"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>理论上，第一部分文档和第一部分<span class="built_in">shadow</span>根节点生成了下面的DOM树. 宿主元素的子节点显示在插入点的位置.
-</pre></td></tr></table></figure>
+2
+</pre></td><td class="code"><pre>
+理论上，第一部分文档和第一部分<span class="built_in">shadow</span>根节点生成了下面的DOM树. 宿主元素的子节点显示在插入点的位置.
+</pre></td></tr></table></figure>html
 <div id="news">
   <h1>Good day for kittens</h1>
   <div id="ticker">
@@ -617,8 +558,10 @@ s.appendChild(u.content.cloneNode(true));
 5
 6
 7
+8
 </pre></td><td class="code"><pre>
 ![<span class="link_label">shadow stack</span>](<span class="link_url">https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg</span>)
+
 <span class="xml"><span class="tag"><<span class="title">object</span> <span class="attribute">data</span>=<span class="value">"https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg"</span> <span class="attribute">width</span>=<span class="value">"500"</span> <span class="attribute">height</span>=<span class="value">"600"</span>></span></span><span class="xml"><span class="tag"></<span class="title">object</span>></span></span>
 
 总结一下：
@@ -765,7 +708,7 @@ Custom elements 和 decorators可以通过文件的方式引入：
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://suetming.cn/2014/07/29/2013-06-29-web-components/" data-id="uqakz0lmje9aai4p" class="article-share-link">Share</a>
+      <a data-url="http://suetming.cn/2014/07/29/2013-06-29-web-components/" data-id="xlt9m4n31tx7chh1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/custom-elements/">custom elements</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/decorator/">decorator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/import/">import</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shadow-DOM/">shadow DOM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/templates/">templates</a></li></ul>
