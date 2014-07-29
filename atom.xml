@@ -3,7 +3,7 @@
   <title><![CDATA[盖世小虫]]></title>
   <link href="http://suetming.cn/atom.xml" rel="self"/>
   <link href="http://suetming.cn"/>
-  <updated>2014-07-29T13:43:21.159Z</updated>
+  <updated>2014-07-29T13:49:31.522Z</updated>
   <id>http://suetming.cn/</id>
   <author>
     <name><![CDATA[suetming]]></name>
@@ -13,8 +13,8 @@
     <title type="html"><![CDATA[Web组件(Web Components) | HTML5]]></title>
     <link href="http://suetming.cn/2014/07/29/2013-06-29-web-components/"/>
     <id>http://suetming.cn/2014/07/29/2013-06-29-web-components/</id>
-    <published>2014-07-29T13:39:14.000Z</published>
-    <updated>2014-07-29T13:39:14.000Z</updated>
+    <published>2014-07-29T13:48:10.000Z</published>
+    <updated>2014-07-29T13:48:10.000Z</updated>
     <content type="html"><![CDATA[<p>译者：<a href="http://suetming.com" target="_blank" rel="external">suetming</a></p>
 <p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/" target="_blank" rel="external">W3C: Web Components</a></p>
 <p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="external">CC 3.0 BY-SA 协议</a>”发布</strong></p>
@@ -112,6 +112,7 @@
 19
 20
 21
+22
 </pre></td><td class="code"><pre>
 最终渲染成
 
@@ -128,6 +129,7 @@
 <span class="strong">__decorator__</span> CSS属性可以指向任何网络资源，不过只有其“定义”被调用才能申请，生成的标记仅限于展示，永远不会运行脚本包括内联事件，而且也是不可编辑的
 
 4.1 Decorators的事件
+
 Decorators可以关联事件增强交互，decorator采用事件控制器当做媒介，因为decorator可能在任何时间生效或者失效，所以关联template中监听节点事件或者获取其状态都是无效的
 
 ![<span class="link_label">事件注册</span>](<span class="link_url">http://www.w3.org/TR/2013/WD-components-intro-20130606/event-handler-registration.png</span>)
