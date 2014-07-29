@@ -3,7 +3,7 @@
   <title><![CDATA[盖世小虫]]></title>
   <link href="http://suetming.cn/atom.xml" rel="self"/>
   <link href="http://suetming.cn"/>
-  <updated>2014-07-29T14:18:22.450Z</updated>
+  <updated>2014-07-29T14:26:45.326Z</updated>
   <id>http://suetming.cn/</id>
   <author>
     <name><![CDATA[suetming]]></name>
@@ -13,15 +13,16 @@
     <title type="html"><![CDATA[Web组件(Web Components) | HTML5]]></title>
     <link href="http://suetming.cn/2014/07/29/2013-06-29-web-components/"/>
     <id>http://suetming.cn/2014/07/29/2013-06-29-web-components/</id>
-    <published>2014-07-29T14:18:14.000Z</published>
-    <updated>2014-07-29T14:18:14.000Z</updated>
+    <published>2014-07-29T14:26:37.000Z</published>
+    <updated>2014-07-29T14:26:37.000Z</updated>
     <content type="html"><![CDATA[<p>译者：<a href="http://suetming.com" target="_blank" rel="external">suetming</a></p>
 <p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/" target="_blank" rel="external">W3C: Web Components</a></p>
 <p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="external">CC 3.0 BY-SA 协议</a>”发布</strong></p>
 <h2 id="1_关于本文">1 关于本文</h2>
 <p>注意文章涉及正在开展的工作. 关系到web组件的一系列概念，每个概念都有各自的规范.<br>这是一个迭代的过程</p>
 <p>本文描述的概念有时会落后或者超前于专门界定此概念的规范，一旦本文涉及的前瞻性技术被相应的规范所采纳，本文会更新并注明</p>
-<p><a id="more"></a></p>
+<a id="more"></a>
+
 <h2 id="2_介绍">2 介绍</h2>
 <p>web组件模型由5部分组成：</p>
 <ul>
@@ -56,7 +57,7 @@
 </pre></td><td class="code"><pre><span class="tag"><<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"commentTemplate"</span>></span>
     <span class="tag"><<span class="title">div</span>></span>
         <span class="tag"><<span class="title">img</span> <span class="attribute">src</span>=<span class="value">""</span>></span>
-        <span class="tag"><<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"comment-text"</span>></span><span class="tag"></<span class="title">div</span>></span>
+        <span class="tag"><<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"comment-text"</span>></span>"<span class="tag"></<span class="title">"div</span>></span>
     <span class="tag"></<span class="title">div</span>></span>
 <span class="tag"></<span class="title">template</span>></span>
 <span class="tag"><<span class="title">script</span>></span><span class="javascript">
