@@ -82,7 +82,7 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
         <section id="main"><article id="post-2013-06-29-web-components" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2014/07/29/2013-06-29-web-components/" class="article-date">
-  <time datetime="2014-07-29T14:26:37.000Z" itemprop="datePublished">7月 29 2014</time>
+  <time datetime="2014-07-29T14:37:18.000Z" itemprop="datePublished">7月 29 2014</time>
 </a>
     
   <div class="article-category">
@@ -128,40 +128,9 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
 <p>具体规范参加这篇<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html" target="_blank" rel="external">HTML Templates</a></p>
 <p><strong>template</strong>元素及其所包含元素会由解析器进行解析并标记，不过不会立即渲染出来，脚本不会立即执行，包含的图片也不会立即下载</p>
 <p><strong>template</strong>元素有一个属性 <strong>content</strong> 存储元素的实际内容，属性 <strong>content</strong> 的内容可以拷贝移动到HTML节点中</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-</pre></td><td class="code"><pre><span class="tag"><<span class="title">template</span> <span class="attribute">id</span>=<span class="value">"commentTemplate"</span>></span>
-    <span class="tag"><<span class="title">div</span>></span>
-        <span class="tag"><<span class="title">img</span> <span class="attribute">src</span>=<span class="value">""</span>></span>
-        <span class="tag"><<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"comment-text"</span>></span>"<span class="tag"></<span class="title">"div</span>></span>
-    <span class="tag"></<span class="title">div</span>></span>
-<span class="tag"></<span class="title">template</span>></span>
-<span class="tag"><<span class="title">script</span>></span><span class="javascript">
-<span class="function"><span class="keyword">function</span> <span class="title">addComment</span><span class="params">(imageUrl, text)</span> {</span>
-  <span class="keyword">var</span> t = document.querySelector(<span class="string">"#commentTemplate"</span>);
-  <span class="keyword">var</span> comment = t.content.cloneNode(<span class="literal">true</span>);
-  <span class="comment">// Populate content.</span>
-  comment.querySelector(<span class="string">'img'</span>).src = imageUrl;
-  comment.querySelector(<span class="string">'.comment-text'</span>).textContent = text;
-  document.body.appendChild(comment);
-}
-</span><span class="tag"></<span class="title">script</span>></span>
-</pre></td></tr></table></figure>
-
+<p>``</p>
+<p><template id="commentTemplate"><br>    <div><br>        <img src=""><br>        <div class="comment-text"></div><br>    </div><br></template></p>
+<p><script><br>function addComment(imageUrl, text) {<br>  var t = document.querySelector(“#commentTemplate”);<br>  var comment = t.content.cloneNode(true);<br>  // Populate content.<br>  comment.querySelector(‘img’).src = imageUrl;<br>  comment.querySelector(‘.comment-text’).textContent = text;<br>  document.body.appendChild(comment);<br>}<br></script><br> ``</p>
 <p><strong>template</strong> 所包含的的元素包含在属性 <strong>content</strong> 中，通过script拷贝里面的元素并插入到HTML中使图片加载进来，脚本开始运行. 例如，在templates引入大型脚本，需要时调用</p>
 <h2 id="4_Decorators">4 Decorators</h2>
 <p>Decorators 目前没有标准文档，<strong>decorator</strong> 主要加强或者重载已经存在的元素，由CSS控制表现，与一般元素不同的是通过标记可以达到额外的效果</p>
@@ -1010,7 +979,7 @@ ticker.pseudo = <span class="string">'x-ticker'</span>;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://suetming.cn/2014/07/29/2013-06-29-web-components/" data-id="rdnjuw846l4zxzb2" class="article-share-link">Share</a>
+      <a data-url="http://suetming.cn/2014/07/29/2013-06-29-web-components/" data-id="xiyregxzjlucvz02" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/custom-elements/">custom elements</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/decorator/">decorator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/import/">import</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shadow-DOM/">shadow DOM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/templates/">templates</a></li></ul>
