@@ -3,7 +3,7 @@
   <title><![CDATA[盖世小虫]]></title>
   <link href="http://suetming.cn/atom.xml" rel="self"/>
   <link href="http://suetming.cn"/>
-  <updated>2014-07-29T14:05:26.229Z</updated>
+  <updated>2014-07-29T14:08:52.183Z</updated>
   <id>http://suetming.cn/</id>
   <author>
     <name><![CDATA[suetming]]></name>
@@ -13,8 +13,8 @@
     <title type="html"><![CDATA[Web组件(Web Components) | HTML5]]></title>
     <link href="http://suetming.cn/2014/07/29/2013-06-29-web-components/"/>
     <id>http://suetming.cn/2014/07/29/2013-06-29-web-components/</id>
-    <published>2014-07-29T14:05:18.000Z</published>
-    <updated>2014-07-29T14:05:18.000Z</updated>
+    <published>2014-07-29T14:08:45.000Z</published>
+    <updated>2014-07-29T14:08:45.000Z</updated>
     <content type="html"><![CDATA[<p>译者：<a href="http://suetming.com" target="_blank" rel="external">suetming</a></p>
 <p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/" target="_blank" rel="external">W3C: Web Components</a></p>
 <p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="external">CC 3.0 BY-SA 协议</a>”发布</strong></p>
@@ -37,7 +37,7 @@
 <p>具体规范参加这篇<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html" target="_blank" rel="external">HTML Templates</a></p>
 <p><strong>template</strong>元素及其所包含元素会由解析器进行解析并标记，不过不会立即渲染出来，脚本不会立即执行，包含的图片也不会立即下载</p>
 <p><strong>template</strong>元素有一个属性 <strong>content</strong> 存储元素的实际内容，属性 <strong>content</strong> 的内容可以拷贝移动到HTML节点中</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
 2
 3
 4
@@ -82,12 +82,8 @@
 <decorator id="details-open"><br>    <template><br>        <a id="summary"><br>          ▾<br>          <content select="summary"></content><br>        </a><br>        <content></content><br>    </template><br></decorator><br><figure class="highlight"><table><tr><td class="gutter"><pre>1
 2
 </pre></td><td class="code"><pre>
-
-</pre></td></tr></table></figure><content><figure class="highlight 包含待渲染的内容，通过CSS控制生效"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-
-</pre></td></tr></table></figure>css<br>details[open] {<br>    decorator: url(#details-open);<br>}<br><figure class="highlight"><table><tr><td class="gutter"><pre>1
+<span class="strong">__content__</span>包含待渲染的内容，通过CSS控制生效
+</pre></td></tr></table></figure><br>details[open] {<br>    decorator: url(#details-open);<br>}<br><figure class="highlight"><table><tr><td class="gutter"><pre>1
 2
 </pre></td><td class="code"><pre>
 通过这种方式可以使下面的html代码
@@ -165,7 +161,8 @@ details[open] {
 
 <decorator id="details-closed"><br>    <script><br>        function clicked(event) {<br>            event.target.setAttribute(‘open’, ‘open’);<br>        }<br>        [{selector: ‘#summary’, type: ‘click’, handler: clicked}];<br>    </script><br>    <template><br>        <a id="summary"><br>            ▸ <content select="summary"></content><br>        </a><br>    </template><br></decorator>
 
-<p><decorator id="details-open"><br>    <!-- as illustrated above --></decorator></p>
+<decorator id="details-open"><br>    <!-- as illustrated above --><br></decorator>
+
 <p><figure class="highlight"><table><tr><td class="gutter"><pre>1
 2
 3
@@ -631,7 +628,7 @@ Custom elements 和 decorators可以通过文件的方式引入：
 </pre></td><td class="code"><pre>
 只有
 </pre></td></tr></table></figure><decorator><code>元素和</code><element>```能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行. </element></decorator></p>
-</content></div></shadow></content></shadow></content></shadow></content></content></content>]]></content>
+</content></div></shadow></content></shadow></content></shadow></content></content>]]></content>
     <category scheme="http://suetming.cn/tags/shadow-DOM/" term="shadow DOM"/>
     <category scheme="http://suetming.cn/tags/templates/" term="templates"/>
     <category scheme="http://suetming.cn/tags/decorator/" term="decorator"/>
