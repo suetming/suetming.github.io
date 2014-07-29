@@ -23,6 +23,8 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
 本文描述的概念有时会落后或者超前于专门界定此概念的规范，一旦本文涉及的前瞻性技术被相应的规范所采纳，本文会更新并注明">
 <meta property="og:image" content="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-handler-registration.png">
 <meta property="og:image" content="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-routing-retargeting.png">
+<meta property="og:image" content="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg">
+<meta property="og:image" content="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Web组件(Web Components) | HTML5">
 <meta name="twitter:description" content="译者：suetming
@@ -79,7 +81,7 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
         <section id="main"><article id="post-2013-06-29-web-components" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2014/07/29/2013-06-29-web-components/" class="article-date">
-  <time datetime="2014-07-29T14:10:44.000Z" itemprop="datePublished">7月 29 2014</time>
+  <time datetime="2014-07-29T14:15:17.000Z" itemprop="datePublished">7月 29 2014</time>
 </a>
     
   <div class="article-category">
@@ -252,154 +254,8 @@ SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
 
 <p>事件控制器解析注册事件如图所示</p>
 <p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-routing-retargeting.png" alt="事件的路由和重定向"></p>
-<p>事件监听器被调用时，事件的目标是最终生成的内容而不是template中的内容. 点击template中定义的▾，将会调用单击事件（在template中定义的<strong>#summary</strong>元素）, event.target指向<figure class="highlight <details>```，事件的重定向不会影响文档DOM结构"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-移除属性<span class="strong">__open__</span>，由于selector与decorator的属性不匹配，这个decorator不再有效. 未应用的decorator会回到最初的状态. 不过可以再构造一个decorator来渲染<span class="strong">__closed__</span>，通过激活不同的decorator可以达到无状态交互，代码如下
-</pre></td></tr></table></figure>html</p>
-<style>
-details {
-    decorator: url(#details-closed);
-}
-details[open] {
-    decorator: url(#details-open);
-}
-</style>
-
-<decorator id="details-closed"><br>    <script><br>        function clicked(event) {<br>            event.target.setAttribute(‘open’, ‘open’);<br>        }<br>        [{selector: ‘#summary’, type: ‘click’, handler: clicked}];<br>    </script><br>    <template><br>        <a id="summary"><br>            ▸ <content select="summary"></content><br>        </a><br>    </template><br></decorator>
-
-<decorator id="details-open"><br>    <!-- as illustrated above --><br></decorator>
-
-<p><figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-</pre></td><td class="code"><pre>
-<span class="header">5 Custom Elements
-----------------------------</span>
-
-技术规范见此[<span class="link_label">The Custom Elements specification</span>](<span class="link_url">https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html</span>)
-
-用户可以构造新的DOM元素，这种技术称之为Custom Elements. 不像decorators，自定义元素可以封装状态并提供脚本接口. 下面的数据表表明两者区别
-</pre></td></tr></table></figure>html</p>
-<p><blockquote></blockquote></p>
-<p><table><br>   <tr><br>      <td></td><br>      <td>Decorators</td><br>      <td>Custom Elements</td><br>   </tr><br>   <tr><br>      <td>Lifetime</td><br>      <td>Ephemeral, while a CSS selector matches</td><br>      <td>Stable, matches entire element lifetime</td><br>   </tr><br>   <tr><br>      <td>Applied, unapplied dynamically</td><br>      <td>Yes, based on CSS selectors</td><br>      <td>No, fixed at element creation time</td><br>   </tr><br>   <tr><br>      <td>Accessible through script</td><br>      <td>No, transparent to DOM; cannot add interfaces</td><br>      <td>Yes, accessible through DOM; can provide interfaces</td><br>   </tr><br>   <tr><br>      <td>State</td><br>      <td>Stateless projection</td><br>      <td>Stateful DOM object</td><br>   </tr><br>   <tr><br>      <td>Behavior</td><br>      <td>Simulated by changing decorators</td><br>      <td>First-class using script and events</td><br>   </tr><br></table><br></p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-</pre></td><td class="code"><pre>
-<span class="header">5.1 构造一个自定义元素
--------------------------------------------</span>
-用
-</pre></td></tr></table></figure><element><figure class="highlight 构造一个元素，并指明继承哪一个属性如下："><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-
-</pre></td></tr></table></figure>html</element></p>
-<element extends="button" name="fancy-button"><br>    …<br></element><br><figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-</pre></td><td class="code"><pre>
-<span class="strong">__extends__</span>属性标记继承于哪一个元素，自定义元素实例会有此标记名
-
-<span class="strong">__name__</span>属性指明元素名称，命名必须包含“-”
-
-用户的自定义元素应该继承最接近自己想法的实际存在的元素. 如果用户构造不继承任何元素的自定义元素，user agent会抛出异常[<span class="link_label">HTMLUnknownElement</span>](<span class="link_url">http://www.whatwg.org/specs/web-apps/current-work/multipage/elements.html#htmlunknownelement</span>)
-
-<span class="header">5.2 方法和属性
----------------</span>
-将
-</pre></td></tr></table></figure><script><figure class="highlight 插入到自定义元素中可以对自定义元素增加方法和属性，下面的例子中元素```<tick-tock-clock>```增加了tick方法"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-
-</pre></td></tr></table></figure>html<br><element name="tick-tock-clock"><br>  <script><br>    ({<br>      tick: function () {<br>        …<br>      }<br>    });<br>  </script><br><br><figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-</pre></td><td class="code"><pre>
-5.3 生命周期回调函数
-自定义元素有很多回调函数如下：
-
--<span class="ruby"> readyCallback：创建时调用
-</span>-<span class="ruby"> insertedCallback：插入文档时调用
-</span>-<span class="ruby"> removedCallbakc：删除元素时调用
-</span>
-下面的例子演示如何用template，Shadow DOM (见下一章节)，以及Custom Elements回调函数创建元素：
-</pre></td></tr></table></figure>html<br><element name="tick-tock-clock"><br>  <template><br>    <span id="hh"></span><br>    <span id="sep">:</span><br>    <span id="mm"></span><br>  </template><br>  <script><br>    var template = document.currentScript.parentNode.querySelector(‘template’);<br><br>    function start() {<br>      this.tick();<br>      this._interval = window.setInterval(this.tick.bind(this), 1000);<br>    }<br>    function stop() {<br>      window.clearInterval(this._interval);<br>    }<br>    function fmt(n) {<br>      return (n &lt; 10 ? ‘0’ : ‘’) + n;<br>    }<br><br>    ({<br>      readyCallback: function () {<br>        this._root = this.createShadowRoot();<br>        this._root.appendChild(template.content.cloneNode());<br>        if (this.parentElement) {<br>          start.call(this);<br>        }<br>      },<br>      insertedCallback: start,<br>      removedCallback: stop,<br>      tick: function () {<br>        var now = new Date();<br>        this._root.querySelector(‘hh’).textContent = fmt(now.getHours());<br>        this._root.querySelector(‘sep’).style.visibility =<br>            now.getSeconds() % 2 ? ‘visible’ : ‘hidden’;<br>        this._root.querySelector(‘mm’).textContent = fmt(now.getMinutes());<br>      },<br>      chime: function () { … }<br>    });<br>  </script><br></element><br><figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-</pre></td><td class="code"><pre>
-<span class="number">5.4</span> Custom Elements实例化
-自定义元素均继承HTML的标准元素(div/button/option/<span class="keyword">...</span>)， 当用户想用这些元素的时候需要用到属性__is__，如下：
-</pre></td></tr></table></figure>html<br><element extends="button" name="fancy-button">  <!-- definition --><br>    …<br></element>
-
-<p><button is="fancy-button">  <!-- use --><br>    Do something fancy<br></button></p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-</pre></td><td class="code"><pre>
-5.5 Script实例化Custom Elements
-通过脚本语言也可以实例化自定义元素，方法为<span class="strong">__register__</span>，具体见下述代码：
-</pre></td></tr></table></figure>javascript<br>var p = Object.create(HTMLButtonElement.prototype, {});<br>p.dazzle = function () { … };</p>
-<p>// 返回实例化对象<br>var FancyButton = document.register(‘button’, ‘fancy-button’, {prototype: p});<br>var b = new FancyButton();<br>document.body.appendChild(b);<br>b.addEventListener(‘click’, function (event) {<br>    event.target.dazzle();<br>});</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-也可以直接通过createElement生成：
-</pre></td></tr></table></figure>javascript<br>var b = document.createElement(‘button’, ‘fancy-button’);<br>alert(b.outerHTML); // will display ‘<button is="fancy-button"></button>‘<br>var c = document.createElement(‘tick-tock-clock’);<br>alert(c.outerHTML); // will display ‘<tick-tock-clock></tick-tock-clock>‘</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-</pre></td><td class="code"><pre>
-<span class="header">5.6 元素更新
----------------</span>
-当元素定义调用的时候，每一个匹配的元素都会进行更新. 更新元素后，元素相应API会生效，生命周期相关函数会被调用.
-通过CSS_<span class="emphasis">_:unresolved_</span><span class="emphasis">_可以匹配所有为构造的自定义元素，通过这种方式避免更新元素所造成的闪烁</span>
-</pre></td></tr></table></figure>html</p>
-<p><style><br>tick-tock-clock:unresolved {<br>  content: ‘??:??’;<br>}<br></style></p>
-<p><tick-tock-clock></tick-tock-clock> <!-- will show ??:?? --></p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>
-也可以通过脚本进行控制
-</pre></td></tr></table></figure>javascript<br>// Chime ALL the clocks!<br>Array.prototype.forEach.call(<br>  document.querySelectorAll(‘tick-tock-clock:not(:unresolved)’),<br>  function (clock) { clock.chime(); });</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-</pre></td><td class="code"><pre>通过自定义事件元素可以通知页面其他部分元素已经更新，可以等到元素更新完成，脚本在对其进行操作
-
-<span class="number">5.7</span> 扩展<span class="keyword">Custom</span> Elements
-元素也可以继承自定义元素，代码如下：
-</pre></td></tr></table></figure>html</p>
-<p><element extends="tick-tock-clock" name="grand-father-clock"><br>    …<br></element></p>
-<script>
-var p = Object.create(Object.getPrototypeOf(document.createElement('tick-tock-clock')));
-p.popOutBirdie = function () { … }
-var CuckooClock = document.register('cuckoo-clock', {prototype: p});
-var c = new CuckooClock();
-c.tick();         // inherited from tick-tock-clock
-c.popOutBirdie(); // specific to cuckoo-clock
-</script>
+<p>事件监听器被调用时，事件的目标是最终生成的内容而不是template中的内容. 点击template中定义的▾，将会调用单击事件（在template中定义的<strong>#summary</strong>元素）, event.target指向<strong>details</strong>，事件的重定向不会影响文档DOM结构</p>
+<p>移除属性<strong>open</strong>，由于selector与decorator的属性不匹配，这个decorator不再有效. 未应用的decorator会回到最初的状态. 不过可以再构造一个decorator来渲染<strong>closed</strong>，通过激活不同的decorator可以达到无状态交互，代码如下</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre>1
 2
 3
@@ -421,53 +277,361 @@ c.popOutBirdie(); // specific to cuckoo-clock
 19
 20
 21
-</pre></td><td class="code"><pre>
-<span class="header">6 Shadow DOM
-------------------------</span>
-相应规范见这里[<span class="link_label">The Shadow DOM specification</span>](<span class="link_url">https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html</span>)
+22
+23
+24
+25
+26
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">style</span>></span><span class="css">
+<span class="tag">details</span> <span class="rules">{
+    <span class="rule"><span class="attribute">decorator</span>:<span class="value"> <span class="function">url(#details-closed)</span></span></span>;
+<span class="rule">}</span></span>
+<span class="tag">details</span><span class="attr_selector">[open]</span> <span class="rules">{
+    <span class="rule"><span class="attribute">decorator</span>:<span class="value"> <span class="function">url(#details-open)</span></span></span>;
+<span class="rule">}</span></span>
+</span><span class="tag"></<span class="title">style</span>></span>
 
-Shadow DOM 是一种DOM节点的辅助树. Shadow DOM 子树能够关联某个元素，但不会显示在元素子节点中，子树有自己的作用域. 例如，一个shadow DOM 子树可以和文档中相同ID和风格的元素而不冲突，因为shadow DOM 子树与文档是完全分离的
+<span class="tag"><<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-closed"</span>></span>
+    <span class="tag"><<span class="title">script</span>></span><span class="javascript">
+        <span class="function"><span class="keyword">function</span> <span class="title">clicked</span><span class="params">(event)</span> {</span>
+            event.target.setAttribute(<span class="string">'open'</span>, <span class="string">'open'</span>);
+        }
+        [{selector: <span class="string">'#summary'</span>, type: <span class="string">'click'</span>, handler: clicked}];
+    </span><span class="tag"></<span class="title">script</span>></span>
+    <span class="tag"><<span class="title">template</span>></span>
+        <span class="tag"><<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"summary"</span>></span>
+            ▸ <span class="tag"><<span class="title">content</span> <span class="attribute">select</span>=<span class="value">"summary"</span>></span><span class="tag"></<span class="title">content</span>></span>
+        <span class="tag"></<span class="title">a</span>></span>
+    <span class="tag"></<span class="title">template</span>></span>
+<span class="tag"></<span class="title">decorator</span>></span>
 
-Shadow DOM 通过[<span class="link_label">__createShadowRoot__</span>](<span class="link_url">https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-partial-element-create-shadow-root</span>)方法生效，返回shadow DOM的根节点并填充到DOM节点中
+<span class="tag"><<span class="title">decorator</span> <span class="attribute">id</span>=<span class="value">"details-open"</span>></span>
+    <span class="comment"><!-- as illustrated above --></span>
+<span class="tag"></<span class="title">decorator</span>></span>
+</pre></td></tr></table></figure>
 
-![<span class="link_label">shadow trees</span>](<span class="link_url">http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg</span>)
+<h2 id="5_Custom_Elements">5 Custom Elements</h2>
+<p>技术规范见此<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html" target="_blank" rel="external">The Custom Elements specification</a></p>
+<p>用户可以构造新的DOM元素，这种技术称之为Custom Elements. 不像decorators，自定义元素可以封装状态并提供脚本接口. 下面的数据表表明两者区别</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">blockquote</span>></span>
+<span class="tag"><<span class="title">table</span>></span>
+   <span class="tag"><<span class="title">tr</span>></span>
+      <span class="tag"><<span class="title">td</span>></span><span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Decorators<span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Custom Elements<span class="tag"></<span class="title">td</span>></span>
+   <span class="tag"></<span class="title">tr</span>></span>
+   <span class="tag"><<span class="title">tr</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Lifetime<span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Ephemeral, while a CSS selector matches<span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Stable, matches entire element lifetime<span class="tag"></<span class="title">td</span>></span>
+   <span class="tag"></<span class="title">tr</span>></span>
+   <span class="tag"><<span class="title">tr</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Applied, unapplied dynamically<span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Yes, based on CSS selectors<span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>No, fixed at element creation time<span class="tag"></<span class="title">td</span>></span>
+   <span class="tag"></<span class="title">tr</span>></span>
+   <span class="tag"><<span class="title">tr</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Accessible through script<span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>No, transparent to DOM; cannot add interfaces<span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Yes, accessible through DOM; can provide interfaces<span class="tag"></<span class="title">td</span>></span>
+   <span class="tag"></<span class="title">tr</span>></span>
+   <span class="tag"><<span class="title">tr</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>State<span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Stateless projection<span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Stateful DOM object<span class="tag"></<span class="title">td</span>></span>
+   <span class="tag"></<span class="title">tr</span>></span>
+   <span class="tag"><<span class="title">tr</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Behavior<span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>Simulated by changing decorators<span class="tag"></<span class="title">td</span>></span>
+      <span class="tag"><<span class="title">td</span>></span>First-class using script and events<span class="tag"></<span class="title">td</span>></span>
+   <span class="tag"></<span class="title">tr</span>></span>
+<span class="tag"></<span class="title">table</span>></span>
+<span class="tag"></<span class="title">blockquote</span>></span>
+</pre></td></tr></table></figure>
 
-<span class="xml"><span class="tag"><<span class="title">object</span> <span class="attribute">data</span>=<span class="value">"http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg"</span> <span class="attribute">width</span>=<span class="value">"800"</span> <span class="attribute">height</span>=<span class="value">"430"</span>></span></span><span class="xml"><span class="tag"></<span class="title">object</span>></span></span>
+<h2 id="5-1_构造一个自定义元素">5.1 构造一个自定义元素</h2>
+<p>用<strong>element</strong>构造一个元素，并指明继承哪一个属性如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"button"</span> <span class="attribute">name</span>=<span class="value">"fancy-button"</span>></span>
+    …
+<span class="tag"></<span class="title">element</span>></span>
+</pre></td></tr></table></figure>
 
-关联shadow DOM的元素称为[<span class="link_label">shadow host</span>](<span class="link_url">https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-shadow-host</span>). 当元素存在shadow DOM，元素的子节点不会渲染；渲染的是shadow DOM的内容
+<p><strong>extends</strong>属性标记继承于哪一个元素，自定义元素实例会有此标记名</p>
+<p><strong>name</strong>属性指明元素名称，命名必须包含“-”</p>
+<p>用户的自定义元素应该继承最接近自己想法的实际存在的元素. 如果用户构造不继承任何元素的自定义元素，user agent会抛出异常<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/elements.html#htmlunknownelement" target="_blank" rel="external">HTMLUnknownElement</a></p>
+<h2 id="5-2_方法和属性">5.2 方法和属性</h2>
+<p>将<strong>script</strong>插入到自定义元素中可以对自定义元素增加方法和属性，下面的例子中元素<strong>tick-tock-clock</strong>增加了tick方法</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"tick-tock-clock"</span>></span>
+  <span class="tag"><<span class="title">script</span>></span><span class="javascript">
+    ({
+      tick: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        …
+      }
+    });
+  </span><span class="tag"></<span class="title">script</span>></span>
+<span class="tag"></<span class="title">element</span>></span>
+</pre></td></tr></table></figure>
 
-![<span class="link_label">shadow rendering</span>](<span class="link_url">http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg</span>)
+<p>5.3 生命周期回调函数<br>自定义元素有很多回调函数如下：</p>
+<ul>
+<li>readyCallback：创建时调用</li>
+<li>insertedCallback：插入文档时调用</li>
+<li>removedCallbakc：删除元素时调用</li>
+</ul>
+<p>下面的例子演示如何用template，Shadow DOM (见下一章节)，以及Custom Elements回调函数创建元素：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">element</span> <span class="attribute">name</span>=<span class="value">"tick-tock-clock"</span>></span>
+  <span class="tag"><<span class="title">template</span>></span>
+    <span class="tag"><<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"hh"</span>></span><span class="tag"></<span class="title">span</span>></span>
+    <span class="tag"><<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"sep"</span>></span>:<span class="tag"></<span class="title">span</span>></span>
+    <span class="tag"><<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"mm"</span>></span><span class="tag"></<span class="title">span</span>></span>
+  <span class="tag"></<span class="title">template</span>></span>
+  <span class="tag"><<span class="title">script</span>></span><span class="javascript">
+    <span class="keyword">var</span> template = document.currentScript.parentNode.querySelector(<span class="string">'template'</span>);
 
-<span class="xml"><span class="tag"><<span class="title">object</span> <span class="attribute">data</span>=<span class="value">"http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg"</span> <span class="attribute">width</span>=<span class="value">"450"</span> <span class="attribute">height</span>=<span class="value">"400"</span>></span></span><span class="xml"><span class="tag"></<span class="title">object</span>></span></span>
+    <span class="function"><span class="keyword">function</span> <span class="title">start</span><span class="params">()</span> {</span>
+      <span class="keyword">this</span>.tick();
+      <span class="keyword">this</span>._interval = window.setInterval(<span class="keyword">this</span>.tick.bind(<span class="keyword">this</span>), <span class="number">1000</span>);
+    }
+    <span class="function"><span class="keyword">function</span> <span class="title">stop</span><span class="params">()</span> {</span>
+      window.clearInterval(<span class="keyword">this</span>._interval);
+    }
+    <span class="function"><span class="keyword">function</span> <span class="title">fmt</span><span class="params">(n)</span> {</span>
+      <span class="keyword">return</span> (n < <span class="number">10</span> ? <span class="string">'0'</span> : <span class="string">''</span>) + n;
+    }
 
-6.1 插入点
-shadow DOM 子树通过
-</pre></td></tr></table></figure><content><figure class="highlight 元素作为渲染输出插入点."><figcaption><span>```<content>```只是作为渲染输出的插入点，如下：</content></span></figcaption><table><tr><td class="gutter"><pre>1
+    ({
+      readyCallback: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">this</span>._root = <span class="keyword">this</span>.createShadowRoot();
+        <span class="keyword">this</span>._root.appendChild(template.content.cloneNode());
+        <span class="keyword">if</span> (<span class="keyword">this</span>.parentElement) {
+          start.call(<span class="keyword">this</span>);
+        }
+      },
+      insertedCallback: start,
+      removedCallback: stop,
+      tick: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">var</span> now = <span class="keyword">new</span> <span class="built_in">Date</span>();
+        <span class="keyword">this</span>._root.querySelector(<span class="string">'hh'</span>).textContent = fmt(now.getHours());
+        <span class="keyword">this</span>._root.querySelector(<span class="string">'sep'</span>).style.visibility =
+            now.getSeconds() % <span class="number">2</span> ? <span class="string">'visible'</span> : <span class="string">'hidden'</span>;
+        <span class="keyword">this</span>._root.querySelector(<span class="string">'mm'</span>).textContent = fmt(now.getMinutes());
+      },
+      chime: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> … }
+    });
+  </span><span class="tag"></<span class="title">script</span>></span>
+<span class="tag"></<span class="title">element</span>></span>
+</pre></td></tr></table></figure>
+
+<p>5.4 Custom Elements实例化<br>自定义元素均继承HTML的标准元素(div/button/option/…)， 当用户想用这些元素的时候需要用到属性<strong>is</strong>，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"button"</span> <span class="attribute">name</span>=<span class="value">"fancy-button"</span>></span>  <span class="comment"><!-- definition --></span>
+    …
+<span class="tag"></<span class="title">element</span>></span>
+
+<span class="tag"><<span class="title">button</span> <span class="attribute">is</span>=<span class="value">"fancy-button"</span>></span>  <span class="comment"><!-- use --></span>
+    Do something fancy
+<span class="tag"></<span class="title">button</span>></span>
+</pre></td></tr></table></figure>
+
+<p>5.5 Script实例化Custom Elements<br>通过脚本语言也可以实例化自定义元素，方法为<strong>register</strong>，具体见下述代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="code"><pre><span class="keyword">var</span> p = <span class="built_in">Object</span>.create(HTMLButtonElement.prototype, {});
+p.dazzle = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> … };
+
+<span class="comment">// 返回实例化对象</span>
+<span class="keyword">var</span> FancyButton = document.register(<span class="string">'button'</span>, <span class="string">'fancy-button'</span>, {prototype: p});
+<span class="keyword">var</span> b = <span class="keyword">new</span> FancyButton();
+document.body.appendChild(b);
+b.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(event)</span> {</span>
+    event.target.dazzle();
+});
+</pre></td></tr></table></figure>
+
+<p>也可以直接通过createElement生成：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="keyword">var</span> b = document.createElement(<span class="string">'button'</span>, <span class="string">'fancy-button'</span>);
+alert(b.outerHTML); <span class="comment">// will display '<button is="fancy-button"></button>'</span>
+<span class="keyword">var</span> c = document.createElement(<span class="string">'tick-tock-clock'</span>);
+alert(c.outerHTML); <span class="comment">// will display '<tick-tock-clock></tick-tock-clock>'</span>
+</pre></td></tr></table></figure>
+
+<h2 id="5-6_元素更新">5.6 元素更新</h2>
+<p>当元素定义调用的时候，每一个匹配的元素都会进行更新. 更新元素后，元素相应API会生效，生命周期相关函数会被调用.<br>通过CSS<strong>:unresolved</strong>可以匹配所有为构造的自定义元素，通过这种方式避免更新元素所造成的闪烁</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">style</span>></span><span class="css">
+<span class="tag">tick-tock-clock</span><span class="pseudo">:unresolved</span> <span class="rules">{
+  <span class="rule"><span class="attribute">content</span>:<span class="value"> <span class="string">'??:??'</span></span></span>;  
+<span class="rule">}</span></span>
+</span><span class="tag"></<span class="title">style</span>></span>
+<span class="tag"><<span class="title">tick-tock-clock</span>></span><span class="tag"></<span class="title">tick-tock-clock</span>></span> <span class="comment"><!-- will show ??:?? --></span>
+</pre></td></tr></table></figure>
+
+<p>也可以通过脚本进行控制</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="comment">// Chime ALL the clocks!</span>
+<span class="built_in">Array</span>.prototype.forEach.call(
+  document.querySelectorAll(<span class="string">'tick-tock-clock:not(:unresolved)'</span>),
+  <span class="function"><span class="keyword">function</span> <span class="params">(clock)</span> {</span> clock.chime(); });
+</pre></td></tr></table></figure><br>通过自定义事件元素可以通知页面其他部分元素已经更新，可以等到元素更新完成，脚本在对其进行操作<br><br>5.7 扩展Custom Elements<br>元素也可以继承自定义元素，代码如下：<br><br><figure class="highlight html"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="code"><pre><span class="tag"><<span class="title">element</span> <span class="attribute">extends</span>=<span class="value">"tick-tock-clock"</span> <span class="attribute">name</span>=<span class="value">"grand-father-clock"</span>></span>
+    …
+<span class="tag"></<span class="title">element</span>></span>
+<span class="tag"><<span class="title">script</span>></span><span class="javascript">
+<span class="keyword">var</span> p = <span class="built_in">Object</span>.create(<span class="built_in">Object</span>.getPrototypeOf(document.createElement(<span class="string">'tick-tock-clock'</span>)));
+p.popOutBirdie = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> … }
+<span class="keyword">var</span> CuckooClock = document.register(<span class="string">'cuckoo-clock'</span>, {prototype: p});
+<span class="keyword">var</span> c = <span class="keyword">new</span> CuckooClock();
+c.tick();         <span class="comment">// inherited from tick-tock-clock</span>
+c.popOutBirdie(); <span class="comment">// specific to cuckoo-clock</span>
+</span><span class="tag"></<span class="title">script</span>></span>
+</pre></td></tr></table></figure>
+
+<h2 id="6_Shadow_DOM">6 Shadow DOM</h2>
+<p>相应规范见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html" target="_blank" rel="external">The Shadow DOM specification</a></p>
+<p>Shadow DOM 是一种DOM节点的辅助树. Shadow DOM 子树能够关联某个元素，但不会显示在元素子节点中，子树有自己的作用域. 例如，一个shadow DOM 子树可以和文档中相同ID和风格的元素而不冲突，因为shadow DOM 子树与文档是完全分离的</p>
+<p>Shadow DOM 通过<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-partial-element-create-shadow-root" target="_blank" rel="external"><strong>createShadowRoot</strong></a>方法生效，返回shadow DOM的根节点并填充到DOM节点中</p>
+<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg" alt="shadow trees"></p>
+<object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg" width="800" height="430"></object>
+
+<p>关联shadow DOM的元素称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-shadow-host" target="_blank" rel="external">shadow host</a>. 当元素存在shadow DOM，元素的子节点不会渲染；渲染的是shadow DOM的内容</p>
+<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" alt="shadow rendering"></p>
+<object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" width="450" height="400"></object>
+
+<p>6.1 插入点<br>shadow DOM 子树通过<figure class="highlight <content>```元素作为渲染输出插入点."><figcaption><span>```<content>```只是作为渲染输出的插入点，如下：</content></span></figcaption><table><tr><td class="gutter"><pre>1
 2
 </pre></td><td class="code"><pre>
 
-</pre></td></tr></table></figure>html
-<!-- document -->
-<div id="news">
-  <h1>Good day for kittens</h1>
-  <div class="breaking">Kitten rescued from tree</div>
-  <div>Area kitten "adorable"—owner</div>
-  <div class="breaking">Jiggled piece of yarn derails kitten kongress</div>
-</div>
+</pre></td></tr></table></figure>html<br><!-- document --></p>
+<div id="news"><br>  <h1>Good day for kittens</h1><br>  <div class="breaking">Kitten rescued from tree</div><br>  <div>Area kitten “adorable”—owner</div><br>  <div class="breaking">Jiggled piece of yarn derails kitten kongress</div><br></div>
 
-<!-- #news' shadow -->
-<template id="t">
-  <content select="h1"></content>
-  <div id="ticker">
-    <content id="stories"></content>
-  </div>
-</template>
+<p><!-- #news' shadow --></p>
+<template id="t"><br>  <content select="h1"></content><br>  <div id="ticker"><br>    <content id="stories"></content><br>  </div><br></template>
 
-<!-- #ticker's shadow -->
-<template id="u">
-  <content class="highlight" select=".breaking"></content>
-  <content></content>
-</template>
+<p><!-- #ticker's shadow --></p>
+<template id="u"><br>  <content class="highlight" select=".breaking"></content><br>  <content></content><br></template>
 
 <script>
 // Set up shadow DOM
@@ -735,11 +899,11 @@ Custom elements 和 decorators可以通过文件的方式引入：
 </pre></td><td class="code"><pre>
 只有
 </pre></td></tr></table></figure><decorator><code>元素和</code><element>```能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行. </element></decorator></p>
-</content></div></shadow></content></shadow></content></shadow></content></content>
+</content></div></shadow></content></shadow></content></shadow></content>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://suetming.cn/2014/07/29/2013-06-29-web-components/" data-id="w9z96h05xrfu434v" class="article-share-link">Share</a>
+      <a data-url="http://suetming.cn/2014/07/29/2013-06-29-web-components/" data-id="j8vexmulxjw97zdt" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/custom-elements/">custom elements</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/decorator/">decorator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/import/">import</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shadow-DOM/">shadow DOM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/templates/">templates</a></li></ul>
