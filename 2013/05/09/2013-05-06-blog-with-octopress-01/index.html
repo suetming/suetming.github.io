@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>octopress系列-从零搭建部署 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="引言本文主要介绍jekyll的博客引擎octopress如何配置、定制和增加评论分享插件，如何部署至github，以及如何注册绑定域名">
+<meta property="og:type" content="article">
+<meta property="og:title" content="octopress系列-从零搭建部署">
+<meta property="og:url" content="http://yoursite.com/2013/05/09/2013-05-06-blog-with-octopress-01/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="引言本文主要介绍jekyll的博客引擎octopress如何配置、定制和增加评论分享插件，如何部署至github，以及如何注册绑定域名">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-03-27-namecheap-all-host-records.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-03-27-namecheap-dns-settings.png">
+<meta property="og:updated_time" content="2013-08-11T10:53:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="octopress系列-从零搭建部署">
+<meta name="twitter:description" content="引言本文主要介绍jekyll的博客引擎octopress如何配置、定制和增加评论分享插件，如何部署至github，以及如何注册绑定域名">
+<meta name="twitter:image" content="http://yoursite.com/images/photos/2013-03-27-namecheap-all-host-records.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2013-05-06-blog-with-octopress-01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/05/09/2013-05-06-blog-with-octopress-01/" class="article-date">
+  <time datetime="2013-05-09T05:26:58.000Z" itemprop="datePublished">2013-05-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/octopress/">octopress</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      octopress系列-从零搭建部署
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>本文主要介绍jekyll的博客引擎octopress如何配置、定制和增加评论分享插件，如何部署至github，以及如何注册绑定域名</p>
+<a id="more"></a>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><ul>
+<li>git </li>
+<li>ruby &gt;= 1.9.2</li>
+<li>gem</li>
+</ul>
+<h2 id="安装octopress"><a href="#安装octopress" class="headerlink" title="安装octopress"></a>安装octopress</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">git clone git://github.com/imathis/octopress.git octopress</div><div class="line">cd octopress</div><div class="line">bundle install #安装依赖</div><div class="line">rake install #安装主题</div></pre></td></tr></table></figure>
+<h2 id="主题theme"><a href="#主题theme" class="headerlink" title="主题theme"></a>主题theme</h2><p>google搜索主题定位github,输入如下代码切换主题<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> octopress</div><div class="line">git <span class="built_in">clone</span> git://github.com/tommy351/Octopress-Theme-Slash.git .themes/slash</div><div class="line">rake install[<span class="string">'slash'</span>]</div><div class="line">rake generate</div></pre></td></tr></table></figure></p>
+<h2 id="发布到github"><a href="#发布到github" class="headerlink" title="发布到github"></a>发布到github</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">rake setup_github_pages #建立连接按照提示输入url如：git@github.com:用户名/用户名.github.com.git</div><div class="line">rake generate #生成静态页面</div><div class="line">rake preview #本地预览 http://localhost:4000</div><div class="line">rake deploy #部署到github，访问 http://用户名.github.com 查看博客服务器运行效果</div></pre></td></tr></table></figure>
+<h2 id="添加评论"><a href="#添加评论" class="headerlink" title="添加评论"></a>添加评论</h2><p>默认的评论系统disqus主要针对twitter、facebook等不适合中国国情，选用时候国内的评论系统目前主要有友言、灯鹭、多说，<a href="http://www.zoum5.com/ue/310.html" target="_blank" rel="external">对比文章见此处</a><br>本文选用多说</p>
+<ul>
+<li>注册多说，绑定shortname</li>
+<li>修改octopress，详细步骤见<a href="http://ihavanna.org/Internet/2013-02/add-duoshuo-commemt-system-into-octopress.html" target="_blank" rel="external">此处</a></li>
+</ul>
+<h2 id="添加分享"><a href="#添加分享" class="headerlink" title="添加分享"></a>添加分享</h2><p>octopress自带的分享不适合中国国情，本文在查看了国内几个分享插件后，选用bshare</p>
+<ul>
+<li>注册bshare，定制分享控件样式，复制代码</li>
+<li>修改_config.yml文件增加下述代码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">bshare_user:</div><div class="line">bshare_button: true</div></pre></td></tr></table></figure>
+<ul>
+<li>将_config.yml中的twitter_tweet_button设置为false</li>
+<li>修改source\includes\post\sharing.html文件，插入</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;% if site.bshare_button %&#125;</div><div class="line">bshare 控件代码</div><div class="line">&#123;% endif %&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>将下述代码注释</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"addthis_counter addthis_pill_style"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="SEO"><a href="#SEO" class="headerlink" title="SEO"></a>SEO</h2><p>octopress 默认提供关键字和描述，默认new_post不生成，可以手动添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">layout: post</div><div class="line">title: &quot;Octopress SEO&quot;</div><div class="line">date: 2013-01-23 22:13</div><div class="line">comments: true</div><div class="line">categories: Internet</div><div class="line">keywords: octopress, seo, keywords, description</div><div class="line">description: octopress系列-从零搭建部署</div><div class="line">---</div></pre></td></tr></table></figure></p>
+<p>或者编辑Rakefile，找到相应行插入</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">puts <span class="string">"Creating new post: #&#123;filename&#125;"</span></div><div class="line">  open(filename, <span class="string">'w'</span>) <span class="keyword">do</span> |post|</div><div class="line">    post.puts <span class="string">"---"</span></div><div class="line">    post.puts <span class="string">"layout: post"</span></div><div class="line">    post.puts <span class="string">"title: \"#&#123;title.gsub(/&amp;/,'&amp;')&#125;\""</span></div><div class="line">    post.puts <span class="string">"date: #&#123;Time.now.strftime('%Y-%m-%d %H:%M')&#125;"</span></div><div class="line">    post.puts <span class="string">"comments: true"</span></div><div class="line">    post.puts <span class="string">"description: "</span></div><div class="line">    post.puts <span class="string">"categories: "</span></div><div class="line">    post.puts <span class="string">"keywords: "</span></div><div class="line">    post.puts <span class="string">"description: "</span></div><div class="line">    post.puts <span class="string">"---"</span></div></pre></td></tr></table></figure>
+<p>编辑_config.yml，添加keywords和description，如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">keywords: browser, internet, media, sql</div><div class="line">description: Coding is my life。</div></pre></td></tr></table></figure></p>
+<p>修改.themes/classic/source/_includes/head.html文件，替换description/keywords<br>
+undefined
+
+</p>
+<h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><ul>
+<li>去域名提供商购买TLD域名(如<a href="www.namecheap.com">namecheap</a>)</li>
+<li><p>在source文件下新建CNAME文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">域名.com</div></pre></td></tr></table></figure>
+</li>
+<li><p>上传至github</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rake deploy</div></pre></td></tr></table></figure>
+</li>
+<li><p>域名提供商点击all host records</p>
+</li>
+</ul>
+<p><img src="/images/photos/2013-03-27-namecheap-all-host-records.png" alt="all host records"></p>
+<ul>
+<li>设置如图所示</li>
+</ul>
+<p><img src="/images/photos/2013-03-27-namecheap-dns-settings.png" alt="namecheap dns settings"></p>
+<h2 id="添加google统计分析"><a href="#添加google统计分析" class="headerlink" title="添加google统计分析"></a>添加google统计分析</h2><ul>
+<li>进入google统计分析页面增加网址www.yourdomainname.com</li>
+<li>获取跟踪ID</li>
+<li>将跟踪ID加入octopress的_config.yml中</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">google_analytics_tracking_id: xxxx</div></pre></td></tr></table></figure>
+<h2 id="移动设备-ios-android-增加touch-icon"><a href="#移动设备-ios-android-增加touch-icon" class="headerlink" title="移动设备(ios|android)增加touch icon"></a>移动设备(ios|android)增加touch icon</h2><ul>
+<li>制作APP图标保存为png(114 X 144)</li>
+<li>在/source/_includes/head.html插入</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"apple-touch-icon"</span> <span class="attr">href</span>=<span class="string">"apple-touch-icon-precomposed.png"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>详细APP ICON 方法可参考<br><a href="http://www.ravelrumba.com/blog/android-apple-touch-icon/" target="_blank" rel="external">ravelrumba</a><br><a href="http://developer.apple.com/library/safari/#documentation/appleapplications/reference/safariwebcontent/ConfiguringWebApplications/ConfiguringWebApplications.html" target="_blank" rel="external">developer.apple.com</a></li>
+</ul>
+<h2 id="可能的问题"><a href="#可能的问题" class="headerlink" title="可能的问题"></a>可能的问题</h2><p>‘Liquid error: incompatible character encodings: UTF-8 and IBM437’</p>
+<ul>
+<li>mygit: 添加两对用户自定义的环境变量，LC_ALL=en_US.UTF-8 和 LANG=en_US.UTF-8</li>
+<li>cmd: 在octopress的Rakefile最后添加如下代码:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">task :runwindows do</div><div class="line">    puts &apos;* Changing the codepage&apos;</div><div class="line">    `chcp 65001`</div><div class="line">    puts &apos;* Running Jekyll&apos;</div><div class="line">    `jekyll --server --auto`</div><div class="line">end</div></pre></td></tr></table></figure>
+<p>cmd下执行rake runwindows</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/05/09/2013-05-06-blog-with-octopress-01/" data-id="ciu28wl3w00029ks6r3py0t9s" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/seo/">seo</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2013/05/14/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          HashMap.get()所导致的的死循环
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/deep-learning/">deep learning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/octopress/">octopress</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟货币/">虚拟货币</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDOS/">DDOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Deep-Learning/">Deep Learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/I-O-performance/">I/O performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrolling-performance/">Scrolling performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI-performance/">UI performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-elements/">custom elements</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decorator/">decorator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/free-bitcoin/">free bitcoin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/import/">import</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/seo/">seo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shadow-DOM/">shadow DOM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/templates/">templates</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/人脸检测/">人脸检测</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/历史记录/">历史记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/悬浮窗/">悬浮窗</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DDOS/" style="font-size: 10px;">DDOS</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/I-O-performance/" style="font-size: 10px;">I/O performance</a> <a href="/tags/Scrolling-performance/" style="font-size: 10px;">Scrolling performance</a> <a href="/tags/UI-performance/" style="font-size: 10px;">UI performance</a> <a href="/tags/custom-elements/" style="font-size: 10px;">custom elements</a> <a href="/tags/decorator/" style="font-size: 10px;">decorator</a> <a href="/tags/free-bitcoin/" style="font-size: 10px;">free bitcoin</a> <a href="/tags/import/" style="font-size: 10px;">import</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/seo/" style="font-size: 10px;">seo</a> <a href="/tags/shadow-DOM/" style="font-size: 10px;">shadow DOM</a> <a href="/tags/templates/" style="font-size: 10px;">templates</a> <a href="/tags/人脸检测/" style="font-size: 10px;">人脸检测</a> <a href="/tags/历史记录/" style="font-size: 10px;">历史记录</a> <a href="/tags/悬浮窗/" style="font-size: 10px;">悬浮窗</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2014/02/10/人脸检测与打码/">人脸自动检测与打码【基础篇】</a>
+          </li>
+        
+          <li>
+            <a href="/2013/08/25/deep-learning---round-1/">Deep Learning Reserch - Round 1</a>
+          </li>
+        
+          <li>
+            <a href="/2013/08/11/仿360chathead等app悬浮窗效果/">仿360|ChatHead等APP悬浮窗和动画效果</a>
+          </li>
+        
+          <li>
+            <a href="/2013/07/16/2013-07-13-android-performance/">android深度优化</a>
+          </li>
+        
+          <li>
+            <a href="/2013/06/29/2013-06-29-web-components/">Web组件(Web Components) | HTML5</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

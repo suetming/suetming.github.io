@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>HashMap.get()所导致的的死循环 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在以java为主导的web框架开发的APP，并发与多线程是经常出现的，若在高并发的API中用到了HashMap则可能诱发死循环">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HashMap.get()所导致的的死循环">
+<meta property="og:url" content="http://yoursite.com/2013/05/14/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在以java为主导的web框架开发的APP，并发与多线程是经常出现的，若在高并发的API中用到了HashMap则可能诱发死循环">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-05-14-hashmap.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-05-14-hashmap-resize.png">
+<meta property="og:updated_time" content="2013-08-11T03:30:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HashMap.get()所导致的的死循环">
+<meta name="twitter:description" content="在以java为主导的web框架开发的APP，并发与多线程是经常出现的，若在高并发的API中用到了HashMap则可能诱发死循环">
+<meta name="twitter:image" content="http://yoursite.com/images/photos/2013-05-14-hashmap.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2013-05-14-hashmap-dot-get-cause-an-infinite-loop" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/05/14/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/" class="article-date">
+  <time datetime="2013-05-14T11:09:55.000Z" itemprop="datePublished">2013-05-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HashMap.get()所导致的的死循环
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在以java为主导的web框架开发的APP，并发与多线程是经常出现的，若在高并发的API中用到了HashMap则可能诱发死循环</p>
+<a id="more"></a>
+<h2 id="症状"><a href="#症状" class="headerlink" title="症状"></a>症状</h2><ul>
+<li>DDOS</li>
+<li>CPU 100%</li>
+<li>服务器访问速度异常缓慢</li>
+</ul>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><ul>
+<li>HashMap并不是针对并发的根据Java Docs：</li>
+</ul>
+<blockquote>
+<p><strong>Note that this implementation is not synchronized.</strong> If multiple threads access this map concurrently, and at least one of the threads modifies the map structurally, it must be synchronized externally. (A structural modification is any operation that adds or deletes one or more mappings; merely changing the value associated with a key that an instance already contains is not a structural modification.) This is typically accomplished by synchronizing on some object that naturally encapsulates the map.</p>
+</blockquote>
+<p>并发操作同一个HashMap就可能出现未知的诡异行为，而在调试中却又无法检测.</p>
+<p>首先查看<strong>get()</strong>方法实现</p>
+<figure class="highlight java"><figcaption><span>old version</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(Object key)</span> </span>&#123;</div><div class="line">	Object k = maskNull(key);</div><div class="line">	<span class="keyword">int</span> hash = hash(k);</div><div class="line">	<span class="keyword">int</span> i = indexFor(hash, table.length);</div><div class="line">	Entry e = table[i];</div><div class="line">	<span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">		<span class="keyword">if</span> (e == <span class="keyword">null</span>) <span class="keyword">return</span> e;</div><div class="line">		<span class="keyword">if</span> (e.hash == hash &amp;&amp; eq(k, e.key)) <span class="keyword">return</span> e.value;</div><div class="line">		e = e.next;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><figcaption><span>new version</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> V <span class="title">get</span><span class="params">(Object key)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (key == <span class="keyword">null</span>)</div><div class="line">        <span class="keyword">return</span> getForNullKey();</div><div class="line">    <span class="keyword">int</span> hash = hash(key.hashCode());</div><div class="line">    <span class="keyword">for</span> (Entry&lt;K,V&gt; e = table[indexFor(hash, table.length)];</div><div class="line">         e != <span class="keyword">null</span>;</div><div class="line">         e = e.next) &#123;</div><div class="line">        Object k;</div><div class="line">        <span class="keyword">if</span> (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k)))</div><div class="line">            <span class="keyword">return</span> e.value;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意<strong>while(true)</strong>和<strong>for</strong>的e.next指向e, 这里就是出现问题的地方分配e.next的为：</p>
+<figure class="highlight java"><figcaption><span>old version</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(Entry[] newTable)</span> </span>&#123;</div><div class="line">	Entry[] src = table;</div><div class="line">	<span class="keyword">int</span> newCapacity = newTable.length;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; src.length; j++) &#123;</div><div class="line">		Entry e = src[j];</div><div class="line">		<span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</div><div class="line">			src[j] = <span class="keyword">null</span>;</div><div class="line">			do &#123;</div><div class="line">				Entry next = e.next;</div><div class="line">				<span class="keyword">int</span> i = indexFor(e.hash, newCapacity);</div><div class="line">				e.next = newTable[i];</div><div class="line">				newTable[i] = e;</div><div class="line">				e = next;</div><div class="line">			&#125; <span class="keyword">while</span> (e != <span class="keyword">null</span>);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div></pre></td></tr></table></figure>
+<figure class="highlight java"><figcaption><span>new version</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(Entry[] newTable)</span></span></div><div class="line">&#123;</div><div class="line">    Entry[] src = table;</div><div class="line">    <span class="keyword">int</span> newCapacity = newTable.length;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; src.length; j++) &#123;</div><div class="line">        Entry&lt;K,V&gt; e = src[j];</div><div class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</div><div class="line">            src[j] = <span class="keyword">null</span>;</div><div class="line">            do &#123;</div><div class="line">                Entry&lt;K,V&gt; next = e.next;</div><div class="line">                <span class="keyword">int</span> i = indexFor(e.hash, newCapacity);</div><div class="line">                e.next = newTable[i];</div><div class="line">                newTable[i] = e;</div><div class="line">                e = next;</div><div class="line">            &#125; <span class="keyword">while</span> (e != <span class="keyword">null</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="HashMap-原理"><a href="#HashMap-原理" class="headerlink" title="HashMap 原理"></a>HashMap 原理</h2><p><img src="/images/photos/2013-05-14-hashmap.png" alt="HashMap 数据结构"></p>
+<p>HashMap实现原理其实是一种“链表散列”的数据结构，通过hash算法将key散列，一个<key,value>存进来时，通过hash算出索引i，然后插入到指针数组table[i]中,如果不同的可以存入同一个table[i]中，则发生碰撞，即在table[i]处形成链表存储<br>如果table分配size为n，存入m个<key,value>，m 远远大于 n 则碰撞非常频繁，性能o(1)-&gt;o(n)，这是HashMap的不足，所以容量是HashMap的关键点，如果超过已知容量需要rehash，所有key的hash值会被重算</key,value></key,value></p>
+<figure class="highlight java"><figcaption><span>new version</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K key, V value)</span> </span>&#123;</div><div class="line">    <span class="comment">// HashMap允许存放null键和null值。</span></div><div class="line">    <span class="comment">// 当key为null时，调用putForNullKey方法，将value放置在数组第一个位置。</span></div><div class="line">    <span class="keyword">if</span> (key == <span class="keyword">null</span>)</div><div class="line">        <span class="keyword">return</span> putForNullKey(value);</div><div class="line">    <span class="comment">// 根据key的keyCode重新计算hash值。</span></div><div class="line">    <span class="keyword">int</span> hash = hash(key.hashCode());</div><div class="line">    <span class="comment">// 搜索指定hash值在对应table中的索引。</span></div><div class="line">    <span class="keyword">int</span> i = indexFor(hash, table.length);</div><div class="line">    <span class="comment">// 如果 i 索引处的 Entry 不为 null，通过循环不断遍历 e 元素的下一个元素。</span></div><div class="line">    <span class="keyword">for</span> (Entry&lt;K,V&gt; e = table[i]; e != <span class="keyword">null</span>; e = e.next) &#123;</div><div class="line">        Object k;</div><div class="line">        <span class="keyword">if</span> (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) &#123;</div><div class="line">            V oldValue = e.value;</div><div class="line">            e.value = value;</div><div class="line">            e.recordAccess(<span class="keyword">this</span>);</div><div class="line">            <span class="keyword">return</span> oldValue;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 如果i索引处的Entry为null，表明此处还没有Entry。</span></div><div class="line">    modCount++;</div><div class="line">    <span class="comment">// 将key、value添加到i索引处。</span></div><div class="line">    addEntry(hash, key, value, i);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">addEntry</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, <span class="keyword">int</span> bucketIndex)</span> </span>&#123;</div><div class="line">    <span class="comment">// 获取指定 bucketIndex 索引处的 Entry </span></div><div class="line">    Entry&lt;K,V&gt; e = table[bucketIndex];</div><div class="line">    <span class="comment">// 将新创建的 Entry 放入 bucketIndex 索引处，并让新的 Entry 指向原来的 Entry</span></div><div class="line">    table[bucketIndex] = <span class="keyword">new</span> Entry&lt;K,V&gt;(hash, key, value, e);</div><div class="line">    <span class="comment">// 如果 Map 中的 key-value 对的数量超过了极限</span></div><div class="line">    <span class="keyword">if</span> (size++ &gt;= threshold)</div><div class="line">    <span class="comment">// 把 table 对象的长度扩充到原来的2倍。</span></div><div class="line">        resize(<span class="number">2</span> * table.length);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">resize</span><span class="params">(<span class="keyword">int</span> newCapacity)</span> </span>&#123;</div><div class="line">    Entry[] oldTable = table;</div><div class="line">    <span class="keyword">int</span> oldCapacity = oldTable.length;</div><div class="line">    <span class="keyword">if</span> (oldCapacity == MAXIMUM_CAPACITY) &#123;</div><div class="line">        threshold = Integer.MAX_VALUE;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Entry[] newTable = <span class="keyword">new</span> Entry[newCapacity]; <span class="comment">// 新的容器空间</span></div><div class="line">    transfer(newTable); <span class="comment">// 复制数据过去</span></div><div class="line">    table = newTable;</div><div class="line">    threshold = (<span class="keyword">int</span>)(newCapacity * loadFactor); <span class="comment">// 重新计算threshold的值</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>根据代码可以发现resize是耗时最大的<br>单线程下的resize，假设初始容量为1，hash算法为取余 mod 1，resize后hash算法为 mod 2，则如图所示</p>
+<p><img src="/images/photos/2013-05-14-hashmap-resize.png" alt="one thread hashmap resize"></p>
+<p>并发下的resize<br>注意transfer()的<figure class="highlight plain"><figcaption><span>next = e.next; ```，若thread 1 运行到这行挂起，thread 2 开始执行，如图所示</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">![two thread hashmap resize](/images/photos/2013-05-14-hashmap-resize-two-thread.png)</div><div class="line">thread 2 resize完成后，thread 1 开始执行，此时执行</div></pre></td></tr></table></figure></p>
+<p>newTalbe[i] = e;<br>e = next // 导致 e 指向key(1)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">下一次循环</div></pre></td></tr></table></figure></p>
+<p>next=e.next // 导致 e 指向key(3)<br>```<br>thread 1 继续key(1)放入newTable[i]的第一个，然后 e 和 next 移动，死循环出现key(3).next指向了key(1)</p>
+<p>此时调用HashTable.get(5)时死循环出现，CPU100%</p>
+<p>若支持多线程HashMap，需要采用ConcurrentHashmap</p>
+<h2 id="深化"><a href="#深化" class="headerlink" title="深化"></a>深化</h2><p>根据Hash算法的“非随机性”原理可以制造出N多的value不一样，但是key一样数据，然后让你的Hash表成为一张单向链表，而导致你的整个网站或是程序的运行性能以级数下降（可以很轻松的让你的CPU升到100%）这个问题出现的语言：</p>
+<ul>
+<li>java 所有版本</li>
+<li>jruby &lt;= 1.6.5</li>
+<li>php &lt;= 5.3.8, &lt;= 5.4.0RC3</li>
+<li>python 所有版本</li>
+<li>ruby 所有版本</li>
+<li>V8 JavaScript Engine 所有版本</li>
+</ul>
+<p>部分框架：</p>
+<ul>
+<li>tomcat &lt;= 5.5.34, &lt;= 6.0.34, &lt;= 7.0.22 （目前fix在 5.5.35,  6.0.35,  7.0.23）</li>
+<li>jetty 所有版本</li>
+</ul>
+<p>详细文章参见<a href="http://coolshell.cn/articles/6424.html" target="_blank" rel="external">CoolShell</a></p>
+<h2 id="深入阅读"><a href="#深入阅读" class="headerlink" title="深入阅读"></a>深入阅读</h2><ul>
+<li><a href="http://www.cs.rice.edu/~scrosby/hash/CrosbyWallach_UsenixSec2003.pdf" target="_blank" rel="external">基于HashMap的DOS</a></li>
+<li><a href="http://coolshell.cn/articles/6424.html" target="_blank" rel="external">CoolShell:Hash Collision DoS</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/05/14/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/" data-id="ciu28wl4c00079ks6qyo2ax2g" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DDOS/">DDOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2013/05/24/2013-05-22-free-bitcoin/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          如果偷取别人的比特币
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2013/05/09/2013-05-06-blog-with-octopress-01/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">octopress系列-从零搭建部署</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/deep-learning/">deep learning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/octopress/">octopress</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟货币/">虚拟货币</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDOS/">DDOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Deep-Learning/">Deep Learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/I-O-performance/">I/O performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrolling-performance/">Scrolling performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI-performance/">UI performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-elements/">custom elements</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decorator/">decorator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/free-bitcoin/">free bitcoin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/import/">import</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/seo/">seo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shadow-DOM/">shadow DOM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/templates/">templates</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/人脸检测/">人脸检测</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/历史记录/">历史记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/悬浮窗/">悬浮窗</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DDOS/" style="font-size: 10px;">DDOS</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/I-O-performance/" style="font-size: 10px;">I/O performance</a> <a href="/tags/Scrolling-performance/" style="font-size: 10px;">Scrolling performance</a> <a href="/tags/UI-performance/" style="font-size: 10px;">UI performance</a> <a href="/tags/custom-elements/" style="font-size: 10px;">custom elements</a> <a href="/tags/decorator/" style="font-size: 10px;">decorator</a> <a href="/tags/free-bitcoin/" style="font-size: 10px;">free bitcoin</a> <a href="/tags/import/" style="font-size: 10px;">import</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/seo/" style="font-size: 10px;">seo</a> <a href="/tags/shadow-DOM/" style="font-size: 10px;">shadow DOM</a> <a href="/tags/templates/" style="font-size: 10px;">templates</a> <a href="/tags/人脸检测/" style="font-size: 10px;">人脸检测</a> <a href="/tags/历史记录/" style="font-size: 10px;">历史记录</a> <a href="/tags/悬浮窗/" style="font-size: 10px;">悬浮窗</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2014/02/10/人脸检测与打码/">人脸自动检测与打码【基础篇】</a>
+          </li>
+        
+          <li>
+            <a href="/2013/08/25/deep-learning---round-1/">Deep Learning Reserch - Round 1</a>
+          </li>
+        
+          <li>
+            <a href="/2013/08/11/仿360chathead等app悬浮窗效果/">仿360|ChatHead等APP悬浮窗和动画效果</a>
+          </li>
+        
+          <li>
+            <a href="/2013/07/16/2013-07-13-android-performance/">android深度优化</a>
+          </li>
+        
+          <li>
+            <a href="/2013/06/29/2013-06-29-web-components/">Web组件(Web Components) | HTML5</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
