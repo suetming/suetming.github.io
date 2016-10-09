@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>android深度优化 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="android开发有几年了，对其相关有些许认识，虽然现在手机的硬件配置以极快的速度提升，但是优化仍然占有重要的位置，是必不可少的重要环节，本文主要是写自己在学习和实际开发app过程中的吸取的教训和对优化相关认识的总结，如有不周之处，还请批评指正">
+<meta property="og:type" content="article">
+<meta property="og:title" content="android深度优化">
+<meta property="og:url" content="http://yoursite.com/2013/07/16/2013-07-13-android-performance/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="android开发有几年了，对其相关有些许认识，虽然现在手机的硬件配置以极快的速度提升，但是优化仍然占有重要的位置，是必不可少的重要环节，本文主要是写自己在学习和实际开发app过程中的吸取的教训和对优化相关认识的总结，如有不周之处，还请批评指正">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-07-sqlite-db-index.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-07-heap.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-07-memory-usage.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-07-memory-leak.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-07-inner-class-object.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-07-logcat.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-07-reference-object.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-07-histogram.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-07-dominator-tree.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-07-dominator-tree2.png">
+<meta property="og:image" content="http://yoursite.com/images/photos/2013-07-dominator-tree3.png">
+<meta property="og:updated_time" content="2013-08-14T01:02:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="android深度优化">
+<meta name="twitter:description" content="android开发有几年了，对其相关有些许认识，虽然现在手机的硬件配置以极快的速度提升，但是优化仍然占有重要的位置，是必不可少的重要环节，本文主要是写自己在学习和实际开发app过程中的吸取的教训和对优化相关认识的总结，如有不周之处，还请批评指正">
+<meta name="twitter:image" content="http://yoursite.com/images/photos/2013-07-sqlite-db-index.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2013-07-13-android-performance" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/07/16/2013-07-13-android-performance/" class="article-date">
+  <time datetime="2013-07-16T07:25:33.000Z" itemprop="datePublished">2013-07-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/android/">android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      android深度优化
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>android开发有几年了，对其相关有些许认识，虽然现在手机的硬件配置以极快的速度提升，但是优化仍然占有重要的位置，是必不可少的重要环节，本文主要是写自己在学习和实际开发app过程中的吸取的教训和对优化相关认识的总结，如有不周之处，还请批评指正</p>
+<a id="more"></a>
+<p>本文主要由以下几部分组成：</p>
+<ul>
+<li>framework API</li>
+<li>UI 性能优化</li>
+<li>I/O 性能优化</li>
+<li>速度优化【泛指】</li>
+</ul>
+<h2 id="Framework-API"><a href="#Framework-API" class="headerlink" title="Framework API"></a>Framework API</h2><h2 id="1-繁重的任务请开启新线程，UI线程只做UI的任务"><a href="#1-繁重的任务请开启新线程，UI线程只做UI的任务" class="headerlink" title="1.繁重的任务请开启新线程，UI线程只做UI的任务"></a>1.繁重的任务请开启新线程，UI线程只做UI的任务</h2><ul>
+<li>Thread、Runnable、Future、ExecutorService、AsyncTask</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">// 后台任务</span></div><div class="line">	&#125;</div><div class="line">&#125;).start();</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> AsyncTask&lt;URL, Integer, Integer&gt;() &#123;</div><div class="line">	<span class="function"><span class="keyword">protected</span> Long <span class="title">doInBackground</span><span class="params">(URL... urls)</span> </span>&#123;</div><div class="line">		<span class="comment">// background thread</span></div><div class="line">		<span class="comment">// fetch url/save open file/...</span></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onProgressUpdate</span><span class="params">(Integer... progress)</span> </span>&#123;</div><div class="line">		updateProgress(progress[<span class="number">0</span>]);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(Integer result)</span> </span>&#123;</div><div class="line">		<span class="comment">// frontend thread</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">HandlerThread mHandlerThread = <span class="keyword">new</span> HandlerThread(<span class="string">"WorkerThread"</span>);</div><div class="line">	Handler handler = <span class="keyword">new</span> Handler(mHandlerThread.getLooper()) &#123;</div><div class="line">		<span class="meta">@Override</span></div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">			<span class="keyword">switch</span> (msg.what) &#123;</div><div class="line">			<span class="keyword">case</span> JOB_1:</div><div class="line">			<span class="comment">// do job #1</span></div><div class="line">			<span class="keyword">break</span>;</div><div class="line">			<span class="keyword">case</span> JOB_2:</div><div class="line">			<span class="comment">// do job #2</span></div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">handler.sendEmptyMessage(JOB_1);</div><div class="line">handler.sendEmptyMessage(JOB_2);</div><div class="line">handler.post(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">// do more work</span></div><div class="line">	&#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</div><div class="line">	mHandlerThread.quit();</div><div class="line">	<span class="keyword">super</span>.onDestroy();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于thread比较简单，不支持并发中的很多特性，如果要求同步和调度等功能需要自己实现，可选用Asynctask来处理，不过如果需要和frontend有更多的交互，则thread+handler+looper更灵活</p>
+<p>如果要处理ContentProvider相关内容，这些耗时操作可以用AsyncQueryHandler来处理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> AsyncQueryHandler(getContentResolver()) &#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onQueryComplete</span><span class="params">(<span class="keyword">int</span> token, Object cookie,Cursor cursor)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (token == <span class="number">0</span>) &#123;</div><div class="line">			<span class="comment">// get data from cursor</span></div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;.startQuery(<span class="number">0</span>, <span class="comment">// token</span></div><div class="line">			<span class="keyword">null</span>, <span class="comment">// cookie</span></div><div class="line">			RawContacts.CONTENT_URI, <span class="keyword">null</span>, <span class="comment">// projection</span></div><div class="line">			RawContacts.CONTACT_ID + <span class="string">"&lt;?"</span>, <span class="comment">// selection</span></div><div class="line">			<span class="keyword">new</span> String[] &#123; <span class="string">"888"</span> &#125;, <span class="comment">// selectionArgs</span></div><div class="line">			RawContacts.DISPLAY_NAME_PRIMARY + <span class="string">" ASC"</span>);  <span class="comment">// orderby</span></div></pre></td></tr></table></figure>
+<p>如果后台运行服务需要做耗时操作请采用IntentService而不是Service，因为Service和应用程序在同一个进程不是单独的进程; Service也不是线程，所以需要避免做耗时操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WorkerService</span> <span class="keyword">extends</span> <span class="title">IntentService</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">WorkerService</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>(<span class="string">"WorkerThread"</span>);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onHandleIntent</span><span class="params">(Intent intent)</span> </span>&#123;</div><div class="line">		String action = intent.getAction();</div><div class="line">		<span class="keyword">if</span> (<span class="string">"com.test.DO_JOB_1"</span>.equals(action)) &#123;</div><div class="line">			<span class="comment">// 耗时操作</span></div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">startService(<span class="keyword">new</span> Intent(<span class="string">"com.test.DO_JOB_1"</span>));</div></pre></td></tr></table></figure>
+<p>总结，采用下述API避免在UI线程做耗时操作</p>
+<ul>
+<li>Activity or Fragment<ul>
+<li>Handler, HandlerThread</li>
+<li>AsyncTask</li>
+<li>AsyncTaskLoader</li>
+</ul>
+</li>
+<li>ContentProvider<ul>
+<li>AsyncQueryHandler</li>
+<li>CursorLoader</li>
+</ul>
+</li>
+<li>Service<ul>
+<li>IntentService</li>
+<li>Parcel.writeStrongBinder(IBinder)</li>
+</ul>
+</li>
+</ul>
+<p>另外，部分Java方法请采用google建议的代码库代替，如： </p>
+<ul>
+<li>gson、fastjson 替换 JSONObject</li>
+<li>volley 替换 HttpURLConnection、HttpClient</li>
+</ul>
+<h2 id="UI性能优化"><a href="#UI性能优化" class="headerlink" title="UI性能优化"></a>UI性能优化</h2><p>UI性能优化需要清楚UI的层次结构和几个API：Measure、Layout、Draw，还有事件处理流程key events、TrackBall events、Touch events</p>
+<p>相关概况如下：</p>
+<ul>
+<li>1.尽量简化视图布局，用 Hierarchy Viewer来查看瓶颈所在，用 layoutopt来查找布局文件中的常见问题</li>
+<li>2.采用RelativeLayout或者GridLayout来替换多个LinearLayout</li>
+<li>3.不经常用的视图可以采用<viewstub>延迟加载</viewstub></li>
+<li>4.标签<merge>重用布局文件</merge></li>
+<li>5.尽量使用点9作为背景</li>
+</ul>
+<p>Scrolling和ListView是讨论的比较多的，这里单独拿出来强调一下</p>
+<ul>
+<li>缓存Item避免重复Inflate：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> View <span class="title">getView</span><span class="params">(<span class="keyword">int</span> position, View convertView, ViewGroup parent)</span> </span>&#123;</div><div class="line">	<span class="keyword">if</span> (convertView == <span class="keyword">null</span>) &#123;</div><div class="line">		convertView = mInflater.inflate(R.layout.main, parent, <span class="keyword">false</span>);</div><div class="line">		ViewHolder holder = <span class="keyword">new</span> ViewHolder();</div><div class="line">		holder.img = (ImageView) convertView.findViewById(R.id.image);</div><div class="line">		holder.txt = (TextView) convertView.findViewById(R.id.text);</div><div class="line">		convertView.setTag(holder);</div><div class="line">	&#125;</div><div class="line">	ViewHolder holder = (ViewHolder) convertView.getTag();</div><div class="line">	holder.img.setImageResource(R.drawable.icon);</div><div class="line">	holder.txt.setText(R.string.hello);</div><div class="line">	<span class="keyword">return</span> convertView;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> </span>&#123;</div><div class="line">	ImageView img;</div><div class="line">	TextView txt;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>尽量缓存view避免findviewById()</li>
+<li>避免不必要的drawing</li>
+</ul>
+<p>通常情况下即使一个实体的子类view在最前面，android也会绘制每一个父类view，所以如果有不可见的父类视图则需要禁用draw来减少消耗</p>
+<p>其次大多数情况下Window的背景也不需要绘制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">getWindow().setBackgroundDrawable(null);</div><div class="line"></div><div class="line">android:windowBackground=&quot;@null&quot; // XML</div></pre></td></tr></table></figure>
+<ul>
+<li>运行时要避免图像放缩等耗时操作</li>
+<li>滚动时避免animations(AnimationDrawable…)</li>
+<li>如果要用animations，设置ListView.setDrawableCacheEnabled(false)</li>
+</ul>
+<h2 id="I-O-性能优化"><a href="#I-O-性能优化" class="headerlink" title="I/O 性能优化"></a>I/O 性能优化</h2><ul>
+<li>SharedPreferences是耗时I/O操作请采用异步方式</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">SharedPreferences.Editor.apply();  <span class="comment">// asynchronous</span></div><div class="line">SharedPreferences.Editor.commit(); <span class="comment">// synchronous</span></div></pre></td></tr></table></figure>
+<p>可以采用下面的封装</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SharedPreferencesUtils</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Method sApplyMethod = findApplyMethod();</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Method <span class="title">findApplyMethod</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			Class cls = SharedPreferences.Editor.class;</div><div class="line">			<span class="keyword">return</span> cls.getMethod(<span class="string">"apply"</span>);</div><div class="line">		&#125; <span class="keyword">catch</span> ( NoSuchMethodException unused ) &#123;</div><div class="line">			<span class="comment">// fall through</span></div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(SharedPreferences.Editor editor)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> ( sApplyMethod != <span class="keyword">null</span> ) &#123;</div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				sApplyMethod.invoke(editor);</div><div class="line">				<span class="keyword">return</span>;</div><div class="line">			&#125; <span class="keyword">catch</span> ( InvocationTargetException unused ) &#123;</div><div class="line">				<span class="comment">// fall through</span></div><div class="line">			&#125; <span class="keyword">catch</span> ( IllegalAccessException unused ) &#123;</div><div class="line">				<span class="comment">// fall through</span></div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		editor.commit();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>数据库查询可以采用<a href="http://www.sqlite.org/eqp.html" target="_blank" rel="external">EXPLAIN QUERY PLAN</a>来确定哪些信息需要优化或者用TraceView查看</li>
+<li>SQLITE的某些字段可以添加索引提高查询速度</li>
+</ul>
+<p><img src="/images/photos/2013-07-sqlite-db-index.png" alt="sqlite添加索引"></p>
+<ul>
+<li><p>如无必要请对查询的数据增加限制LIMIT来减少耗时</p>
+</li>
+<li><p>可以用<a href="http://developer.android.com/reference/android/database/sqlite/SQLiteStatement.html" target="_blank" rel="external">SQLiteStatement</a>来预编译一些频繁使用的sql语句</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SQLiteDatabase db = dbHelper.getWritableDatabase();</div><div class="line">SQLiteStatement stmt = db.compileStatement(<span class="string">"SELECT * FROM Country WHERE code = ?"</span>);</div><div class="line">stmt.bindString(<span class="number">1</span>, <span class="string">"US"</span>);</div><div class="line">stmt.execute();</div></pre></td></tr></table></figure>
+<ul>
+<li>如果用了ContentObserver，请延迟查询操作</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">getContentResolver().registerContentObserver(uri, <span class="keyword">true</span>,</div><div class="line">	<span class="keyword">new</span> ContentObserver(<span class="keyword">new</span> Handler()) &#123;</div><div class="line">			<span class="meta">@Override</span></div><div class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onChange</span><span class="params">(<span class="keyword">boolean</span> selfChange)</span> </span>&#123;</div><div class="line">				mDirty = <span class="keyword">true</span>;</div><div class="line">			&#125;</div><div class="line">	&#125;)</div><div class="line">);</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onResume</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="keyword">super</span>.onResume();</div><div class="line">	<span class="keyword">if</span> (mDirty) &#123;</div><div class="line">		<span class="comment">// start query again</span></div><div class="line">		mDirty = <span class="keyword">false</span>;</div><div class="line">	&#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<ul>
+<li>能批量操作的尽量批量操作ContentProviderOperation、ContentProviderOperation.Builder、ContentResolver.applyBatch()</li>
+<li>多线程情况下可以采用SQLITEDatabase.yieldIfContendedSafely()</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">bulkInsert</span><span class="params">(Uri uri, ContentValues[] values)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> numValues = values.length;</div><div class="line">    mDb = mOpenHelper.getWritableDatabase();</div><div class="line">    mDb.beginTransactionWithListener(<span class="keyword">this</span>);</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numValues; i++) &#123;</div><div class="line">            Uri result = insertInTransaction(uri, values[i]);</div><div class="line">            <span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</div><div class="line">                mNotifyChange = <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">            mDb.yieldIfContendedSafely();</div><div class="line">        &#125;</div><div class="line">        mDb.setTransactionSuccessful();</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        mDb.endTransaction();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    onEndTransaction();</div><div class="line">    <span class="keyword">return</span> numValues;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>输出事件日志分析耗时操作并优化</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb logcat -b events content_query_sample:I *:S</div></pre></td></tr></table></figure>
+<p>内存性能优化<br>内存这块比较大，从底层的Linux的就有OOM killer到Android系统层的OOM killer，我们只讨论应用层</p>
+<p>在应用层上，android严格控制每一个应用程序分配多少内存，当应用超出这个限制会抛出OutOfMemoryError</p>
+<p>打开ADT的heap可以查看里面每一列</p>
+<p><img src="/images/photos/2013-07-heap.png" alt="heap"></p>
+<p>这里要说明几个概念：</p>
+<ul>
+<li>Heap limit：Dalvik heap最大值</li>
+<li>Heap size: Dalvik heap当前值</li>
+<li>Allocated： Dalvik heap分配的字节数</li>
+<li>Free：还能分配的Heap size</li>
+<li>%Used: free / heap size * 100%</li>
+<li>External allocation: Bitmap内存(HoneyComb版本之前的参数)</li>
+</ul>
+<p>其次不同机型的Heap size limit是不同的，通过ActivityManager.getMemoryClass()获取内存信息</p>
+<p>出现OOM的条件：</p>
+<ul>
+<li>Honeycomb之前</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Heap size + external allocation + new allocation request &gt;= Heap limit</div></pre></td></tr></table></figure>
+<ul>
+<li>Honeycomb之后</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Heap size + new allocation request &gt;= Heap limit</div><div class="line">104</div></pre></td></tr></table></figure>
+<p>不过上述情况并不能代表应用进程的实际使用情况，要注意以下几点</p>
+<ul>
+<li>每一个进程初始情况下有2MB+的开销</li>
+<li>本地下可以分配更多的内存：android app 运行在Dalvik VM上，但是通过JNI可以调用本地lib，并且可以在lib中做相关操作</li>
+<li>如果开启硬件加速（ICS默认开启），会给OpenGL分配8MB初始内存</li>
+</ul>
+<p>通过下述命令查看内存使用情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell procrank -p</div></pre></td></tr></table></figure>
+<p><img src="/images/photos/2013-07-memory-usage.png" alt="memory useage"></p>
+<p>图解说明：</p>
+<ul>
+<li>VSS(Virtual Set Size)：进程可以得到的总页数</li>
+<li>RSS(Resident Set Size)：进程可以在RAM中获得的总页数</li>
+<li>PSS(Proportional Set Size)：进程可以在RAM中已经用的总页数</li>
+<li>USS(Unique Set Size))：进程可以取得的未分配的页数</li>
+</ul>
+<p>打印进程虚拟内存相关命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">adb shell procmem -p &lt;pid&gt;</div><div class="line">adb shell dumpsys meminfo &lt;pid&gt;</div></pre></td></tr></table></figure>
+<p>stackoverflow：<a href="http://stackoverflow.com/questions/2298208/how-to-discover-memory-usage-of-my-application-in-android" target="_blank" rel="external">http://stackoverflow.com/questions/2298208/how-to-discover-memory-usage-of-my-application-in-android</a></p>
+<p>如何避免内存泄露？</p>
+<p>想要避免内存泄露，那么就需要了解垃圾回收(GC)</p>
+<ul>
+<li><p>Gingerbread之前：</p>
+<ul>
+<li>Stop the world</li>
+<li>Full Heap collection</li>
+<li>Pause times often &gt; 100ms</li>
+</ul>
+</li>
+<li><p>Gingerbread之后：</p>
+<ul>
+<li>Concurrent（大部分情况下）</li>
+<li>Partial collection</li>
+<li>Pause times usually &lt; 5ms</li>
+</ul>
+</li>
+</ul>
+<p>内存泄露主要是有代码本身造成的，GC无法阻止人为的内存泄露问题；只要有生命周期长度的引用引用了没用的对象，GC就无法回收；那么最有可能出现这种内存泄露的是那些对象呢？你猜对了，是Context/Activity</p>
+<p>参考：<a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/附图如下：" target="_blank" rel="external">http://dubroy.com/blog/google-io-memory-management-for-android-apps/附图如下：</a><br><img src="/images/photos/2013-07-memory-leak.png" alt="memory leak"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> <span class="keyword">extends</span> <span class="title">Activity</span> <span class="keyword">implements</span> <span class="title">ActionBar</span>.<span class="title">TabListener</span> </span>&#123;</div><div class="line">	<span class="keyword">static</span> Leaky leak = <span class="keyword">null</span>;</div><div class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Leaky</span> </span>&#123;</div><div class="line">		<span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>&#123;</div><div class="line">			System.out.print(<span class="string">"Wheee!!!"</span>);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span></span>&#123;</div><div class="line">		<span class="keyword">if</span> (leak==<span class="keyword">null</span>)&#123;</div><div class="line">			leak = <span class="keyword">new</span> Leaky();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述代码引用了一个私有非静态内部类的实例对象，情况可想而知：</p>
+<p><img src="/images/photos/2013-07-inner-class-object.png" alt="inner class"></p>
+<p>一个超过Activity生命周期的线程，会发生什么情况？内存泄露</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">// do some heavy work</span></div><div class="line">	&#125;</div><div class="line">&#125;).start();</div></pre></td></tr></table></figure>
+<p>如何检测内存泄露?</p>
+<p>1.LOGCAT</p>
+<p><img src="/images/photos/2013-07-logcat.png" alt="logcat"></p>
+<p>上述每一个字段都有明确的意义，具体概念不详述了请google</p>
+<p>2.Allocation Tracker可以查看已经分配内存去没有用到的对象</p>
+<p><img src="/images/photos/2013-07-reference-object.png" alt="look up object"></p>
+<p>3.Eclipse Memory Analyzer (MAT)可以查看潜在的内存泄露</p>
+<p>DEMO：</p>
+<ul>
+<li><a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/" target="_blank" rel="external">dubroy</a></li>
+<li><a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=_CruQY55HOk" target="_blank" rel="external">youtube</a></li>
+</ul>
+<p>4.Histogram：查看Activity的实例数量，一个activity不止一个实例在运行是潜在内存泄露信号</p>
+<p><img src="/images/photos/2013-07-histogram.png" alt="histogram"></p>
+<p>5.Dominator Tree：帮助辨别占用很多内存且没有释放的对象</p>
+<p><img src="/images/photos/2013-07-dominator-tree.png" alt="Dominator Tree"></p>
+<p><img src="/images/photos/2013-07-dominator-tree2.png" alt="Dominator Tree 2"></p>
+<p><img src="/images/photos/2013-07-dominator-tree3.png" alt="Dominator Tree 3"></p>
+<p>避免抛出OutOfMemoryError异常【具体用法google】：</p>
+<ul>
+<li>Bitmap：<ul>
+<li>是否可以Sample？</li>
+<li>回收不用的Bitmap：Bitmap.recycle()</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">BitmapFactory.Options opts = <span class="keyword">new</span> BitmapFactory.Options();</div><div class="line">opts.inJustDecodeBounds = <span class="keyword">true</span>;</div><div class="line">BitmapFactory.decodeFile(path, opts);</div><div class="line"><span class="keyword">final</span> <span class="keyword">int</span> originalWidth = opts.outWidth;</div><div class="line"><span class="keyword">final</span> <span class="keyword">int</span> originalHeight = opts.outHeight;</div><div class="line"><span class="keyword">final</span> <span class="keyword">int</span> originalDim = Math.max(originalWidth, originalHeight);</div><div class="line">opts = <span class="keyword">new</span> BitmapFactory.Options();</div><div class="line">opts.inSampleSize = <span class="number">1</span>;</div><div class="line"><span class="keyword">while</span> ( originalDim &gt; MAX_IMAGE_DIM ) &#123;</div><div class="line">	opts.inSampleSize *= <span class="number">2</span>;</div><div class="line">	originalDim /= <span class="number">2</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">return</span> BitmapFactory.decodeFile(path, opts);</div></pre></td></tr></table></figure>
+<ul>
+<li>Java Object：<ul>
+<li>用SoftReference替换直接引用</li>
+<li>用WeakReference避免内存泄露【常用到引用Context、Activity】</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line">	<span class="keyword">static</span> Leaky leak = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Leaky</span> </span>&#123;</div><div class="line">		<span class="keyword">private</span> <span class="keyword">final</span> WeakReference&lt;Context&gt; mContext;</div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="title">Leaky</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">			<span class="keyword">super</span>();</div><div class="line">			mContext = <span class="keyword">new</span> WeakReference&lt;Context&gt;(context);</div><div class="line">			doSomethingWithOuterInstance();</div><div class="line">		&#125;</div><div class="line">	</div><div class="line">		<span class="function"><span class="keyword">void</span> <span class="title">doSomethingWithOuterInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">			Context context = mContext.get();</div><div class="line">			<span class="keyword">if</span> (context != <span class="keyword">null</span>) &#123;</div><div class="line">				String text = context.getString(R.string.hello);</div><div class="line">				System.out.println(text);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">		<span class="keyword">if</span> (leak == <span class="keyword">null</span>) &#123;</div><div class="line">			leak = <span class="keyword">new</span> Leaky(<span class="keyword">this</span>);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="速度优化"><a href="#速度优化" class="headerlink" title="速度优化"></a>速度优化</h2><p>经常会有引用一些开源的底层库，比如pdf或者doc解析库，ffmppeg编解码库等等，除了对库做底层的裁剪移植，我们有时也需要将解码后的图形等信息输出到设备上，或者url fetch了某些网页或者图片，为了避免下次重复这种耗时操作，有效的方法就是缓存</p>
+<p>图像的缓存见<a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html" target="_blank" rel="external">android developer</a>已经有例子写的很详细，使用LRU(最近最少使用)算法实现</p>
+<h2 id="主要参考文献："><a href="#主要参考文献：" class="headerlink" title="主要参考文献："></a>主要参考文献：</h2><ul>
+<li>1.<a href="http://stackoverflow.com/questions/2630158/detect-application-heap-size-in-android/2634738#2634738" target="_blank" rel="external">http://stackoverflow.com/questions/2630158/detect-application-heap-size-in-android/2634738#2634738</a></li>
+<li>2.<a href="http://developer.android.com/reference/java/lang/ref/WeakReference.html" target="_blank" rel="external">http://developer.android.com/reference/java/lang/ref/WeakReference.html</a></li>
+<li>3.<a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html" target="_blank" rel="external">http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html</a></li>
+<li>4.<a href="http://dubroy.com/blog/google-io-memory-management-for-android-apps/" target="_blank" rel="external">http://dubroy.com/blog/google-io-memory-management-for-android-apps/</a></li>
+<li>5.<a href="http://cyrilmottier.com/2013/01/09/back-to-top-android-vs-ios/" target="_blank" rel="external">http://cyrilmottier.com/2013/01/09/back-to-top-android-vs-ios/</a></li>
+<li>6.<a href="http://blog.csdn.net/luoshengyang/article/details/6745181" target="_blank" rel="external">http://blog.csdn.net/luoshengyang/article/details/6745181</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/07/16/2013-07-13-android-performance/" data-id="ciu28wl4f00089ks6cnyvplcr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/I-O-performance/">I/O performance</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Scrolling-performance/">Scrolling performance</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UI-performance/">UI performance</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2013/08/11/仿360chathead等app悬浮窗效果/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          仿360|ChatHead等APP悬浮窗和动画效果
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2013/06/29/2013-06-29-web-components/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Web组件(Web Components) | HTML5</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/deep-learning/">deep learning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/octopress/">octopress</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟货币/">虚拟货币</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDOS/">DDOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Deep-Learning/">Deep Learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/I-O-performance/">I/O performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrolling-performance/">Scrolling performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI-performance/">UI performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-elements/">custom elements</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decorator/">decorator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/free-bitcoin/">free bitcoin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/import/">import</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/seo/">seo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shadow-DOM/">shadow DOM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/templates/">templates</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/人脸检测/">人脸检测</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/历史记录/">历史记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/悬浮窗/">悬浮窗</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DDOS/" style="font-size: 10px;">DDOS</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/I-O-performance/" style="font-size: 10px;">I/O performance</a> <a href="/tags/Scrolling-performance/" style="font-size: 10px;">Scrolling performance</a> <a href="/tags/UI-performance/" style="font-size: 10px;">UI performance</a> <a href="/tags/custom-elements/" style="font-size: 10px;">custom elements</a> <a href="/tags/decorator/" style="font-size: 10px;">decorator</a> <a href="/tags/free-bitcoin/" style="font-size: 10px;">free bitcoin</a> <a href="/tags/import/" style="font-size: 10px;">import</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/seo/" style="font-size: 10px;">seo</a> <a href="/tags/shadow-DOM/" style="font-size: 10px;">shadow DOM</a> <a href="/tags/templates/" style="font-size: 10px;">templates</a> <a href="/tags/人脸检测/" style="font-size: 10px;">人脸检测</a> <a href="/tags/历史记录/" style="font-size: 10px;">历史记录</a> <a href="/tags/悬浮窗/" style="font-size: 10px;">悬浮窗</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2014/02/10/人脸检测与打码/">人脸自动检测与打码【基础篇】</a>
+          </li>
+        
+          <li>
+            <a href="/2013/08/25/deep-learning---round-1/">Deep Learning Reserch - Round 1</a>
+          </li>
+        
+          <li>
+            <a href="/2013/08/11/仿360chathead等app悬浮窗效果/">仿360|ChatHead等APP悬浮窗和动画效果</a>
+          </li>
+        
+          <li>
+            <a href="/2013/07/16/2013-07-13-android-performance/">android深度优化</a>
+          </li>
+        
+          <li>
+            <a href="/2013/06/29/2013-06-29-web-components/">Web组件(Web Components) | HTML5</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

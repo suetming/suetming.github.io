@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Web组件(Web Components) | HTML5 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="译者：suetming
+原文：W3C: Web Components
+SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
+1 关于本文注意文章涉及正在开展的工作. 关系到web组件的一系列概念，每个概念都有各自的规范.这是一个迭代的过程
+本文描述的概念有时会落后或者超前于专门界定此概念的规范，一旦本文涉及的前瞻性技术被相应的规范所采纳，本文会更新并注明">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web组件(Web Components) | HTML5">
+<meta property="og:url" content="http://yoursite.com/2013/06/29/2013-06-29-web-components/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="译者：suetming
+原文：W3C: Web Components
+SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
+1 关于本文注意文章涉及正在开展的工作. 关系到web组件的一系列概念，每个概念都有各自的规范.这是一个迭代的过程
+本文描述的概念有时会落后或者超前于专门界定此概念的规范，一旦本文涉及的前瞻性技术被相应的规范所采纳，本文会更新并注明">
+<meta property="og:image" content="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-handler-registration.png">
+<meta property="og:image" content="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-routing-retargeting.png">
+<meta property="og:image" content="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg">
+<meta property="og:image" content="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg">
+<meta property="og:image" content="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg">
+<meta property="og:updated_time" content="2014-07-29T14:38:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Web组件(Web Components) | HTML5">
+<meta name="twitter:description" content="译者：suetming
+原文：W3C: Web Components
+SuetMing 保留部分权力。基于“CC 3.0 BY-SA 协议”发布
+1 关于本文注意文章涉及正在开展的工作. 关系到web组件的一系列概念，每个概念都有各自的规范.这是一个迭代的过程
+本文描述的概念有时会落后或者超前于专门界定此概念的规范，一旦本文涉及的前瞻性技术被相应的规范所采纳，本文会更新并注明">
+<meta name="twitter:image" content="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-handler-registration.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2013-06-29-web-components" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/06/29/2013-06-29-web-components/" class="article-date">
+  <time datetime="2013-06-29T11:00:45.000Z" itemprop="datePublished">2013-06-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Web组件(Web Components) | HTML5
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>译者：<a href="http://suetming.com" target="_blank" rel="external">suetming</a></p>
+<p>原文：<a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/" target="_blank" rel="external">W3C: Web Components</a></p>
+<p><strong>SuetMing 保留部分权力。基于“<a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="external">CC 3.0 BY-SA 协议</a>”发布</strong></p>
+<h2 id="1-关于本文"><a href="#1-关于本文" class="headerlink" title="1 关于本文"></a>1 关于本文</h2><p>注意文章涉及正在开展的工作. 关系到web组件的一系列概念，每个概念都有各自的规范.<br>这是一个迭代的过程</p>
+<p>本文描述的概念有时会落后或者超前于专门界定此概念的规范，一旦本文涉及的前瞻性技术被相应的规范所采纳，本文会更新并注明</p>
+<a id="more"></a>
+<h2 id="2-介绍"><a href="#2-介绍" class="headerlink" title="2 介绍"></a>2 介绍</h2><p>web组件模型由5部分组成：</p>
+<ul>
+<li>Templates：由一系列复用时能被激活的标记组成</li>
+<li>Decorators：用于Templates中，通过CSS丰富和控制交互改变文本</li>
+<li>Custom Elements：让用户可以自定义元素[自定义元素名、自定义API接口]</li>
+<li>Shadow DOM：将一组DOM树封装成一个用户接口元素</li>
+<li>Imports：定义如何将Templates、Decorators和Custom Elements打包，并且能够以资源的形式从外部引用</li>
+</ul>
+<p>每一部分都有各自的用途. 如果将这5种技术引入，开发人员可以轻松的编写拥有复杂交互体验的组件，并且可以轻松引用和组装，这是今天的CSS和脚本语言所无法达到的</p>
+<p>本文将会讨论这5种技术，并举例说明其在Web组件中的作用</p>
+<h2 id="3-Templates"><a href="#3-Templates" class="headerlink" title="3 Templates"></a>3 Templates</h2><p>具体规范参加这篇<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html" target="_blank" rel="external">HTML Templates</a></p>
+<p><strong>template</strong>元素及其所包含元素会由解析器进行解析并标记，不过不会立即渲染出来，脚本不会立即执行，包含的图片也不会立即下载</p>
+<p><strong>template</strong>元素有一个属性 <strong>content</strong> 存储元素的实际内容，属性 <strong>content</strong> 的内容可以拷贝移动到HTML节点中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;template id=&quot;commentTemplate&quot;&gt;</div><div class="line">    &lt;div&gt;</div><div class="line">        &lt;img src=&quot;&quot;&gt;</div><div class="line">        &lt;div class=&quot;comment-text&quot;&gt;&lt;/div&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;/template&gt;</div><div class="line">&lt;script&gt;</div><div class="line">function addComment(imageUrl, text) &#123;</div><div class="line">  var t = document.querySelector(&quot;#commentTemplate&quot;);</div><div class="line">  var comment = t.content.cloneNode(true);</div><div class="line">  // Populate content.</div><div class="line">  comment.querySelector(&apos;img&apos;).src = imageUrl;</div><div class="line">  comment.querySelector(&apos;.comment-text&apos;).textContent = text;</div><div class="line">  document.body.appendChild(comment);</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p><strong>template</strong> 所包含的的元素包含在属性 <strong>content</strong> 中，通过script拷贝里面的元素并插入到HTML中使图片加载进来，脚本开始运行. 例如，在templates引入大型脚本，需要时调用</p>
+<h2 id="4-Decorators"><a href="#4-Decorators" class="headerlink" title="4 Decorators"></a>4 Decorators</h2><p>Decorators 目前没有标准文档，<strong>decorator</strong> 主要加强或者重载已经存在的元素，由CSS控制表现，与一般元素不同的是通过标记可以达到额外的效果</p>
+<p><strong>decorator</strong>通过包含<strong>template</strong>来明确具体渲染哪一块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;decorator id=&quot;details-open&quot;&gt;</div><div class="line">    &lt;template&gt;</div><div class="line">        &lt;a id=&quot;summary&quot;&gt;</div><div class="line">          &amp;blacktriangledown;</div><div class="line">          &lt;content select=&quot;summary&quot;&gt;&lt;/content&gt;</div><div class="line">        &lt;/a&gt;</div><div class="line">        &lt;content&gt;&lt;/content&gt;</div><div class="line">    &lt;/template&gt;</div><div class="line">&lt;/decorator&gt;</div></pre></td></tr></table></figure>
+<p><strong>content</strong>包含待渲染的内容，通过CSS控制生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">details[open] &#123;</div><div class="line">    decorator: url(#details-open);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过这种方式可以使下面的html代码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">details</span> <span class="attr">open</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">summary</span>&gt;</span>Timepieces<span class="tag">&lt;/<span class="name">summary</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">li</span>&gt;</span>Sundial</div><div class="line">      <span class="tag">&lt;<span class="name">li</span>&gt;</span>Cuckoo clock</div><div class="line">      <span class="tag">&lt;<span class="name">li</span>&gt;</span>Wristwatch</div><div class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">details</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>最终渲染成</p>
+<p><a><br>  ▾ Timepieces<br></a></p>
+<ul><br>  <li>Sundial<br>  </li><li>Cuckoo clock<br>  </li><li>Wristwatch<br></li></ul>
+
+
+<p><strong>decorator</strong> CSS属性可以指向任何网络资源，不过只有其“定义”被调用才能申请，生成的标记仅限于展示，永远不会运行脚本包括内联事件，而且也是不可编辑的</p>
+<p>4.1 Decorators的事件</p>
+<p>Decorators可以关联事件增强交互，decorator采用事件控制器当做媒介，因为decorator可能在任何时间生效或者失效，所以关联template中监听节点事件或者获取其状态都是无效的</p>
+<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-handler-registration.png" alt="事件注册"></p>
+<p>通过事件控制器注册事件监听器，template中插入<strong>script</strong>，decorator元素插入到文档中时脚本会执行，脚本会被插入到注册队列中:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">decorator</span> <span class="attr">id</span>=<span class="string">"details-open"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></div><div class="line">        function clicked(event) &#123;</div><div class="line">            event.target.removeAttribute('open');</div><div class="line">        &#125;</div><div class="line">        [&#123;selector: '#summary', type: 'click', handler: clicked&#125;];</div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">template</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"summary"</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- as illustrated above --&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">decorator</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>事件控制器解析注册事件如图所示</p>
+<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/event-routing-retargeting.png" alt="事件的路由和重定向"></p>
+<p>事件监听器被调用时，事件的目标是最终生成的内容而不是template中的内容. 点击template中定义的▾，将会调用单击事件（在template中定义的<strong>#summary</strong>元素）, event.target指向<strong>details</strong>，事件的重定向不会影响文档DOM结构</p>
+<p>移除属性<strong>open</strong>，由于selector与decorator的属性不匹配，这个decorator不再有效. 未应用的decorator会回到最初的状态. 不过可以再构造一个decorator来渲染<strong>closed</strong>，通过激活不同的decorator可以达到无状态交互，代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;style&gt;</div><div class="line">details &#123;</div><div class="line">    decorator: url(#details-closed);</div><div class="line">&#125;</div><div class="line">details[open] &#123;</div><div class="line">    decorator: url(#details-open);</div><div class="line">&#125;</div><div class="line">&lt;/style&gt;</div><div class="line"></div><div class="line">&lt;decorator id=&quot;details-closed&quot;&gt;</div><div class="line">    &lt;script&gt;</div><div class="line">        function clicked(event) &#123;</div><div class="line">            event.target.setAttribute(&apos;open&apos;, &apos;open&apos;);</div><div class="line">        &#125;</div><div class="line">        [&#123;selector: &apos;#summary&apos;, type: &apos;click&apos;, handler: clicked&#125;];</div><div class="line">    &lt;/script&gt;</div><div class="line">    &lt;template&gt;</div><div class="line">        &lt;a id=&quot;summary&quot;&gt;</div><div class="line">            &amp;blacktriangleright; &lt;content select=&quot;summary&quot;&gt;&lt;/content&gt;</div><div class="line">        &lt;/a&gt;</div><div class="line">    &lt;/template&gt;</div><div class="line">&lt;/decorator&gt;</div><div class="line"></div><div class="line">&lt;decorator id=&quot;details-open&quot;&gt;</div><div class="line">    &lt;!-- as illustrated above --&gt;</div><div class="line">&lt;/decorator&gt;</div></pre></td></tr></table></figure>
+<h2 id="5-Custom-Elements"><a href="#5-Custom-Elements" class="headerlink" title="5 Custom Elements"></a>5 Custom Elements</h2><p>技术规范见此<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html" target="_blank" rel="external">The Custom Elements specification</a></p>
+<p>用户可以构造新的DOM元素，这种技术称之为Custom Elements. 不像decorators，自定义元素可以封装状态并提供脚本接口. 下面的数据表表明两者区别</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">blockquote</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Decorators<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Custom Elements<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Lifetime<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Ephemeral, while a CSS selector matches<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Stable, matches entire element lifetime<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Applied, unapplied dynamically<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Yes, based on CSS selectors<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>No, fixed at element creation time<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Accessible through script<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>No, transparent to DOM; cannot add interfaces<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Yes, accessible through DOM; can provide interfaces<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>State<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Stateless projection<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Stateful DOM object<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Behavior<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>Simulated by changing decorators<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>First-class using script and events<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">blockquote</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="5-1-构造一个自定义元素"><a href="#5-1-构造一个自定义元素" class="headerlink" title="5.1 构造一个自定义元素"></a>5.1 构造一个自定义元素</h2><p>用<strong>element</strong>构造一个元素，并指明继承哪一个属性如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">element</span> <span class="attr">extends</span>=<span class="string">"button"</span> <span class="attr">name</span>=<span class="string">"fancy-button"</span>&gt;</span></div><div class="line">    …</div><div class="line"><span class="tag">&lt;/<span class="name">element</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>extends</strong>属性标记继承于哪一个元素，自定义元素实例会有此标记名</p>
+<p><strong>name</strong>属性指明元素名称，命名必须包含“-”</p>
+<p>用户的自定义元素应该继承最接近自己想法的实际存在的元素. 如果用户构造不继承任何元素的自定义元素，user agent会抛出异常<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/elements.html#htmlunknownelement" target="_blank" rel="external">HTMLUnknownElement</a></p>
+<h2 id="5-2-方法和属性"><a href="#5-2-方法和属性" class="headerlink" title="5.2 方法和属性"></a>5.2 方法和属性</h2><p>将<strong>script</strong>插入到自定义元素中可以对自定义元素增加方法和属性，下面的例子中元素<strong>tick-tock-clock</strong>增加了tick方法</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">element</span> <span class="attr">name</span>=<span class="string">"tick-tock-clock"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></div><div class="line">    (&#123;</div><div class="line">      tick: function () &#123;</div><div class="line">        …</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">element</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>5.3 生命周期回调函数<br>自定义元素有很多回调函数如下：</p>
+<ul>
+<li>readyCallback：创建时调用</li>
+<li>insertedCallback：插入文档时调用</li>
+<li>removedCallbakc：删除元素时调用</li>
+</ul>
+<p>下面的例子演示如何用template，Shadow DOM (见下一章节)，以及Custom Elements回调函数创建元素：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">element</span> <span class="attr">name</span>=<span class="string">"tick-tock-clock"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">template</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"hh"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"sep"</span>&gt;</span>:<span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"mm"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="xml"></span></div><div class="line">    var template = document.currentScript.parentNode.querySelector('template');</div><div class="line"></div><div class="line">    function start() &#123;</div><div class="line">      this.tick();</div><div class="line">      this._interval = window.setInterval(this.tick.bind(this), 1000);</div><div class="line">    &#125;</div><div class="line">    function stop() &#123;</div><div class="line">      window.clearInterval(this._interval);</div><div class="line">    &#125;</div><div class="line">    function fmt(n) &#123;</div><div class="line">      return (n <span class="tag">&lt; <span class="attr">10</span> ? '<span class="attr">0</span>' <span class="attr">:</span> '') + <span class="attr">n</span>;</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    (&#123;</div><div class="line">      <span class="attr">readyCallback:</span> <span class="attr">function</span> () &#123;</div><div class="line">        <span class="attr">this._root</span> = <span class="string">this.createShadowRoot();</span></div><div class="line">        <span class="attr">this._root.appendChild</span>(<span class="attr">template.content.cloneNode</span>());</div><div class="line">        <span class="attr">if</span> (<span class="attr">this.parentElement</span>) &#123;</div><div class="line">          <span class="attr">start.call</span>(<span class="attr">this</span>);</div><div class="line">        &#125;</div><div class="line">      &#125;,</div><div class="line">      <span class="attr">insertedCallback:</span> <span class="attr">start</span>,</div><div class="line">      <span class="attr">removedCallback:</span> <span class="attr">stop</span>,</div><div class="line">      <span class="attr">tick:</span> <span class="attr">function</span> () &#123;</div><div class="line">        <span class="attr">var</span> <span class="attr">now</span> = <span class="string">new</span> <span class="attr">Date</span>();</div><div class="line">        <span class="attr">this._root.querySelector</span>('<span class="attr">hh</span>')<span class="attr">.textContent</span> = <span class="string">fmt(now.getHours());</span></div><div class="line">        <span class="attr">this._root.querySelector</span>('<span class="attr">sep</span>')<span class="attr">.style.visibility</span> =</div><div class="line">            <span class="string">now.getSeconds()</span> % <span class="attr">2</span> ? '<span class="attr">visible</span>' <span class="attr">:</span> '<span class="attr">hidden</span>';</div><div class="line">        <span class="attr">this._root.querySelector</span>('<span class="attr">mm</span>')<span class="attr">.textContent</span> = <span class="string">fmt(now.getMinutes());</span></div><div class="line">      &#125;,</div><div class="line">      <span class="attr">chime:</span> <span class="attr">function</span> () &#123; … &#125;</div><div class="line">    &#125;);</div><div class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">element</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>5.4 Custom Elements实例化<br>自定义元素均继承HTML的标准元素(div/button/option/…)， 当用户想用这些元素的时候需要用到属性<strong>is</strong>，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">element</span> <span class="attr">extends</span>=<span class="string">"button"</span> <span class="attr">name</span>=<span class="string">"fancy-button"</span>&gt;</span>  <span class="comment">&lt;!-- definition --&gt;</span></div><div class="line">    …</div><div class="line"><span class="tag">&lt;/<span class="name">element</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">is</span>=<span class="string">"fancy-button"</span>&gt;</span>  <span class="comment">&lt;!-- use --&gt;</span></div><div class="line">    Do something fancy</div><div class="line"><span class="tag">&lt;/<span class="name">button</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>5.5 Script实例化Custom Elements<br>通过脚本语言也可以实例化自定义元素，方法为<strong>register</strong>，具体见下述代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> p = <span class="built_in">Object</span>.create(HTMLButtonElement.prototype, &#123;&#125;);</div><div class="line">p.dazzle = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; … &#125;;</div><div class="line"></div><div class="line"><span class="comment">// 返回实例化对象</span></div><div class="line"><span class="keyword">var</span> FancyButton = <span class="built_in">document</span>.register(<span class="string">'button'</span>, <span class="string">'fancy-button'</span>, &#123;<span class="attr">prototype</span>: p&#125;);</div><div class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> FancyButton();</div><div class="line"><span class="built_in">document</span>.body.appendChild(b);</div><div class="line">b.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</div><div class="line">    event.target.dazzle();</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>也可以直接通过createElement生成：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> b = <span class="built_in">document</span>.createElement(<span class="string">'button'</span>, <span class="string">'fancy-button'</span>);</div><div class="line">alert(b.outerHTML); <span class="comment">// will display '&lt;button is="fancy-button"&gt;&lt;/button&gt;'</span></div><div class="line"><span class="keyword">var</span> c = <span class="built_in">document</span>.createElement(<span class="string">'tick-tock-clock'</span>);</div><div class="line">alert(c.outerHTML); <span class="comment">// will display '&lt;tick-tock-clock&gt;&lt;/tick-tock-clock&gt;'</span></div></pre></td></tr></table></figure>
+<h2 id="5-6-元素更新"><a href="#5-6-元素更新" class="headerlink" title="5.6 元素更新"></a>5.6 元素更新</h2><p>当元素定义调用的时候，每一个匹配的元素都会进行更新. 更新元素后，元素相应API会生效，生命周期相关函数会被调用.<br>通过CSS<strong>:unresolved</strong>可以匹配所有为构造的自定义元素，通过这种方式避免更新元素所造成的闪烁</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">tick-tock-clock:unresolved &#123;</div><div class="line">  content: '??:??';  </div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">tick-tock-clock</span>&gt;</span><span class="tag">&lt;/<span class="name">tick-tock-clock</span>&gt;</span> <span class="comment">&lt;!-- will show ??:?? --&gt;</span></div></pre></td></tr></table></figure>
+<p>也可以通过脚本进行控制</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Chime ALL the clocks!</span></div><div class="line"><span class="built_in">Array</span>.prototype.forEach.call(</div><div class="line">  <span class="built_in">document</span>.querySelectorAll(<span class="string">'tick-tock-clock:not(:unresolved)'</span>),</div><div class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">clock</span>) </span>&#123; clock.chime(); &#125;);</div></pre></td></tr></table></figure>
+<p>通过自定义事件元素可以通知页面其他部分元素已经更新，可以等到元素更新完成，脚本在对其进行操作</p>
+<p>5.7 扩展Custom Elements<br>元素也可以继承自定义元素，代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">element</span> <span class="attr">extends</span>=<span class="string">"tick-tock-clock"</span> <span class="attr">name</span>=<span class="string">"grand-father-clock"</span>&gt;</span></div><div class="line">    …</div><div class="line"><span class="tag">&lt;/<span class="name">element</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line"><span class="keyword">var</span> p = <span class="built_in">Object</span>.create(<span class="built_in">Object</span>.getPrototypeOf(<span class="built_in">document</span>.createElement(<span class="string">'tick-tock-clock'</span>)));</div><div class="line">p.popOutBirdie = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; … &#125;</div><div class="line"><span class="keyword">var</span> CuckooClock = <span class="built_in">document</span>.register(<span class="string">'cuckoo-clock'</span>, &#123;<span class="attr">prototype</span>: p&#125;);</div><div class="line"><span class="keyword">var</span> c = <span class="keyword">new</span> CuckooClock();</div><div class="line">c.tick();         <span class="comment">// inherited from tick-tock-clock</span></div><div class="line">c.popOutBirdie(); <span class="comment">// specific to cuckoo-clock</span></div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="6-Shadow-DOM"><a href="#6-Shadow-DOM" class="headerlink" title="6 Shadow DOM"></a>6 Shadow DOM</h2><p>相应规范见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html" target="_blank" rel="external">The Shadow DOM specification</a></p>
+<p>Shadow DOM 是一种DOM节点的辅助树. Shadow DOM 子树能够关联某个元素，但不会显示在元素子节点中，子树有自己的作用域. 例如，一个shadow DOM 子树可以和文档中相同ID和风格的元素而不冲突，因为shadow DOM 子树与文档是完全分离的</p>
+<p>Shadow DOM 通过<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#api-partial-element-create-shadow-root" target="_blank" rel="external"><strong>createShadowRoot</strong></a>方法生效，返回shadow DOM的根节点并填充到DOM节点中</p>
+<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg" alt="shadow trees"></p>
+<object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-trees.svg" width="800" height="430"></object>
+
+<p>关联shadow DOM的元素称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-shadow-host" target="_blank" rel="external">shadow host</a>. 当元素存在shadow DOM，元素的子节点不会渲染；渲染的是shadow DOM的内容</p>
+<p><img src="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" alt="shadow rendering"></p>
+<object data="http://www.w3.org/TR/2013/WD-components-intro-20130606/shadow-rendering.svg" width="450" height="400"></object>
+
+<p>6.1 插入点<br>shadow DOM 子树通过<strong>content</strong>元素作为渲染输出插入点. <strong>content</strong>只是作为渲染输出的插入点，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- document --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"news"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span>Area kitten "adorable"&amp;mdash;owner<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"breaking"</span>&gt;</span>Jiggled piece of yarn derails kitten kongress<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- #news' shadow --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">id</span>=<span class="string">"t"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">content</span> <span class="attr">select</span>=<span class="string">"h1"</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"ticker"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">content</span> <span class="attr">id</span>=<span class="string">"stories"</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- #ticker's shadow --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">id</span>=<span class="string">"u"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">content</span> <span class="attr">class</span>=<span class="string">"highlight"</span> <span class="attr">select</span>=<span class="string">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">content</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line"><span class="comment">// Set up shadow DOM</span></div><div class="line"><span class="keyword">var</span> news = <span class="built_in">document</span>.querySelector(<span class="string">'#news'</span>);</div><div class="line"><span class="keyword">var</span> r = news.createShadowRoot();</div><div class="line"><span class="keyword">var</span> t = <span class="built_in">document</span>.querySelector(<span class="string">'#t'</span>);</div><div class="line">r.appendChild(t.content.cloneNode(<span class="literal">true</span>));</div><div class="line"></div><div class="line"><span class="keyword">var</span> ticker = r.querySelector(<span class="string">'#ticker'</span>);</div><div class="line"><span class="keyword">var</span> s = ticker.createShadowRoot();</div><div class="line"><span class="keyword">var</span> u = <span class="built_in">document</span>.querySelector(<span class="string">'#u'</span>);</div><div class="line">s.appendChild(u.content.cloneNode(<span class="literal">true</span>));</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>理论上，第一部分文档和第一部分shadow根节点生成了下面的DOM树. 宿主元素的子节点显示在插入点的位置. </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"news"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"ticker"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>Area kitten "adorable"&amp;mdash;owner<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"breaking"</span>&gt;</span>Jiggled piece of yarn derails kitten kongress<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>第二部分，由于<strong>content class=”highlight” select=”.breaking”</strong>所有类属性为breaking的排在顶部，这种方式称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#reprojection" target="_blank" rel="external">reprojection</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"news"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Good day for kittens<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"ticker"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"breaking"</span>&gt;</span>Kitten rescued from tree<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"breaking"</span>&gt;</span>Jiggled piece of yarn derails kitten kongress<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>Area kitten "adorable"&amp;mdash;owner<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>6.3 备用内容<br>插入点可以有<em>content</em>，称为<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#dfn-fallback-content" target="_blank" rel="external">备用内容</a>，当插入点没有任何文本时，会显示此信息，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- #news' shadow --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">id</span>=<span class="string">"t"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">content</span> <span class="attr">select</span>=<span class="string">"h1"</span>&gt;</span>Today's top headlines<span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"ticker"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">content</span> <span class="attr">id</span>=<span class="string">"stories"</span>&gt;</span></div><div class="line">      No news</div><div class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">"window.location.reload(true);"</span>&gt;</span>Reload<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="6-4-多重Shadow子树"><a href="#6-4-多重Shadow子树" class="headerlink" title="6.4 多重Shadow子树"></a>6.4 多重Shadow子树</h2><p>一个元素可以含有不止一个shadow DOM 子树. 继承一个已具有shadow DOM子树的自定义元素是很常见的. 不过要是想重用原先的元素时怎么处理? 如何重用?<br>利用<strong>shadow</strong>可以调用原先申请的shadow DOM 子树，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">element</span> <span class="attr">name</span>=<span class="string">"sailing-watch"</span> <span class="attr">extends</span>=<span class="string">"tick-tock-clock"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">template</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">shadow</span>&gt;</span><span class="tag">&lt;/<span class="name">shadow</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"compass"</span>&gt;</span>N<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></div><div class="line">    …</div><div class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">element</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>由于一个元素可以有多个shadow，我们需要了解这些shadow如何相互影响，如何作用元素的子节点</p>
+<p>由于你不能删除shadow root，所以shadow DOM子树生效时的顺序很重要，如下：</p>
+<ul>
+<li><ol>
+<li>user agent shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>自定义元素的shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>第一个派生自定义元素的shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>…</li>
+</ol>
+</li>
+<li><ol>
+<li>用脚本添加的Ad-hoc shadow DOM</li>
+</ol>
+</li>
+<li><ol>
+<li>Decorator shadow (applied and removed with CSS rules—not technically shadow DOM, but its insertion points work similarly to shadow DOM.)</li>
+</ol>
+</li>
+</ul>
+<p>其次，根据顺序从最新生效的子树反向推倒，每一个<strong>content</strong>插入点，根据规则，可以定位任何宿主元素子节点</p>
+<p>一旦子节点在正确的地方渲染，我们可以检查是否有<strong>shadow</strong>元素，如果没有，表明成功；如果有，从<strong>shadow</strong>队列元素中取出子树重复替换<strong>content</strong>插入点，直到队尾. 具体见如下图：</p>
+<p><img src="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg" alt="shadow stack"></p>
+<object data="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/images/shadow-stack.svg" width="500" height="600"></object>
+
+<p>总结一下：</p>
+<ul>
+<li>最近申请的shadow DOM 子树最可能在<strong>content</strong>插入点获得最新的子树</li>
+<li>以此类推</li>
+<li>直到当前的shadow DOM子树没有<strong>shadow</strong>，那么其就是这个元素最后的DOM子树</li>
+</ul>
+<h2 id="6-5-CSS-和-Shadow-DOM"><a href="#6-5-CSS-和-Shadow-DOM" class="headerlink" title="6.5 CSS 和 Shadow DOM"></a>6.5 CSS 和 Shadow DOM</h2><p>当构建自定义元素时自然要考虑属性、内容和API接口. 这与页面渲染同等重要. Shadow DOM 提供给开发者很多方式控制shadow DOM内容的样式.</p>
+<p>shadow DOM 子树有一个不看见的边界，user agent的样式默认生效，而不是定制的样式. 派生的元素依旧有效，这不是我们想要的. 在上面的scailing-watch的例子里，如果页面内容被渲染成绿色，如果要保持整体风格，shadow DOM内的文本由于color属性由于继承性质也会是绿色，不过设定了所有<strong>div</strong>元素橙色边框， 那direction indicator不会有橙色边框因为<strong>border</strong>并不是具有继承性质的属性</p>
+<p>一个shadow根节点有两个属性控制行为. applyAuthorStyles（开发者样式）属性，shadow DOM 会匹配最接近的样式，注意这个属性只能匹配shadow DOM 子树. 使用时要注意”n”代选择器</p>
+<p>如果<strong>applyAuthorStyles</strong>设置为false，<strong>resetStyleInheritance</strong>设置为true，样式会清空. 元素会被与页面样式隔离，你可以通过浏览器重置样式</p>
+<p>在插入点有相似的界限. shadow DOM子树的样式不会再插入点分布的元素上生效. 不过要是通过选择器想渲染某一部分特定内容， 可以用<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#distributed-pseudo-element" target="_blank" rel="external">::distributed pseudo-selector</a>，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- #ticker's shadow --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">id</span>=<span class="string">"u"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">    content::distributed(*) &#123;</div><div class="line">      display: inline-block;</div><div class="line">    &#125;</div><div class="line">    *::distributed(.breaking) &#123;</div><div class="line">      text-shadow: 0 0 0.2em maroon;</div><div class="line">      color: orange;</div><div class="line">    &#125;</div><div class="line">  <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">content</span> <span class="attr">class</span>=<span class="string">"highlight"</span> <span class="attr">select</span>=<span class="string">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">content</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>上述包含了两个规则，选择器的左半部分是shadow DOM 生效；括号内代表适用元素。第一个选择器对<strong>content</strong>的所有元素有效；第二个选择器对类对象为breaking的元素有效</p>
+<p>ShadowDOM 也可以定制宿主元素的样式. 代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- #ticker's shadow --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">id</span>=<span class="string">"u"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">    @host &#123;</div><div class="line">      :scope &#123;</div><div class="line">        white-space: nowrap;</div><div class="line">        overflow-style: marquee-line;</div><div class="line">        overflow-x: marquee;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    content::distributed(*) &#123;</div><div class="line">      display: inline-block;</div><div class="line">    &#125;</div><div class="line">    *::distributed(.breaking) &#123;</div><div class="line">      text-shadow: 0 0 0.2em maroon;</div><div class="line">      color: orange;</div><div class="line">    &#125;</div><div class="line">  <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">content</span> <span class="attr">class</span>=<span class="string">"highlight"</span> <span class="attr">select</span>=<span class="string">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">content</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>最后，有两种方式可以使shadow DOM 子树的样式与页面保持一致. 首先通过分配一个伪ID暴漏shadow DOM 子树中的特定元素，开发者可以定制其样式. 例如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line"><span class="comment">// Set up shadow DOM</span></div><div class="line">…</div><div class="line"><span class="keyword">var</span> ticker = r.querySelector(<span class="string">'#ticker'</span>);</div><div class="line">ticker.pseudo = <span class="string">'x-ticker'</span>;</div><div class="line">…</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- change the appearance of the ticker part --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">#news::x-ticker &#123;</div><div class="line">  background: gray;</div><div class="line">  color: lightblue;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>另一种方法是通过CSS变量进行控制，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- #ticker's shadow --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">id</span>=<span class="string">"u"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">    @host &#123;</div><div class="line">      :scope &#123;</div><div class="line">        white-space: nowrap;</div><div class="line">        overflow-style: marquee-line;</div><div class="line">        overflow-x: marquee;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    content::distributed(*) &#123;</div><div class="line">      display: inline-block;</div><div class="line">    &#125;</div><div class="line">    *::distributed(.breaking) &#123;</div><div class="line">      text-shadow: 0 0 0.2em var(highlight-accent, maroon);</div><div class="line">      color: var(highlight-primary, orange);</div><div class="line">    &#125;</div><div class="line">  <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">content</span> <span class="attr">class</span>=<span class="string">"highlight"</span> <span class="attr">select</span>=<span class="string">".breaking"</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">content</span>&gt;</span><span class="tag">&lt;/<span class="name">content</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- change the appearance of the ticker part --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">#news::x-ticker &#123;</div><div class="line">  background: gray;</div><div class="line">  color: lightblue;</div><div class="line">  var-highlight-primary: green;</div><div class="line">  var-highlight-accent: yellow;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>伪元素方法针对特定元素保持页面样式非常有用，而CSS变量则对不想重复指定的属性集（主题风格）非常有用. </p>
+<h2 id="6-6-Shadow-DOM中的事件"><a href="#6-6-Shadow-DOM中的事件" class="headerlink" title="6.6 Shadow DOM中的事件"></a>6.6 Shadow DOM中的事件</h2><p>为了确保shadow DOM子树中的元素不会暴露给外部子树，会有很多工作来分发内部子树事件.<br>首先，shadow DOM 子树会阻止事件如mutation和selectstart外部监听. 那些能够穿过shadow DOM的范围并且重定向的的事件，它们的<strong>target</strong>和<strong>relatedTarget</strong>的会指向shadow DOM子树的宿主元素. 在一些情况下，如<strong>DOMFocusIn</strong>，<strong>mouseover</strong>，<strong>mouseout</strong>事件需要特别注意，如果你在shadow DOM的两个元素中间移动鼠标，会出现鼠标从本身移动到它本身这种诡异的事件</p>
+<h2 id="7-Imports"><a href="#7-Imports" class="headerlink" title="7 Imports"></a>7 Imports</h2><p>规范标准见这里<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html" target="_blank" rel="external">The HTML Imports specification</a></p>
+<p>Custom elements 和 decorators可以通过文件的方式引入：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"import"</span> <span class="attr">href</span>=<span class="string">"goodies.html"</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>只有<strong>decorator</strong>元素和<strong>element</strong>能被user agent解析，脚本也可以通过<strong>import</strong>属性获取DOM.  跨域检索的文档可以通过CORS判定这些定义是否可以跨站运行. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/06/29/2013-06-29-web-components/" data-id="ciu28wl4t000i9ks6w4s2pc45" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/custom-elements/">custom elements</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/decorator/">decorator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/import/">import</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shadow-DOM/">shadow DOM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/templates/">templates</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2013/07/16/2013-07-13-android-performance/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          android深度优化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2013/06/23/2013-06-23-overwrite-global-methods/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">重写全局方法 | JavaScript</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/deep-learning/">deep learning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/octopress/">octopress</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟货币/">虚拟货币</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDOS/">DDOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Deep-Learning/">Deep Learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/I-O-performance/">I/O performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrolling-performance/">Scrolling performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI-performance/">UI performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-elements/">custom elements</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decorator/">decorator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/free-bitcoin/">free bitcoin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/import/">import</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/seo/">seo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shadow-DOM/">shadow DOM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/templates/">templates</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/人脸检测/">人脸检测</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/历史记录/">历史记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/悬浮窗/">悬浮窗</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DDOS/" style="font-size: 10px;">DDOS</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/I-O-performance/" style="font-size: 10px;">I/O performance</a> <a href="/tags/Scrolling-performance/" style="font-size: 10px;">Scrolling performance</a> <a href="/tags/UI-performance/" style="font-size: 10px;">UI performance</a> <a href="/tags/custom-elements/" style="font-size: 10px;">custom elements</a> <a href="/tags/decorator/" style="font-size: 10px;">decorator</a> <a href="/tags/free-bitcoin/" style="font-size: 10px;">free bitcoin</a> <a href="/tags/import/" style="font-size: 10px;">import</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/seo/" style="font-size: 10px;">seo</a> <a href="/tags/shadow-DOM/" style="font-size: 10px;">shadow DOM</a> <a href="/tags/templates/" style="font-size: 10px;">templates</a> <a href="/tags/人脸检测/" style="font-size: 10px;">人脸检测</a> <a href="/tags/历史记录/" style="font-size: 10px;">历史记录</a> <a href="/tags/悬浮窗/" style="font-size: 10px;">悬浮窗</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2014/02/10/人脸检测与打码/">人脸自动检测与打码【基础篇】</a>
+          </li>
+        
+          <li>
+            <a href="/2013/08/25/deep-learning---round-1/">Deep Learning Reserch - Round 1</a>
+          </li>
+        
+          <li>
+            <a href="/2013/08/11/仿360chathead等app悬浮窗效果/">仿360|ChatHead等APP悬浮窗和动画效果</a>
+          </li>
+        
+          <li>
+            <a href="/2013/07/16/2013-07-13-android-performance/">android深度优化</a>
+          </li>
+        
+          <li>
+            <a href="/2013/06/29/2013-06-29-web-components/">Web组件(Web Components) | HTML5</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
